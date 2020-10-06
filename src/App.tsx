@@ -9,7 +9,7 @@ import PrivateRoute from "./components/auth/PrivateRoute";
 import PublicRoute from "./components/auth/PublicRoute";
 import Loader from "./components/UI/Loader";
 import firebase from "./firebase/config";
-import { getUserById, setLoading } from "./store/actions/authActions";
+import { setData, setLoading } from "./store/actions/authActions";
 import { RootState } from "./store";
 
 const App: FC = () => {
@@ -22,7 +22,7 @@ const App: FC = () => {
     const unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
         dispatch(setLoading(true));
-        await dispatch(getUserById(user.uid));
+        dispatch(setData(user.uid));
       }
       dispatch(setLoading(false));
     });

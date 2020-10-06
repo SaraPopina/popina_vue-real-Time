@@ -4,6 +4,7 @@ export const SET_LOADING = "SET_LOADING";
 export const SET_ERROR = "SET_ERROR";
 export const NEED_VERIFICATION = "NEED_VERIFICATION";
 export const SET_SUCCESS = "SET_SUCCESS";
+export const FETCHDATA_SUCCESS = "FETCHDATA_SUCCESS";
 
 export interface User {
   email: string;
@@ -17,6 +18,7 @@ export interface AuthState {
   error: string;
   success: string;
   uid: string;
+  data: {};
 }
 
 export interface LoginUser {
@@ -28,6 +30,11 @@ export interface LoginUser {
 export interface SignInData {
   email: string;
   password: string;
+}
+
+interface fetchDataSuccess {
+  type: typeof FETCHDATA_SUCCESS;
+  payload: {};
 }
 
 // Actions
@@ -58,6 +65,7 @@ interface SetSuccessAction {
 export type AuthAction =
   | SetUserAction
   | SetLoadingAction
+  | fetchDataSuccess
   | SignOutAction
   | SetErrorAction
   | SetSuccessAction;

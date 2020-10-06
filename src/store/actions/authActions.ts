@@ -1,4 +1,5 @@
 import { ThunkAction } from "redux-thunk";
+import firebase from "../../firebase/config";
 
 import {
   AuthAction,
@@ -9,21 +10,10 @@ import {
   SignInData,
   SET_ERROR,
   SET_SUCCESS,
+  FETCHDATA_SUCCESS,
 } from "../types";
 import { RootState } from "..";
-import firebase from "../../firebase/config";
-
-// Get user by id
-export const getUserById = (
-  id: string
-): ThunkAction<void, RootState, null, AuthAction> => {
-  return async (dispatch) => {
-    try {
-    } catch (err) {
-      console.log(err);
-    }
-  };
-};
+import { auth, database } from "firebase";
 
 // Set loading
 export const setLoading = (
@@ -34,6 +24,49 @@ export const setLoading = (
       type: SET_LOADING,
       payload: value,
     });
+  };
+};
+
+export const setData = (
+  userUid: string
+): ThunkAction<void, RootState, null, AuthAction> => {
+  return async (dispatch) => {
+    const userUid = auth().currentUser.uid;
+    const snapshot = database()
+      .ref()
+      .child(`users/${userUid}/realtimeID`)
+      .once("value");
+
+    if (false == (await snapshot).exists()) {
+      const newKey = database()
+        .ref()
+        .child(`users/${userUid}/realtimeID`)
+        .push().key;
+
+      database().ref().child(`users/${userUid}/`).update({
+        realtimeID: newKey,
+      });
+      const orderId = (await snapshot).val();
+      const realTimeRef = database().ref().child(`realtimes/${orderId}`);
+
+      realTimeRef.on("child_added", (snapshot) => {
+        const data = snapshot.val();
+        dispatch(getOldData(data));
+      });
+    } else {
+      const realTimeRef = database()
+        .ref()
+        .child(`realtimes/${(await snapshot).val()}`);
+
+      realTimeRef.on("child_added", (snapshot) => {
+        const data = snapshot.val();
+        dispatch(getOldData(data));
+      });
+    }
+    try {
+    } catch (err) {
+      console.log(err);
+    }
   };
 };
 
@@ -93,6 +126,18 @@ export const setError = (
     dispatch({
       type: SET_ERROR,
       payload: msg,
+    });
+  };
+};
+
+export const getOldData = (
+  data: []
+): ThunkAction<void, RootState, null, AuthAction> => {
+  return (dispatch) => {
+    console.log("ici la fonction recup data", data);
+    dispatch({
+      type: FETCHDATA_SUCCESS,
+      payload: data,
     });
   };
 };

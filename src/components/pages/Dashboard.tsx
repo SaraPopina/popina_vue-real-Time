@@ -14,7 +14,7 @@ const Dashboard: FC = () => {
     }
   }, [success, dispatch]);
 
-  console.log(user);
+  console.log("ici le user", user);
   return (
     <section className="section">
       <div className="container">
