@@ -11,6 +11,7 @@ import Loader from "./components/UI/Loader";
 import firebase from "./firebase/config";
 import { setData, setLoading } from "./store/actions/authActions";
 import store, { RootState } from "./store";
+import "./file.css";
 
 const App: FC = () => {
   const dispatch = useDispatch();

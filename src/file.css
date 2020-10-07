@@ -1,0 +1,19 @@
+body {
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+.dashboard_container {
+  background-color: #f5faf8;
+  margin-left: 250px;
+  min-height: 100%;
+}
+
+.dashboard_header_title {
+  font-size: 24px;
+  background-color: #ced2d9;
+  color: #667084;
+  padding-top: 22px;
+  padding-bottom: 20px;
+  padding-left: 90px;
+}
