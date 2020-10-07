@@ -131,7 +131,7 @@ export const setError = (
 };
 
 export const getOldData = (
-  data: []
+  data: null
 ): ThunkAction<void, RootState, null, AuthAction> => {
   return (dispatch) => {
     console.log("ici la fonction recup data", data);

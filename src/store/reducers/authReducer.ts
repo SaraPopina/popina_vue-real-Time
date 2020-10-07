@@ -16,7 +16,7 @@ const initialState: AuthState = {
   error: "",
   success: "",
   uid: null,
-  data: {},
+  data: null,
 };
 
 export default (state = initialState, action: AuthAction) => {
@@ -50,6 +50,7 @@ export default (state = initialState, action: AuthAction) => {
         success: action.payload,
       };
     case FETCHDATA_SUCCESS:
+      console.log("on recupere bien les donné ", action.payload);
       return {
         ...state,
         data: action.payload,

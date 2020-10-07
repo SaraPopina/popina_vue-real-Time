@@ -10,7 +10,7 @@ import PublicRoute from "./components/auth/PublicRoute";
 import Loader from "./components/UI/Loader";
 import firebase from "./firebase/config";
 import { setData, setLoading } from "./store/actions/authActions";
-import { RootState } from "./store";
+import store, { RootState } from "./store";
 
 const App: FC = () => {
   const dispatch = useDispatch();

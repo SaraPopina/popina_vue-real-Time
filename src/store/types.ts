@@ -11,6 +11,77 @@ export interface User {
   uid: string;
 }
 
+export interface Data {
+  client_id: string;
+  connected: boolean;
+  date_begin: number;
+  date_deleted: number;
+  date_end: number;
+  device_name: string;
+  fiscal: number;
+  is_closed: number;
+  name: string;
+  number_guests: number;
+  team: [
+    {
+      date_begin: number;
+      date_end: number;
+      name: string;
+    }
+  ];
+  ticket_address: string;
+  ticket_city: string;
+  ticket_company: string;
+  ticket_country: string;
+  ticket_naf: string;
+  ticket_name: string;
+  ticket_phone: string;
+  ticket_text: string;
+  ticket_tva: string;
+  ticket_url: string;
+  ticket_zip: string;
+  tickets: [
+    {
+      cancelled: number;
+      date_begin: number;
+      date_end: number;
+      items: [
+        {
+          cancelled: 0;
+          category: string;
+          creation_date: number;
+          live_paid: number;
+          name: string;
+          parent_category: string;
+          parent_category_index: number;
+          price: {
+            amount: number;
+            currency: string;
+            tax: number;
+            tax_name: string;
+            tier: string;
+          };
+          quantity: number;
+          step_index: number;
+          transferred: number;
+          waiter: string;
+          waiter_id: string;
+        }
+      ];
+      live_paid: number;
+      number_guests: number;
+      order_id: number;
+      price: { amount: number; currency: string; tier: string };
+      prints_count: number;
+      room: string;
+      table: string;
+      transferred: number;
+      waiter: string;
+      waiter_id: string;
+    }
+  ];
+}
+
 export interface AuthState {
   user: User | null;
   authenticated: boolean;
@@ -18,7 +89,7 @@ export interface AuthState {
   error: string;
   success: string;
   uid: string;
-  data: {};
+  data: Data | null;
 }
 
 export interface LoginUser {
@@ -34,7 +105,7 @@ export interface SignInData {
 
 interface fetchDataSuccess {
   type: typeof FETCHDATA_SUCCESS;
-  payload: {};
+  payload: Data;
 }
 
 // Actions
