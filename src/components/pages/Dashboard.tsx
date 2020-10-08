@@ -18,6 +18,9 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import * as moment from "moment";
+import "moment/locale/fr";
+import CardHeader from "@material-ui/core/CardHeader";
 
 const Dashboard: FC = () => {
   const { user, success, data } = useSelector((state: RootState) => state.auth);
@@ -32,9 +35,22 @@ const Dashboard: FC = () => {
   console.log(data);
 
   const useStyles = makeStyles({
+    card: {
+      marginTop: 70,
+      borderRadius: "spacing(0.5)",
+      transition: "0.3s",
+      width: "50%",
+      overflow: "initial",
+      background: "#ffffff",
+    },
     table: {
-      maxWidth: 500,
-      width: 400,
+      maxWidth: 300,
+    },
+    content: {
+      paddingTop: 10,
+      textAlign: "left",
+      overflowX: "auto",
+      borderBottom: 0,
     },
   });
 
@@ -52,114 +68,247 @@ const Dashboard: FC = () => {
         <h1 className="is-size-1">Temps réel</h1>
       </div>
       <div className="dashboard_realtime_title_container">
-        <h2 className="dashboard_realtime_title_date">Caisse du {dateBegin}</h2>
-        <h2 className="dashboard_realtime_title_date">
-          Dernière modification effectué à {dateEnd}{" "}
-        </h2>
-        <p>
+        <h2>Caisse du {moment(dateBegin).format("LLLL")} </h2>
+        <h3>
+          Dernière modification effectué à {moment(dateEnd).format("LT")}{" "}
+        </h3>
+        <p className="tip">
           Rafraichissement de la page automatiquement à chaque changements sur
           votre ipad.
         </p>
-        <div>
-          <h3>Encaissements</h3>
-          {data.tickets.map((aData, index) => {
-            return (
-              <div>
-                <ul key={index}>
-                  <li>
-                    {" "}
-                    <p>Payé</p>
-                    <p>{aData.live_paid}</p>
-                  </li>
-                  <li>
-                    <p>Annulé</p>
-                    <p>{aData.cancelled}</p>
-                  </li>
-                  <li>
-                    <p>Transféré</p>
-                    <p>{aData.transferred}</p>
-                  </li>
-                  <li>
-                    <h5>Total</h5>
-                    {Object.values(aData.price).map((aPrice) => {
-                      return (
-                        <div>
-                          <p>Ici le total {aPrice}</p>
-                        </div>
-                      );
-                    })}
-                  </li>
-                </ul>
-              </div>
-            );
-          })}
-        </div>
-        <TableContainer component={Paper}>
-          {data.tickets.map((aData) => {
-            return (
-              <Table className={classes.table} aria-label="spanning table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center" colSpan={6}>
-                      Detail de la commande
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Produits</TableCell>
-                    <TableCell align="right">Quantité</TableCell>
-                    <TableCell align="right">Prix</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {aData.items.map((row) => (
-                    <TableRow key={row.name}>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell align="right">{row.quantity}</TableCell>
-                      <TableCell align="right">
-                        {row.price.amount / 100} {row.price.currency}
+      </div>
+      <section
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-around",
+        }}
+      >
+        <TableContainer className={classes.table}>
+          <Table aria-label="simple-table">
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  align="center"
+                  colSpan={2}
+                  style={{ color: "#94c7f3" }}
+                >
+                  Encaissements
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            {data.tickets.map((row) => (
+              <TableBody>
+                <TableRow key={row.order_id}>
+                  <TableCell
+                    style={{ fontWeight: "bold", fontStyle: "italic" }}
+                  >
+                    Payé
+                  </TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>
+                    {row.live_paid} {row.price.currency}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>- dont encaissé</TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>
+                    {row.live_paid} {row.price.currency}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>- dont offert</TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>
+                    {row.live_paid} {row.price.currency}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell> dont transféré</TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>
+                    {row.transferred} {row.price.currency}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell
+                    style={{ fontWeight: "bold", fontStyle: "italic" }}
+                  >
+                    Non payé
+                  </TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>
+                    {row.live_paid} {row.price.currency}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell
+                    style={{ fontWeight: "bold", fontStyle: "italic" }}
+                  >
+                    Total
+                  </TableCell>
+                  <TableCell style={{ color: "#94c7f3", fontWeight: "bold" }}>
+                    {row.price.amount / 100} {row.price.currency}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Annulations</TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>
+                    {row.cancelled} {row.price.currency}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            ))}
+          </Table>
+        </TableContainer>
+        <TableContainer className={classes.table}>
+          <Table aria-label="simple-table">
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  align="center"
+                  colSpan={2}
+                  style={{ color: "#bd9b71" }}
+                >
+                  Clients
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            {data.tickets.map((row) => (
+              <TableBody>
+                <TableRow key={row.order_id}>
+                  <TableCell
+                    style={{ fontWeight: "bold", fontStyle: "italic" }}
+                  >
+                    Clients ayant payé
+                  </TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>
+                    {row.live_paid}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell
+                    style={{ fontWeight: "bold", fontStyle: "italic" }}
+                  >
+                    Clients n'ayant pas encore payé
+                  </TableCell>
+                  <TableCell style={{ fontWeight: "bold" }}>
+                    {row.live_paid}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell
+                    style={{ fontWeight: "bold", fontStyle: "italic" }}
+                  >
+                    Total
+                  </TableCell>
+                  <TableCell style={{ fontWeight: "bold", color: "#bd9b71" }}>
+                    {row.number_guests}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            ))}
+          </Table>
+        </TableContainer>
+      </section>
+      <section
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-around",
+        }}
+      >
+        <Card className={classes.card}>
+          <CardHeader
+            className="cardHeaderShadowStyles"
+            title={"Commande"}
+            subheader={"Détail de la commande"}
+          />
+
+          <CardContent className={classes.content}>
+            {data.tickets.map((aData) => {
+              return (
+                <Table aria-label="spanning table">
+                  <TableHead>
+                    <TableRow className="detail_tableHeader">
+                      <TableCell
+                        align="center"
+                        style={{
+                          color: "#bd9b71",
+                          fontWeight: "bold",
+                          fontStyle: "italic",
+                        }}
+                      >
+                        {aData.waiter}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        style={{
+                          color: "#bd9b71",
+                          fontWeight: "bold",
+                          fontStyle: "italic",
+                        }}
+                      >
+                        {aData.room} {aData.table}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        style={{
+                          color: "#bd9b71",
+                          fontWeight: "bold",
+                          fontStyle: "italic",
+                        }}
+                      >
+                        {moment(aData.date_begin).format("LT")}
                       </TableCell>
                     </TableRow>
-                  ))}
-                  <TableRow>
-                    <TableCell rowSpan={3} />
-                    <TableCell colSpan={4}>Subtotal</TableCell>
-                    <TableCell align="right">Total //</TableCell>
-                  </TableRow>
-
-                  <TableRow>
-                    <TableCell colSpan={4}>Total</TableCell>
-                    <TableCell align="right">
-                      {data.tickets.map((aTicket) => {
-                        return (
-                          aTicket.price.amount / 100 + aTicket.price.currency
-                        );
-                      })}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            );
-          })}
-        </TableContainer>
-        <div>
-          <h3>Équipe</h3>
-          <div>
-            {data.team.map((aTeamMember) => {
-              return (
-                <div>
-                  <p>{aTeamMember.name}</p>
-                  <p>{aTeamMember.date_begin}</p>
-                  <p>{aTeamMember.date_end}</p>
-                </div>
+                    <TableRow>
+                      <TableCell>Produits</TableCell>
+                      <TableCell>Quantité</TableCell>
+                      <TableCell>Prix</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {aData.items.map((row) => (
+                      <TableRow key={row.name}>
+                        <TableCell>{row.name}</TableCell>
+                        <TableCell>{row.quantity}</TableCell>
+                        <TableCell>
+                          {row.price.amount / 100} {row.price.currency}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    <TableRow>
+                      <TableCell colSpan={4}>Total</TableCell>
+                      <TableCell>
+                        {data.tickets.map((aTicket) => {
+                          return (
+                            aTicket.price.amount / 100 + aTicket.price.currency
+                          );
+                        })}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
               );
             })}
-          </div>
-
-          <div>
-            <h3>Commandes</h3>
-          </div>
-        </div>
-      </div>
+          </CardContent>
+        </Card>
+        {data.team.map((aTeamMember) => {
+          return (
+            <Card className="team-card">
+              <CardContent>
+                <Typography gutterBottom>Équipe</Typography>
+                <Typography variant="h5" component="h3" color="textSecondary">
+                  <p>{aTeamMember.name}</p>
+                </Typography>
+                <Typography color="textSecondary">
+                  {moment(aTeamMember.date_begin).format("LLLL")}
+                </Typography>
+                <Typography variant="body2" component="p" color="textSecondary">
+                  {moment(aTeamMember.date_end).format("LLLL")}
+                </Typography>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </section>
     </section>
   );
 };
