@@ -93,7 +93,7 @@ export const signin = (
         payload: userData,
       });
 
-      console.log("on recup l'uid", areaSnapshot.user.uid);
+      // console.log("on recup l'uid", areaSnapshot.user.uid);
     } catch (err) {
       console.log(err);
       onError();
@@ -134,7 +134,7 @@ export const getOldData = (
   data: null
 ): ThunkAction<void, RootState, null, AuthAction> => {
   return (dispatch) => {
-    console.log("ici la fonction recup data", data);
+    // console.log("ici la fonction recup data", data);
     dispatch({
       type: FETCHDATA_SUCCESS,
       payload: data,

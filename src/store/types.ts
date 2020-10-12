@@ -71,6 +71,18 @@ export interface Data {
       live_paid: number;
       number_guests: number;
       order_id: number;
+      payments: [
+        {
+          amount: number;
+          cancelled: number;
+          clientID: string;
+          creation_date: number;
+          currency: string;
+          mode: number;
+          name: string;
+          type: number;
+        }
+      ];
       price: { amount: number; currency: string; tier: string };
       prints_count: number;
       room: string;

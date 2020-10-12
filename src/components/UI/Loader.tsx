@@ -1,9 +1,10 @@
 import React, { FC } from "react";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const Loader: FC = () => {
   return (
     <div>
-      <div>Loader</div>
+      <CircularProgress />
     </div>
   );
 };
