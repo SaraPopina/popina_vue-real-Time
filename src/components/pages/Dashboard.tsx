@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from "react";
 import { useSelector, useDispatch, connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { setSuccess, getOldData } from "../../store/actions/authActions";
+import { setSuccess } from "../../store/actions/authActions";
 import store, { RootState } from "../../store";
 
 import Card from "@material-ui/core/Card";
@@ -22,7 +22,9 @@ import "moment/locale/fr";
 import CardHeader from "@material-ui/core/CardHeader";
 
 const Dashboard: FC = () => {
-  const { user, success, data } = useSelector((state: RootState) => state.auth);
+  const { user, success } = useSelector((state: RootState) => state.auth);
+  const { data } = useSelector((state: RootState) => state.data);
+
   const dispatch = useDispatch();
 
   console.log(data);
@@ -30,9 +32,9 @@ const Dashboard: FC = () => {
   let sumNotPaid: number = 0;
   let sumCancelled: number = 0;
   let sumTransferred: number = 0;
-  let totalGuests: number = data.number_guests;
   let sumGuestPaid: number = 0;
   let sumGuestNotPaid: number = 0;
+  let sumDiscount: number = 0;
 
   const useStyles = makeStyles({
     card: {
@@ -60,17 +62,13 @@ const Dashboard: FC = () => {
   function calculate_total(): void {
     let totalPricePaid: number[] = [];
     let totalPriceNotPaid: number[] = [];
-    let totalCancelled: number[] = [];
+    let totalCancelled: number[] = [0];
     let totalTransferred: number[] = [];
     let totalGuestPaid: number[] = [];
     let totalGuestNotPaid: number[] = [];
+    let totalDiscount: number[] = [];
 
     data.tickets.map((aTicket) => {
-      totalCancelled.push(aTicket.cancelled);
-      totalCancelled.reduce((a: number, b: number) => {
-        return (sumCancelled = a + b);
-      });
-
       totalTransferred.push(aTicket.transferred);
       totalTransferred.reduce((a: number, b: number) => {
         return (sumTransferred = a + b);
@@ -78,10 +76,20 @@ const Dashboard: FC = () => {
 
       if (aTicket.live_paid > 0) {
         aTicket.payments.map((aPayment) => {
-          totalPricePaid.push(aPayment.amount);
-          totalPricePaid.reduce((a: number, b: number) => {
-            return (sumPaid = a + b);
-          });
+          if (
+            aPayment.name == "Offert Client" ||
+            aPayment.name == "Offert Staff"
+          ) {
+            totalDiscount.push(aPayment.amount);
+            totalDiscount.reduce((a: number, b: number) => {
+              return (sumDiscount = a + b);
+            });
+          } else {
+            totalPricePaid.push(aPayment.amount);
+            totalPricePaid.reduce((a: number, b: number) => {
+              return (sumPaid = a + b);
+            });
+          }
         });
 
         totalGuestPaid.push(aTicket.number_guests);
@@ -99,11 +107,23 @@ const Dashboard: FC = () => {
           return (sumGuestNotPaid = a + b);
         });
       }
+
+      if (aTicket.cancelled > 0 && aTicket.items != undefined) {
+        aTicket.items.map((aItem) => {
+          totalCancelled.push(aItem.price.amount);
+          console.log(totalCancelled);
+          totalCancelled.reduce((a: number, b: number) => {
+            return (sumCancelled = a + b);
+          });
+        });
+      }
     });
   }
 
   calculate_total();
-  let sumTotal: number = sumPaid + sumNotPaid;
+  let sumTotalPaid: number = sumPaid + sumDiscount + sumTransferred;
+  let sumTotal: number = sumTotalPaid + sumNotPaid;
+  let totalGuests: number = sumGuestPaid + sumGuestNotPaid;
 
   useEffect(() => {
     if (success) {
@@ -158,7 +178,7 @@ const Dashboard: FC = () => {
                   Payé
                 </TableCell>
                 <TableCell style={{ fontWeight: "bold", borderBottom: 0 }}>
-                  {(sumPaid / 100).toFixed(2)} €
+                  {(sumTotalPaid / 100).toFixed(2)} €
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -172,7 +192,7 @@ const Dashboard: FC = () => {
               <TableRow>
                 <TableCell style={{ borderBottom: 0 }}>- dont offert</TableCell>
                 <TableCell style={{ fontWeight: "bold", borderBottom: 0 }}>
-                  ??
+                  {(sumDiscount / 100).toFixed(2)} €
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -384,19 +404,27 @@ const Dashboard: FC = () => {
                     )}
                   </TableBody>
                   <TableFooter>
-                    {aData.items.map((row) => (
-                      <TableRow key={row.name} style={{ borderBottom: 0 }}>
+                    {aData.items != undefined ? (
+                      aData.items.map((row, index) => (
+                        <TableRow key={index} style={{ borderBottom: 0 }}>
+                          <TableCell style={{ borderBottom: 0 }}>
+                            {row.quantity} * {row.name}
+                          </TableCell>
+                          <TableCell style={{ borderBottom: 0 }} />
+                          <TableCell style={{ borderBottom: 0 }} />
+                          <TableCell align="right" style={{ borderBottom: 0 }}>
+                            {(row.price.amount / 100).toFixed(2)}{" "}
+                            {row.price.currency}
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow style={{ borderBottom: 0 }}>
                         <TableCell style={{ borderBottom: 0 }}>
-                          {row.quantity} * {row.name}
-                        </TableCell>
-                        <TableCell style={{ borderBottom: 0 }} />
-                        <TableCell style={{ borderBottom: 0 }} />
-                        <TableCell align="right" style={{ borderBottom: 0 }}>
-                          {(row.price.amount / 100).toFixed(2)}{" "}
-                          {row.price.currency}
+                          Commande vierge
                         </TableCell>
                       </TableRow>
-                    ))}
+                    )}
                   </TableFooter>
                 </Table>
               );

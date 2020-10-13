@@ -101,6 +101,9 @@ export interface AuthState {
   error: string;
   success: string;
   uid: string;
+}
+
+export interface DataState {
   data: Data | null;
 }
 
@@ -152,3 +155,5 @@ export type AuthAction =
   | SignOutAction
   | SetErrorAction
   | SetSuccessAction;
+
+export type DataAction = fetchDataSuccess;

@@ -9,7 +9,8 @@ import PrivateRoute from "./components/auth/PrivateRoute";
 import PublicRoute from "./components/auth/PublicRoute";
 import Loader from "./components/UI/Loader";
 import firebase from "./firebase/config";
-import { setData, setLoading } from "./store/actions/authActions";
+import { setLoading } from "./store/actions/authActions";
+import { setData } from "./store/actions/dataActions";
 import store, { RootState } from "./store";
 import "./file.css";
 

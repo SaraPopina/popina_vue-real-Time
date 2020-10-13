@@ -6,7 +6,6 @@ import {
   SIGN_OUT,
   SET_ERROR,
   SET_SUCCESS,
-  FETCHDATA_SUCCESS,
 } from "../types";
 
 const initialState: AuthState = {
@@ -16,7 +15,6 @@ const initialState: AuthState = {
   error: "",
   success: "",
   uid: null,
-  data: null,
 };
 
 export default (state = initialState, action: AuthAction) => {
@@ -49,12 +47,12 @@ export default (state = initialState, action: AuthAction) => {
         ...state,
         success: action.payload,
       };
-    case FETCHDATA_SUCCESS:
-      console.log("on recupere bien les donné ", action.payload);
-      return {
-        ...state,
-        data: action.payload,
-      };
+    // case FETCHDATA_SUCCESS:
+    //   console.log("on recupere bien les donné ", action.payload);
+    //   return {
+    //     ...state,
+    //     data: action.payload,
+    //   };
     default:
       return state;
   }
