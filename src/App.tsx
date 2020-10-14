@@ -4,7 +4,7 @@ import { BrowserRouter, Switch } from "react-router-dom";
 import Header from "./components/sections/Header";
 import SignIn from "./components/pages/SignIn";
 import Homepage from "./components/pages/Homepage";
-import Dashboard from "./components/pages/Dashboard";
+import RealTime from "./components/pages/Real_time";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import PublicRoute from "./components/auth/PublicRoute";
 import Loader from "./components/UI/Loader";
@@ -44,7 +44,7 @@ const App: FC = () => {
       <Switch>
         <PublicRoute path="/" component={Homepage} exact />
         <PublicRoute path="/signin" component={SignIn} exact />
-        <PrivateRoute path="/dashboard" component={Dashboard} exact />
+        <PrivateRoute path="/real_time" component={RealTime} exact />
       </Switch>
     </BrowserRouter>
   );

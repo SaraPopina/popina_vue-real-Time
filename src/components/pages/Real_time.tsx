@@ -21,7 +21,7 @@ import * as moment from "moment";
 import "moment/locale/fr";
 import CardHeader from "@material-ui/core/CardHeader";
 
-const Dashboard: FC = () => {
+const RealTime: FC = () => {
   const { user, success } = useSelector((state: RootState) => state.auth);
   const { data } = useSelector((state: RootState) => state.data);
 
@@ -90,6 +90,13 @@ const Dashboard: FC = () => {
               return (sumPaid = a + b);
             });
           }
+
+          // if (aPayment.name == "Avoir") {
+          //   totalCancelled.push(aPayment.amount);
+          //   totalCancelled.reduce((a: number, b: number) => {
+          //     return (sumCancelled = a + b);
+          //   });
+          // }
         });
 
         totalGuestPaid.push(aTicket.number_guests);
@@ -111,7 +118,6 @@ const Dashboard: FC = () => {
       if (aTicket.cancelled > 0 && aTicket.items != undefined) {
         aTicket.items.map((aItem) => {
           totalCancelled.push(aItem.price.amount);
-          console.log(totalCancelled);
           totalCancelled.reduce((a: number, b: number) => {
             return (sumCancelled = a + b);
           });
@@ -320,14 +326,11 @@ const Dashboard: FC = () => {
         <Card className={classes.card}>
           <CardHeader className="cardHeaderShadowStyles" title={"Commande"} />
           <CardContent className={classes.content}>
-            {data.tickets.map((aData) => {
+            {data.tickets.map((aData, index) => {
               return (
                 <Table size="small" aria-label="a dense table">
                   <TableHead>
-                    <TableRow
-                      className="detail_tableHeader"
-                      key={aData.order_id}
-                    >
+                    <TableRow className="detail_tableHeader" key={index}>
                       <TableCell
                         align="center"
                         style={{
@@ -369,10 +372,10 @@ const Dashboard: FC = () => {
                   </TableHead>
                   <TableBody>
                     {aData.live_paid >= 1 ? (
-                      aData.payments.map((aPayment) => {
+                      aData.payments.map((aPayment, index) => {
                         return (
                           <TableRow
-                            key={aPayment.clientID}
+                            key={index}
                             style={{
                               backgroundColor: "#34c73a1c",
                               marginBottom: "10px",
@@ -433,9 +436,9 @@ const Dashboard: FC = () => {
         </Card>
 
         {/* /////////////// section team //////////// */}
-        {data.team.map((aTeamMember) => {
+        {data.team.map((aTeamMember, index) => {
           return (
-            <Card className="team-card">
+            <Card className="team-card" key={index}>
               <CardContent>
                 <Typography gutterBottom>Équipe</Typography>
                 <Typography variant="h5" component="h3" color="textSecondary">
@@ -456,4 +459,4 @@ const Dashboard: FC = () => {
   );
 };
 
-export default Dashboard;
+export default RealTime;

@@ -15,7 +15,7 @@ const PublicRoute: FC<Props> = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) =>
-        !authenticated ? <Component {...props} /> : <Redirect to="/dashboard" />
+        !authenticated ? <Component {...props} /> : <Redirect to="/real_time" />
       }
     />
   );
