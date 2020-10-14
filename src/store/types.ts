@@ -97,6 +97,7 @@ export interface RealTimeModel {
 }
 
 export interface ClientModel {
+  id: null;
   address: string;
   addressComplement: string;
   city: string;
@@ -122,7 +123,7 @@ export interface AuthState {
 // state
 export interface DataState {
   RealTimedata: RealTimeModel | null;
-  ClientData: ClientModel | null;
+  ClientData: ClientModel[] | null;
 }
 export interface SignInData {
   email: string;

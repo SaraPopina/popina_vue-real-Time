@@ -79,7 +79,6 @@ export const setClientData = (
         agendaID: newKey,
       });
       const agendaID = (await snapshot).val();
-      console.log(agendaID);
       const agendaRef = database().ref().child(`agendas/${agendaID}`);
 
       agendaRef.on("child_added", (snapshot) => {
@@ -104,13 +103,12 @@ export const setClientData = (
 };
 
 export const getClientData = (
-  Clientdata: null
+  clientdata: null
 ): ThunkAction<void, RootState, null, DataAction> => {
   return (dispatch) => {
-    console.log("ici la fonction recup data", Clientdata);
     dispatch({
       type: FETCHCLIENT_DATA_SUCCESS,
-      payload: Clientdata,
+      payload: clientdata,
     });
   };
 };

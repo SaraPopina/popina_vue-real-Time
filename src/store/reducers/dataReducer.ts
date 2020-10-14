@@ -7,7 +7,7 @@ import {
 
 const dataState: DataState = {
   RealTimedata: null,
-  ClientData: null,
+  ClientData: [],
 };
 
 export default (state = dataState, action: DataAction) => {
@@ -18,11 +18,12 @@ export default (state = dataState, action: DataAction) => {
         RealTimedata: action.payload,
       };
     case FETCHCLIENT_DATA_SUCCESS:
-      console.log("on recupere bien les donné ", action.payload);
+      // console.log("on recupere bien les donné client", action.payload);
       return {
         ...state,
-        ClientData: action.payload,
+        ClientData: [...state.ClientData, action.payload],
       };
+
     default:
       return state;
   }
