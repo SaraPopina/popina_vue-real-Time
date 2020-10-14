@@ -1,8 +1,8 @@
 import React, { FC, useEffect } from "react";
 import { useSelector, useDispatch, connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { setSuccess } from "../../store/actions/authActions";
-import store, { RootState } from "../../store";
+import { setSuccess } from "../../../store/actions/authActions";
+import store, { RootState } from "../../../store";
 
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -23,11 +23,11 @@ import CardHeader from "@material-ui/core/CardHeader";
 
 const RealTime: FC = () => {
   const { user, success } = useSelector((state: RootState) => state.auth);
-  const { data } = useSelector((state: RootState) => state.data);
+  const { RealTimedata } = useSelector((state: RootState) => state.data);
 
   const dispatch = useDispatch();
 
-  console.log(data);
+  console.log(RealTimedata);
   let sumPaid: number = 0;
   let sumNotPaid: number = 0;
   let sumCancelled: number = 0;
@@ -68,7 +68,7 @@ const RealTime: FC = () => {
     let totalGuestNotPaid: number[] = [];
     let totalDiscount: number[] = [];
 
-    data.tickets.map((aTicket) => {
+    RealTimedata.tickets.map((aTicket) => {
       totalTransferred.push(aTicket.transferred);
       totalTransferred.reduce((a: number, b: number) => {
         return (sumTransferred = a + b);
@@ -143,9 +143,10 @@ const RealTime: FC = () => {
         <h1 className="is-size-1">Temps réel</h1>
       </div>
       <div className="dashboard_realtime_title_container">
-        <h2>Caisse du {moment(data.date_begin).format("LLLL")} </h2>
+        <h2>Caisse du {moment(RealTimedata.date_begin).format("LLLL")} </h2>
         <h3>
-          Dernière modification effectué à {moment(data.date_end).format("LT")}{" "}
+          Dernière modification effectué à{" "}
+          {moment(RealTimedata.date_end).format("LT")}{" "}
         </h3>
         <p className="tip">
           Rafraichissement de la page automatiquement à chaque changements sur
@@ -326,7 +327,7 @@ const RealTime: FC = () => {
         <Card className={classes.card}>
           <CardHeader className="cardHeaderShadowStyles" title={"Commande"} />
           <CardContent className={classes.content}>
-            {data.tickets.map((aData, index) => {
+            {RealTimedata.tickets.map((aData, index) => {
               return (
                 <Table size="small" aria-label="a dense table">
                   <TableHead>
@@ -436,7 +437,7 @@ const RealTime: FC = () => {
         </Card>
 
         {/* /////////////// section team //////////// */}
-        {data.team.map((aTeamMember, index) => {
+        {RealTimedata.team.map((aTeamMember, index) => {
           return (
             <Card className="team-card" key={index}>
               <CardContent>

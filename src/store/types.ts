@@ -4,14 +4,16 @@ export const SET_LOADING = "SET_LOADING";
 export const SET_ERROR = "SET_ERROR";
 export const NEED_VERIFICATION = "NEED_VERIFICATION";
 export const SET_SUCCESS = "SET_SUCCESS";
-export const FETCHDATA_SUCCESS = "FETCHDATA_SUCCESS";
+export const FETCHREAL_TIME_DATA_SUCCESS = "FETCHREAL_TIME_DATA_SUCCESS";
+export const FETCHCLIENT_DATA_SUCCESS = "FETCHCLIENT_DATA_SUCCESS";
 
+// model
 export interface User {
   email: string;
   uid: string;
 }
 
-export interface Data {
+export interface RealTimeModel {
   client_id: string;
   connected: boolean;
   date_begin: number;
@@ -94,6 +96,20 @@ export interface Data {
   ];
 }
 
+export interface ClientModel {
+  address: string;
+  addressComplement: string;
+  city: string;
+  comment: string;
+  company: string;
+  company_number: string;
+  country: string;
+  email: string;
+  name: string;
+  phone: string;
+  zip: string;
+}
+
 export interface AuthState {
   user: User | null;
   authenticated: boolean;
@@ -103,24 +119,30 @@ export interface AuthState {
   uid: string;
 }
 
+// state
 export interface DataState {
-  data: Data | null;
+  RealTimedata: RealTimeModel | null;
+  ClientData: ClientModel | null;
 }
-
-export interface LoginUser {
-  email: string;
-  password: string;
-}
-
-//login user
 export interface SignInData {
   email: string;
   password: string;
 }
 
-interface fetchDataSuccess {
-  type: typeof FETCHDATA_SUCCESS;
-  payload: Data;
+//login user
+export interface LoginUser {
+  email: string;
+  password: string;
+}
+
+interface fetchRealTimeDataSuccess {
+  type: typeof FETCHREAL_TIME_DATA_SUCCESS;
+  payload: RealTimeModel;
+}
+
+interface fetchClientDataSuccess {
+  type: typeof FETCHCLIENT_DATA_SUCCESS;
+  payload: ClientModel;
 }
 
 // Actions
@@ -151,9 +173,8 @@ interface SetSuccessAction {
 export type AuthAction =
   | SetUserAction
   | SetLoadingAction
-  | fetchDataSuccess
   | SignOutAction
   | SetErrorAction
   | SetSuccessAction;
 
-export type DataAction = fetchDataSuccess;
+export type DataAction = fetchRealTimeDataSuccess | fetchClientDataSuccess;

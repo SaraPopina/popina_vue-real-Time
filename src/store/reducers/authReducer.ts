@@ -47,12 +47,6 @@ export default (state = initialState, action: AuthAction) => {
         ...state,
         success: action.payload,
       };
-    // case FETCHDATA_SUCCESS:
-    //   console.log("on recupere bien les donné ", action.payload);
-    //   return {
-    //     ...state,
-    //     data: action.payload,
-    //   };
     default:
       return state;
   }

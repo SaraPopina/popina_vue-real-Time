@@ -1,16 +1,27 @@
-import { DataAction, DataState, FETCHDATA_SUCCESS } from "../types";
+import {
+  DataAction,
+  DataState,
+  FETCHREAL_TIME_DATA_SUCCESS,
+  FETCHCLIENT_DATA_SUCCESS,
+} from "../types";
 
 const dataState: DataState = {
-  data: null,
+  RealTimedata: null,
+  ClientData: null,
 };
 
 export default (state = dataState, action: DataAction) => {
   switch (action.type) {
-    case FETCHDATA_SUCCESS:
+    case FETCHREAL_TIME_DATA_SUCCESS:
+      return {
+        ...state,
+        RealTimedata: action.payload,
+      };
+    case FETCHCLIENT_DATA_SUCCESS:
       console.log("on recupere bien les donné ", action.payload);
       return {
         ...state,
-        data: action.payload,
+        ClientData: action.payload,
       };
     default:
       return state;
