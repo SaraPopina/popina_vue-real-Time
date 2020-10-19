@@ -6,6 +6,7 @@ export const NEED_VERIFICATION = "NEED_VERIFICATION";
 export const SET_SUCCESS = "SET_SUCCESS";
 export const FETCHREAL_TIME_DATA_SUCCESS = "FETCHREAL_TIME_DATA_SUCCESS";
 export const FETCHCLIENT_DATA_SUCCESS = "FETCHCLIENT_DATA_SUCCESS";
+export const CREATE_CLIENT = "CREATE_CLIENT";
 
 // model
 export interface User {
@@ -96,8 +97,17 @@ export interface RealTimeModel {
   ];
 }
 
+export interface AuthState {
+  user: User | null;
+  authenticated: boolean;
+  loading: boolean;
+  error: string;
+  success: string;
+  uid: string;
+}
+
 export interface ClientModel {
-  id: null;
+  id?: string;
   address: string;
   addressComplement: string;
   city: string;
@@ -109,15 +119,6 @@ export interface ClientModel {
   name: string;
   phone: string;
   zip: string;
-}
-
-export interface AuthState {
-  user: User | null;
-  authenticated: boolean;
-  loading: boolean;
-  error: string;
-  success: string;
-  uid: string;
 }
 
 // state
@@ -143,6 +144,10 @@ interface fetchRealTimeDataSuccess {
 
 interface fetchClientDataSuccess {
   type: typeof FETCHCLIENT_DATA_SUCCESS;
+  payload: ClientModel;
+}
+interface create_client {
+  type: typeof CREATE_CLIENT;
   payload: ClientModel;
 }
 
@@ -178,4 +183,7 @@ export type AuthAction =
   | SetErrorAction
   | SetSuccessAction;
 
-export type DataAction = fetchRealTimeDataSuccess | fetchClientDataSuccess;
+export type DataAction =
+  | fetchRealTimeDataSuccess
+  | fetchClientDataSuccess
+  | create_client;

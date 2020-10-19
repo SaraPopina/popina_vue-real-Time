@@ -1,11 +1,15 @@
+import { User, CREATE_CLIENT } from "./../types";
 import { ThunkAction } from "redux-thunk";
 import {
   DataAction,
   FETCHREAL_TIME_DATA_SUCCESS,
   FETCHCLIENT_DATA_SUCCESS,
+  ClientModel,
 } from "../types";
 import { RootState } from "..";
 import { auth, database } from "firebase";
+
+let agendaRef: database.Reference = null;
 
 export const setRealTimeData = (
   userUid: string
@@ -79,20 +83,26 @@ export const setClientData = (
         agendaID: newKey,
       });
       const agendaID = (await snapshot).val();
-      const agendaRef = database().ref().child(`agendas/${agendaID}`);
+      agendaRef = database().ref().child(`agendas/${agendaID}`);
 
       agendaRef.on("child_added", (snapshot) => {
         const data = snapshot.val();
         dispatch(getClientData(data));
       });
     } else {
-      const agendaRef = database()
+      agendaRef = database()
         .ref()
         .child(`agendas/${(await snapshot).val()}`);
 
       agendaRef.on("child_added", (snapshot) => {
-        const data = snapshot.val();
+        let data = snapshot.val();
         dispatch(getClientData(data));
+      });
+
+      agendaRef.on("child_changed", (snapshot) => {
+        let data = snapshot.val();
+        data.id = snapshot.ref.key;
+        dispatch(addClient(data));
       });
     }
     try {
@@ -109,6 +119,73 @@ export const getClientData = (
     dispatch({
       type: FETCHCLIENT_DATA_SUCCESS,
       payload: clientdata,
+    });
+  };
+};
+
+export const createClient = (
+  client: ClientModel
+): ThunkAction<void, RootState, null, DataAction> => {
+  // console.log("ici create client ", client);
+  return (dispatch) => {
+    // dispatch({
+    //   type: CREATE_CLIENT,
+    //   payload: client,
+    // });
+  };
+};
+
+export const addClient = (clientData: {
+  address: string;
+  addressComplement: string;
+  city: string;
+  comment: string;
+  company: string;
+  company_number: string;
+  country: string;
+  email: string;
+  name: string;
+  phone: string;
+  zip: string;
+}): ThunkAction<void, RootState, null, DataAction> => {
+  console.log("ici lagenda ref", clientData);
+  if (null != agendaRef) {
+    console.log("ici la condition", agendaRef, clientData);
+    // const clientData = client.toFirebaseObject();
+    agendaRef.push(clientData);
+  }
+
+  return async (dispatch) => {
+    const {
+      address = "",
+      addressComplement = "",
+      city = "",
+      comment = "",
+      company = "",
+      company_number = "",
+      country = "",
+      email = "",
+      name = "",
+      phone = "",
+      zip = "",
+    } = clientData;
+    const client = {
+      address,
+      addressComplement,
+      city,
+      comment,
+      company,
+      company_number,
+      country,
+      email,
+      name,
+      phone,
+      zip,
+    };
+
+    dispatch({
+      type: CREATE_CLIENT,
+      payload: client,
     });
   };
 };

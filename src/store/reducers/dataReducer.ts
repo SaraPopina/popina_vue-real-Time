@@ -3,6 +3,7 @@ import {
   DataState,
   FETCHREAL_TIME_DATA_SUCCESS,
   FETCHCLIENT_DATA_SUCCESS,
+  CREATE_CLIENT,
 } from "../types";
 
 const dataState: DataState = {
@@ -18,10 +19,15 @@ export default (state = dataState, action: DataAction) => {
         RealTimedata: action.payload,
       };
     case FETCHCLIENT_DATA_SUCCESS:
-      // console.log("on recupere bien les donné client", action.payload);
       return {
         ...state,
         ClientData: [...state.ClientData, action.payload],
+      };
+    case CREATE_CLIENT:
+      console.log("create client reducer", action.payload);
+      return {
+        ...state,
+        ClientData: [action.payload],
       };
 
     default:
