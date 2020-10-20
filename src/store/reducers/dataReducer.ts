@@ -4,6 +4,8 @@ import {
   FETCHREAL_TIME_DATA_SUCCESS,
   FETCHCLIENT_DATA_SUCCESS,
   CREATE_CLIENT,
+  EDIT_CLIENT,
+  DELETE_CLIENT,
 } from "../types";
 
 const dataState: DataState = {
@@ -29,6 +31,11 @@ export default (state = dataState, action: DataAction) => {
         ...state,
         ClientData: [action.payload],
       };
+    case EDIT_CLIENT:
+      console.log("edit client reducer", action.payload);
+
+    case DELETE_CLIENT:
+      console.log("delete client reducer", action.type);
 
     default:
       return state;

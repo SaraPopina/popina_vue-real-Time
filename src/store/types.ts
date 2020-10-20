@@ -7,6 +7,8 @@ export const SET_SUCCESS = "SET_SUCCESS";
 export const FETCHREAL_TIME_DATA_SUCCESS = "FETCHREAL_TIME_DATA_SUCCESS";
 export const FETCHCLIENT_DATA_SUCCESS = "FETCHCLIENT_DATA_SUCCESS";
 export const CREATE_CLIENT = "CREATE_CLIENT";
+export const DELETE_CLIENT = "DELETE_CLIENT";
+export const EDIT_CLIENT = "EDIT_CLIENT";
 
 // model
 export interface User {
@@ -151,6 +153,16 @@ interface create_client {
   payload: ClientModel;
 }
 
+interface edit_client {
+  type: typeof EDIT_CLIENT;
+  payload: ClientModel;
+}
+
+interface delete_client {
+  type: typeof DELETE_CLIENT;
+  payload: string;
+}
+
 // Actions
 interface SetUserAction {
   type: typeof SET_USER;
@@ -186,4 +198,6 @@ export type AuthAction =
 export type DataAction =
   | fetchRealTimeDataSuccess
   | fetchClientDataSuccess
+  | edit_client
+  | delete_client
   | create_client;

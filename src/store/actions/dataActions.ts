@@ -1,10 +1,12 @@
-import { User, CREATE_CLIENT } from "./../types";
 import { ThunkAction } from "redux-thunk";
 import {
   DataAction,
   FETCHREAL_TIME_DATA_SUCCESS,
   FETCHCLIENT_DATA_SUCCESS,
   ClientModel,
+  EDIT_CLIENT,
+  CREATE_CLIENT,
+  DELETE_CLIENT,
 } from "../types";
 import { RootState } from "..";
 import { auth, database } from "firebase";
@@ -123,15 +125,27 @@ export const getClientData = (
   };
 };
 
-export const createClient = (
+export const deleteClient = (
+  id: string
+): ThunkAction<void, RootState, null, DataAction> => {
+  return (dispatch) => {
+    console.log("ici le deleteCLient", agendaRef);
+    // agendaRef.child(client.get('id')).remove()
+    dispatch({
+      type: DELETE_CLIENT,
+      payload: id,
+    });
+  };
+};
+
+export const editClient = (
   client: ClientModel
 ): ThunkAction<void, RootState, null, DataAction> => {
-  // console.log("ici create client ", client);
   return (dispatch) => {
-    // dispatch({
-    //   type: CREATE_CLIENT,
-    //   payload: client,
-    // });
+    dispatch({
+      type: EDIT_CLIENT,
+      payload: client,
+    });
   };
 };
 
@@ -148,10 +162,7 @@ export const addClient = (clientData: {
   phone: string;
   zip: string;
 }): ThunkAction<void, RootState, null, DataAction> => {
-  console.log("ici lagenda ref", clientData);
   if (null != agendaRef) {
-    console.log("ici la condition", agendaRef, clientData);
-    // const clientData = client.toFirebaseObject();
     agendaRef.push(clientData);
   }
 
@@ -187,5 +198,23 @@ export const addClient = (clientData: {
       type: CREATE_CLIENT,
       payload: client,
     });
+  };
+};
+
+export const startRemoveClient = (
+  id: string
+): ThunkAction<void, RootState, null, DataAction> => {
+  return (dispatch) => {
+    console.log("ici l'id", id);
+    dispatch(deleteClient(id));
+  };
+};
+
+export const startEditClient = (
+  client: ClientModel
+): ThunkAction<void, RootState, null, DataAction> => {
+  return (dispatch) => {
+    console.log("ici le client a update", client);
+    dispatch(editClient(client));
   };
 };

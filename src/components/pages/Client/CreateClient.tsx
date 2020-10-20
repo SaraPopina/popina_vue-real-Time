@@ -1,7 +1,7 @@
 import React, { FC, useEffect, Fragment, Component } from "react";
 import { useSelector, useDispatch, connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { createClient, addClient } from "../../../store/actions/dataActions";
+import { addClient } from "../../../store/actions/dataActions";
 import store, { RootState } from "../../../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "@material-ui/core/Button";

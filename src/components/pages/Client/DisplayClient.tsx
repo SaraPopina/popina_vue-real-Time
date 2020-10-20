@@ -21,10 +21,15 @@ import {
 import { Tooltip, Avatar, CardActions } from "@material-ui/core";
 import CreateClient from "./CreateClient";
 import { render } from "react-dom";
-import { addClient, createClient } from "../../../store/actions/dataActions";
+import {
+  addClient,
+  startEditClient,
+  startRemoveClient,
+} from "../../../store/actions/dataActions";
 import { ClientModel, DataState, DataAction } from "../../../store/types";
 import { ThunkDispatch } from "redux-thunk";
 import { RouteComponentProps } from "react-router-dom";
+import UpdateClient from "./UpdateClient";
 
 interface HomePageProps {
   id?: string;
@@ -36,6 +41,7 @@ interface HomePageState {}
 type Props = HomePageProps & LinkDispatchProps & LinkStateProp;
 
 export class DisplayClient extends React.Component<Props> {
+  modalElement: React.RefObject<UpdateClient>;
   constructor(props: Props | Readonly<Props>) {
     super(props);
     console.log("props display client", this.props);
@@ -43,12 +49,16 @@ export class DisplayClient extends React.Component<Props> {
       open: false,
       setOpen: false,
     };
+    this.modalElement = React.createRef();
   }
   onCreate = (client: ClientModel) => {
     this.props.addClient(client);
   };
 
-  handleOpen = () => {
+  handleOpen = (client: ClientModel) => {
+    console.log("on essaie d'ouvrir ", client);
+    this.modalElement.current.handleModal(client);
+
     this.setState({
       open: true,
     });
@@ -67,7 +77,7 @@ export class DisplayClient extends React.Component<Props> {
         <section className="dashboard_container">
           <div className="template-card">
             <CreateClient />
-            {/* <UpdateClient ref={this.modalElement} onUpdateClient={this.onClientUpdate} /> */}
+            <UpdateClient ref={this.modalElement} />
 
             {ClientData.map((client) => {
               return (
@@ -77,7 +87,7 @@ export class DisplayClient extends React.Component<Props> {
                       <Button
                         variant="contained"
                         style={{ float: "right", color: "#464e5d" }}
-                        onClick={this.handleOpen}
+                        onClick={() => this.handleOpen(client)}
                       >
                         <FontAwesomeIcon icon={faEdit} />
                       </Button>
@@ -193,10 +203,13 @@ export class DisplayClient extends React.Component<Props> {
 
 interface LinkStateProp {
   ClientData?: ClientModel[];
+  id?: string;
 }
 
 interface LinkDispatchProps {
   addClient?: (client: ClientModel) => void;
+  startEditClient?: (client: ClientModel) => void;
+  startRemoveClient?: (id: string) => void;
 }
 
 const mapStateToProps = (
@@ -204,13 +217,16 @@ const mapStateToProps = (
   props: HomePageProps
 ): LinkStateProp => ({
   ClientData: state.ClientData,
+  id: props.id,
 });
 
 const mapDispatchToProps = (
   dispatch: ThunkDispatch<any, any, DataAction>,
   props: HomePageProps
 ): LinkDispatchProps => ({
-  addClient: bindActionCreators(createClient, dispatch),
+  addClient: bindActionCreators(addClient, dispatch),
+  startEditClient: bindActionCreators(startEditClient, dispatch),
+  startRemoveClient: bindActionCreators(startRemoveClient, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DisplayClient);

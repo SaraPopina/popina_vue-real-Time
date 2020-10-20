@@ -14,10 +14,13 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import { useSelector } from "react-redux";
 import store, { RootState } from "../../../../store";
 import { addClient } from "../../../../store/actions/dataActions";
+import { ClientModel } from "../../../../store/types";
 
 interface Props {
-  client?: {};
-  confirm: (client: ClientState) => void;
+  client?: ClientModel;
+  id?: string;
+  confirm?: (client: ClientState) => void;
+  submit?: (client: ClientState) => void;
 }
 
 interface ClientState {
@@ -35,6 +38,7 @@ interface ClientState {
   name?: string;
   phone?: string;
   zip?: string;
+  client?: ClientData | {};
 }
 
 // const FormClient: FC<Props> = ({}) => {
@@ -53,6 +57,7 @@ export default class FormClient extends Component<Props, ClientState> {
       name: "",
       phone: "",
       zip: "",
+      client: {},
     };
   }
   // création et modification de la fiche client Firebase depuis le Onclick button => CreateClient.jsx // UpdateClient.jsx
@@ -102,6 +107,7 @@ export default class FormClient extends Component<Props, ClientState> {
   // const { classes, client } = this.props;
   render() {
     console.log("ici le form", this.props, this.state);
+
     return (
       <div>
         <h2 style={{ fontFamily: "Helvetica, Arial, sans-serif" }}>
@@ -110,7 +116,7 @@ export default class FormClient extends Component<Props, ClientState> {
 
         <TextField
           label="Nom & prénom"
-          // defaultValue={ClientData ? name : ""}
+          defaultValue={this.props.client ? this.props.client.name : ""}
           onChange={this.handleChange}
           name="name"
           required={true}
@@ -130,7 +136,7 @@ export default class FormClient extends Component<Props, ClientState> {
         <div className="form-template">
           <TextField
             label="Email"
-            //   defaultValue={ClientData ? email : ""}
+            defaultValue={this.props.client ? this.props.client.email : ""}
             onChange={this.handleChange}
             name="email"
             className="control-form"
@@ -148,7 +154,7 @@ export default class FormClient extends Component<Props, ClientState> {
           />
           <TextField
             label="Téléphone"
-            //   defaultValue={ClientData ? phone : ""}
+            defaultValue={this.props.client ? this.props.client.phone : ""}
             onChange={this.handleChange}
             className="control-form"
             name="phone"
@@ -172,7 +178,7 @@ export default class FormClient extends Component<Props, ClientState> {
         </h2>
         <TextField
           label="Adresse"
-          // defaultValue={ClientData ? address : ""}
+          defaultValue={this.props.client ? this.props.client.address : ""}
           onChange={this.handleChange}
           name="address"
           margin="dense"
@@ -190,7 +196,9 @@ export default class FormClient extends Component<Props, ClientState> {
         <br />
         <TextField
           label="Complément d'adresse"
-          // defaultValue={ClientData ? addressComplement : ""}
+          defaultValue={
+            this.props.client ? this.props.client.addressComplement : ""
+          }
           onChange={this.handleChange}
           name="addressComplement"
           margin="dense"
@@ -209,7 +217,7 @@ export default class FormClient extends Component<Props, ClientState> {
         <div className="form-template">
           <TextField
             label="Ville"
-            //   defaultValue={ClientData ? city : ""}
+            defaultValue={this.props.client ? this.props.client.city : ""}
             onChange={this.handleChange}
             name="city"
             className="control-form"
@@ -227,7 +235,7 @@ export default class FormClient extends Component<Props, ClientState> {
           <br />
           <TextField
             label="Code postal"
-            //   defaultValue={ClientData ? zip : ""}
+            defaultValue={this.props.client ? this.props.client.zip : ""}
             onChange={this.handleChange}
             name="zip"
             className="control-form"
@@ -247,7 +255,7 @@ export default class FormClient extends Component<Props, ClientState> {
         </div>
         <TextField
           label="Pays"
-          // defaultValue={ClientData ? country : ""}
+          defaultValue={this.props.client ? this.props.client.country : ""}
           onChange={this.handleChange}
           name="country"
           className="control-form"
@@ -269,7 +277,7 @@ export default class FormClient extends Component<Props, ClientState> {
         <div className="form-template">
           <TextField
             label="Société"
-            //   defaultValue={ClientData ? company : ""}
+            defaultValue={this.props.client ? this.props.client.company : ""}
             onChange={this.handleChange}
             name="company"
             className="control-form"
@@ -287,7 +295,9 @@ export default class FormClient extends Component<Props, ClientState> {
           <br />
           <TextField
             label="Numéro de société"
-            //   defaultValue={ClientData ? company_number : ""}
+            defaultValue={
+              this.props.client ? this.props.client.company_number : ""
+            }
             onChange={this.handleChange}
             name="company_number"
             className="control-form"
@@ -308,7 +318,7 @@ export default class FormClient extends Component<Props, ClientState> {
           label="Commentaire"
           multiline
           rows="3"
-          // defaultValue={ClientData ? comment : ""}
+          defaultValue={this.props.client ? this.props.client.comment : ""}
           name="comment"
           onChange={this.handleChange}
           fullWidth

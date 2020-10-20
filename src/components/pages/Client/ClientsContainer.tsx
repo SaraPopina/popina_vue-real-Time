@@ -7,7 +7,7 @@ import CreateClient from "./CreateClient";
 import { DisplayClient } from "./DisplayClient";
 import { ClientModel, DataState, DataAction } from "../../../store/types";
 import { ThunkDispatch } from "redux-thunk";
-import { createClient, addClient } from "../../../store/actions/dataActions";
+import { addClient } from "../../../store/actions/dataActions";
 
 interface displayClientProps {
   id?: string;
@@ -58,7 +58,7 @@ const mapDispatchToProps = (
   dispatch: ThunkDispatch<any, any, DataAction>,
   props: displayClientProps
 ): LinkDispatchProps => ({
-  addClient: bindActionCreators(createClient, dispatch),
+  addClient: bindActionCreators(addClient, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClientsContainer);
