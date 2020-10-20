@@ -1,3 +1,5 @@
+import Client from "./model/ClientModel";
+
 export const SET_USER = "SET_USER";
 export const SIGN_OUT = "SIGN_OUT";
 export const SET_LOADING = "SET_LOADING";
@@ -126,7 +128,7 @@ export interface ClientModel {
 // state
 export interface DataState {
   RealTimedata: RealTimeModel | null;
-  ClientData: ClientModel[] | null;
+  ClientData: Client[] | null;
 }
 export interface SignInData {
   email: string;
@@ -146,16 +148,16 @@ interface fetchRealTimeDataSuccess {
 
 interface fetchClientDataSuccess {
   type: typeof FETCHCLIENT_DATA_SUCCESS;
-  payload: ClientModel;
+  payload: Client;
 }
 interface create_client {
   type: typeof CREATE_CLIENT;
-  payload: ClientModel;
+  payload: Client;
 }
 
 interface edit_client {
   type: typeof EDIT_CLIENT;
-  payload: ClientModel;
+  payload: Client;
 }
 
 interface delete_client {

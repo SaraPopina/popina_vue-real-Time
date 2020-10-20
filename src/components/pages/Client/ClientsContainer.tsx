@@ -8,6 +8,7 @@ import { DisplayClient } from "./DisplayClient";
 import { ClientModel, DataState, DataAction } from "../../../store/types";
 import { ThunkDispatch } from "redux-thunk";
 import { addClient } from "../../../store/actions/dataActions";
+import Client from "../../../store/model/ClientModel";
 
 interface displayClientProps {
   id?: string;
@@ -40,11 +41,11 @@ const ClientsContainer: FC<Props> = () => {
 };
 
 interface LinkStateProp {
-  ClientData: ClientModel[];
+  ClientData: Client[];
 }
 
 interface LinkDispatchProps {
-  addClient: (client: ClientModel) => void;
+  addClient: (client: Client) => void;
 }
 
 const mapStateToProps = (

@@ -30,6 +30,7 @@ import { ClientModel, DataState, DataAction } from "../../../store/types";
 import { ThunkDispatch } from "redux-thunk";
 import { RouteComponentProps } from "react-router-dom";
 import UpdateClient from "./UpdateClient";
+import Client from "../../../store/model/ClientModel";
 
 interface HomePageProps {
   id?: string;
@@ -51,12 +52,11 @@ export class DisplayClient extends React.Component<Props> {
     };
     this.modalElement = React.createRef();
   }
-  onCreate = (client: ClientModel) => {
+  onCreate = (client: Client) => {
     this.props.addClient(client);
   };
 
-  handleOpen = (client: ClientModel) => {
-    console.log("on essaie d'ouvrir ", client);
+  handleOpen = (client: Client) => {
     this.modalElement.current.handleModal(client);
 
     this.setState({
@@ -202,13 +202,13 @@ export class DisplayClient extends React.Component<Props> {
 }
 
 interface LinkStateProp {
-  ClientData?: ClientModel[];
+  ClientData?: Client[];
   id?: string;
 }
 
 interface LinkDispatchProps {
-  addClient?: (client: ClientModel) => void;
-  startEditClient?: (client: ClientModel) => void;
+  addClient?: (client: Client) => void;
+  startEditClient?: (client: Client) => void;
   startRemoveClient?: (id: string) => void;
 }
 

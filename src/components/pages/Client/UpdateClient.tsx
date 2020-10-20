@@ -10,7 +10,8 @@ import {
 } from "@material-ui/core";
 import FormClient from "./form/FormClient";
 import { ClientModel } from "../../../store/types";
-import { editClient } from "../../../store/actions/dataActions";
+import { startEditClient } from "../../../store/actions/dataActions";
+import Client from "../../../store/model/ClientModel";
 
 interface HomePageProps {
   id?: string;
@@ -26,24 +27,24 @@ interface HomePageProps {
   name?: string;
   phone?: string;
   zip?: string;
-  ClientData?: ClientModel[] | {};
+  ClientData?: Client | {};
 }
 
 interface LinkStateProp {
-  ClientData?: ClientModel[];
+  ClientData?: Client;
   id?: string;
   open?: boolean;
 }
 
 interface LinkDispatchProps {
-  addClient?: (client: ClientModel) => void;
+  addClient?: (client: Client) => void;
 }
 
 type Props = HomePageProps & LinkDispatchProps & LinkStateProp;
 
 export default class UpdateClient extends Component<
   Props,
-  { open: boolean; client: ClientModel; id: string }
+  { open: boolean; client: Client; id: string }
 > {
   submitUpdate: React.RefObject<FormClient>;
 
@@ -52,15 +53,15 @@ export default class UpdateClient extends Component<
     // console.log("ici les props", this.props);
     this.state = {
       open: false,
-      client: null,
+      client: new Client(),
       id: null,
     };
     this.submitUpdate = React.createRef();
   }
 
   // ouverture du modal avec son ID
-  handleModal = (client: ClientModel) => {
-    console.log("open modal avec client ", client);
+  handleModal = (client: Client) => {
+    // console.log("open modal avec client ", client);
     if (client) {
       this.setState({
         client: client,
@@ -88,9 +89,9 @@ export default class UpdateClient extends Component<
     });
   };
 
-  onUpdateClient = (client: ClientModel) => {
-    console.log("creation client", client);
-    editClient(client);
+  onUpdateClient = (client: Client) => {
+    console.log("update", client);
+    startEditClient(client);
   };
 
   render() {

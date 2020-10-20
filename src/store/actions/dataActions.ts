@@ -10,6 +10,7 @@ import {
 } from "../types";
 import { RootState } from "..";
 import { auth, database } from "firebase";
+import Client from "../model/ClientModel";
 
 let agendaRef: database.Reference = null;
 
@@ -89,7 +90,9 @@ export const setClientData = (
 
       agendaRef.on("child_added", (snapshot) => {
         const data = snapshot.val();
-        dispatch(getClientData(data));
+        data.id = snapshot.key;
+        let client = new Client(data);
+        dispatch(getClientData(client));
       });
     } else {
       agendaRef = database()
@@ -98,7 +101,9 @@ export const setClientData = (
 
       agendaRef.on("child_added", (snapshot) => {
         let data = snapshot.val();
-        dispatch(getClientData(data));
+        data.id = snapshot.key;
+        let client = new Client(data);
+        dispatch(getClientData(client));
       });
 
       agendaRef.on("child_changed", (snapshot) => {
@@ -106,6 +111,12 @@ export const setClientData = (
         data.id = snapshot.ref.key;
         dispatch(addClient(data));
       });
+
+      // agendaRef.on("child_changed", (snapshot) => {
+      //   let data = snapshot.val();
+      //   data.id = snapshot.ref.key;
+      //   dispatch(startEditClient(data));
+      // });
     }
     try {
     } catch (err) {
@@ -115,7 +126,7 @@ export const setClientData = (
 };
 
 export const getClientData = (
-  clientdata: null
+  clientdata: Client
 ): ThunkAction<void, RootState, null, DataAction> => {
   return (dispatch) => {
     dispatch({
@@ -138,32 +149,12 @@ export const deleteClient = (
   };
 };
 
-export const editClient = (
-  client: ClientModel
+export const addClient = (
+  clientData: Client
 ): ThunkAction<void, RootState, null, DataAction> => {
-  return (dispatch) => {
-    dispatch({
-      type: EDIT_CLIENT,
-      payload: client,
-    });
-  };
-};
-
-export const addClient = (clientData: {
-  address: string;
-  addressComplement: string;
-  city: string;
-  comment: string;
-  company: string;
-  company_number: string;
-  country: string;
-  email: string;
-  name: string;
-  phone: string;
-  zip: string;
-}): ThunkAction<void, RootState, null, DataAction> => {
   if (null != agendaRef) {
-    agendaRef.push(clientData);
+    const newClient = clientData.toFirebaseObject();
+    agendaRef.push(newClient);
   }
 
   return async (dispatch) => {
@@ -180,23 +171,25 @@ export const addClient = (clientData: {
       phone = "",
       zip = "",
     } = clientData;
-    const client = {
-      address,
-      addressComplement,
-      city,
-      comment,
-      company,
-      company_number,
-      country,
-      email,
-      name,
-      phone,
-      zip,
-    };
+    // const client = {
+    //   address,
+    //   addressComplement,
+    //   city,
+    //   comment,
+    //   company,
+    //   company_number,
+    //   country,
+    //   email,
+    //   name,
+    //   phone,
+    //   zip,
+    // };
+
+    const client = clientData.set(clientData.id, clientData);
 
     dispatch({
       type: CREATE_CLIENT,
-      payload: client,
+      payload: new Client(client),
     });
   };
 };
@@ -211,10 +204,22 @@ export const startRemoveClient = (
 };
 
 export const startEditClient = (
-  client: ClientModel
+  client: Client
 ): ThunkAction<void, RootState, null, DataAction> => {
+  console.log("ici le client a update", client);
+  if (null != agendaRef) {
+    const key = client.get("id");
+    agendaRef.child(key).update(client.toFirebaseObject());
+  }
   return (dispatch) => {
-    console.log("ici le client a update", client);
-    dispatch(editClient(client));
+    dispatch({
+      type: EDIT_CLIENT,
+      payload: new Client(client),
+    });
   };
 };
+
+// if (this.clientsRef != null) {
+//   const key = client.get('id');
+//   this.clientsRef.child(key).update(client.toFirebaseObject());
+// }

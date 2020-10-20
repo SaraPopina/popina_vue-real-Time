@@ -7,38 +7,21 @@ import {
   LocationCity,
   Public,
   BusinessCenter,
-  Message,
 } from "@material-ui/icons/";
 import { InputAdornment, TextField } from "@material-ui/core";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { useSelector } from "react-redux";
-import store, { RootState } from "../../../../store";
-import { addClient } from "../../../../store/actions/dataActions";
-import { ClientModel } from "../../../../store/types";
+import Client from "../../../../store/model/ClientModel";
 
 interface Props {
-  client?: ClientModel;
+  client?: Client;
   id?: string;
-  confirm?: (client: ClientState) => void;
-  submit?: (client: ClientState) => void;
+  confirm?: (client: Client) => void;
+  submit?: (client: Client) => void;
 }
 
 interface ClientState {
   // userUid: "";
-  // showMo: true;
-  // required: true;
-  address?: string;
-  addressComplement?: string;
-  city?: string;
-  comment?: string;
-  company?: string;
-  company_number?: string;
-  country?: string;
-  email?: string;
-  name?: string;
-  phone?: string;
-  zip?: string;
-  client?: ClientData | {};
+  showMo?: boolean;
+  client?: ClientData | {} | any;
 }
 
 // const FormClient: FC<Props> = ({}) => {
@@ -46,68 +29,56 @@ export default class FormClient extends Component<Props, ClientState> {
   constructor(props: Props | Readonly<Props>) {
     super(props);
     this.state = {
-      address: "",
-      addressComplement: "",
-      city: "",
-      comment: "",
-      company: "",
-      company_number: "",
-      country: "",
-      email: "",
-      name: "",
-      phone: "",
-      zip: "",
-      client: {},
+      client: this.props.client ? this.props.client.toJS() : {},
+      showMo: true,
     };
   }
-  // création et modification de la fiche client Firebase depuis le Onclick button => CreateClient.jsx // UpdateClient.jsx
+
   manageClient = () => {
-    // event.preventDefault();
+    event.preventDefault();
 
-    // //update client
-    // if (this.props) {
-    //   const selectedClient = this.state.client;
+    //update client
+    if (this.props.client) {
+      const selectedClient = this.state.client;
+      console.log("ici selectedClient", selectedClient);
+      const client = this.props.client
+        .set("address", selectedClient.address)
+        .set("addressComplement", selectedClient.addressComplement)
+        .set("city", selectedClient.city)
+        .set("comment", selectedClient.comment)
+        .set("company", selectedClient.company)
+        .set("company_number", selectedClient.company_number)
+        .set("country", selectedClient.country)
+        .set("email", selectedClient.email)
+        .set("name", selectedClient.name)
+        .set("phone", selectedClient.phone)
+        .set("zip", selectedClient.zip);
 
-    //   const client = this.props.client
-    //     .set("address", selectedClient.address)
-    //     .set("addressComplement", selectedClient.addressComplement)
-    //     .set("city", selectedClient.city)
-    //     .set("comment", selectedClient.comment)
-    //     .set("company", selectedClient.company)
-    //     .set("company_number", selectedClient.company_number)
-    //     .set("country", selectedClient.country)
-    //     .set("email", selectedClient.email)
-    //     .set("name", selectedClient.name)
-    //     .set("phone", selectedClient.phone)
-    //     .set("zip", selectedClient.zip);
+      this.props.submit(client);
 
-    //   // this.props.submit(client);
+      //  create client
+    } else {
+      const client = new Client(this.state.client);
+      this.props.confirm(client);
+    }
 
-    //   //  create client
-    // } else {
-    // const client = this.state.client;
-    // }
-
-    // this.setState({
-    //   showMo: !this.state.showMo,
-    // });
-    console.log("on apelle le manage client ici");
-    this.props.confirm(this.state);
-  };
-
-  handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const name = e.currentTarget.name;
-    const value = e.currentTarget.value;
-    console.log(name, value);
     this.setState({
-      [name]: value, // no typing error
+      showMo: !this.state.showMo,
     });
   };
 
-  // const { classes, client } = this.props;
-  render() {
-    console.log("ici le form", this.props, this.state);
+  handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    let clientInfos = this.state.client;
+    const name = e.currentTarget.name;
+    const value = e.currentTarget.value;
+    clientInfos[name] = value;
+    this.setState({
+      client: clientInfos,
+    });
+  };
 
+  render() {
     return (
       <div>
         <h2 style={{ fontFamily: "Helvetica, Arial, sans-serif" }}>

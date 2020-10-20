@@ -19,6 +19,7 @@ import {
 import { render } from "react-dom";
 import FormClient from "./form/FormClient";
 import { ClientModel } from "../../../store/types";
+import Client from "../../../store/model/ClientModel";
 
 interface HomePageProps {
   id?: string;
@@ -51,7 +52,7 @@ export default class CreateClient extends Component<Props, { open: boolean }> {
   //   submitCreate: React.RefObject<FormClient | null>;
   constructor(props: {}) {
     super(props);
-    console.log("ici les props", this.props);
+    // console.log("ici les props", this.props);
     this.state = {
       open: false,
     };
@@ -71,19 +72,17 @@ export default class CreateClient extends Component<Props, { open: boolean }> {
   };
 
   handleSubmit = () => {
-    console.log(
-      "ici les props de create client pour appeler la fonction action",
-      this.props
-    );
+    // console.log(
+    //   "ici les props de create client pour appeler la fonction action",
+    //   this.props
+    // );
     this.submitCreate.current.manageClient();
-    console.log("call action ");
     this.setState({
       open: !this.state.open,
     });
   };
 
-  onCreate = (client: ClientModel) => {
-    console.log("creation client", client);
+  onCreate = (client: Client) => {
     addClient(client);
   };
 
