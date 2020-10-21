@@ -1,4 +1,3 @@
-import { ClientModel } from "./../types";
 import {
   DataAction,
   DataState,
@@ -8,7 +7,6 @@ import {
   EDIT_CLIENT,
   DELETE_CLIENT,
 } from "../types";
-import Client from "../model/ClientModel";
 
 const dataState: DataState = {
   RealTimedata: null,
@@ -44,7 +42,12 @@ export default (state = dataState, action: DataAction) => {
         ClientData: [action.payload],
       };
     case DELETE_CLIENT:
-      console.log("delete client reducer", action.payload);
+      return {
+        ...state,
+        ClientData: [...state.ClientData].filter(
+          (aClient) => aClient.id !== action.payload
+        ),
+      };
 
     default:
       return state;

@@ -106,21 +106,11 @@ export const setClientData = (
         dispatch(getClientData(client));
       });
 
-      // agendaRef.on("child_changed", (snapshot) => {
-      //   let data = snapshot.val();
-      //   data.id = snapshot.ref.key;
-      //   dispatch(addClient(data));
-      //   dispatch({
-      //     type: CREATE_CLIENT,
-      //     payload: new Client(data),
-      //   });
-      // });
-
       agendaRef.on("child_changed", (snapshot) => {
         let data = snapshot.val();
         data.id = snapshot.ref.key;
         const client = new Client(data);
-        dispatch(getUpdatedClentData(client));
+        dispatch(getUpdatedClientData(client));
       });
 
       agendaRef.on("child_removed", (snapshot) => {
@@ -137,10 +127,8 @@ export const setClientData = (
         } else {
           let data = snapshot.val();
           data.id = snapshot.ref.key;
-          // dispatch({
-          //   type: DELETE_CLIENT,
-          //   payload: new Client(data),
-          // });
+          const client = new Client(data);
+          dispatch(getDeletedClientData(client));
         }
       });
     }
@@ -162,7 +150,7 @@ export const getClientData = (
   };
 };
 
-export const getUpdatedClentData = (
+export const getUpdatedClientData = (
   clientData: Client
 ): ThunkAction<void, RootState, null, DataAction> => {
   return (dispatch) => {
@@ -173,15 +161,16 @@ export const getUpdatedClentData = (
   };
 };
 
-export const deleteClient = (
-  client: Client
+export const getDeletedClientData = (
+  clientData: Client
 ): ThunkAction<void, RootState, null, DataAction> => {
   return (dispatch) => {
-    console.log("ici le deleteCLient", agendaRef);
-    agendaRef.child(client.get("id")).remove();
+    dispatch({
+      type: DELETE_CLIENT,
+      payload: clientData.id,
+    });
   };
 };
-
 export const addClient = (
   clientData: Client
 ): ThunkAction<void, RootState, null, DataAction> => {
@@ -200,27 +189,15 @@ export const startRemoveClient = (
 ): ThunkAction<void, RootState, null, DataAction> => {
   agendaRef.child(client.get("id")).remove();
 
-  return (dispatch) => {
-    // dispatch(deleteClient(id));
-  };
+  return () => {};
 };
 
 export const startEditClient = (
   client: Client
 ): ThunkAction<void, RootState, null, DataAction> => {
-  console.log(client.toFirebaseObject());
   if (null != agendaRef) {
     const key = client.get("id");
     agendaRef.child(key).update(client.toFirebaseObject());
   }
-  return async (dispatch) => {
-    // client.set(client.id, client);
-    // dispatch(updateClient(client));
-    // console.log("on passe ici");
-  };
+  return async () => {};
 };
-
-// if (this.clientsRef != null) {
-//   const key = client.get('id');
-//   this.clientsRef.child(key).update(client.toFirebaseObject());
-// }
