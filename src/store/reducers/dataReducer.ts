@@ -1,3 +1,4 @@
+import { ClientModel } from "./../types";
 import {
   DataAction,
   DataState,
@@ -7,6 +8,7 @@ import {
   EDIT_CLIENT,
   DELETE_CLIENT,
 } from "../types";
+import Client from "../model/ClientModel";
 
 const dataState: DataState = {
   RealTimedata: null,
@@ -14,6 +16,7 @@ const dataState: DataState = {
 };
 
 export default (state = dataState, action: DataAction) => {
+  console.log(state, action);
   switch (action.type) {
     case FETCHREAL_TIME_DATA_SUCCESS:
       return {
@@ -25,17 +28,23 @@ export default (state = dataState, action: DataAction) => {
         ...state,
         ClientData: [...state.ClientData, action.payload],
       };
+    case EDIT_CLIENT:
+      const clients = state.ClientData;
+      const indexOfClient = clients.findIndex(
+        (aClient, _index) => aClient.id === action.payload.id
+      );
+      clients[indexOfClient] = action.payload;
+      return {
+        ...state,
+        ClientData: clients,
+      };
     case CREATE_CLIENT:
-      console.log("create client reducer", action.payload);
       return {
         ...state,
         ClientData: [action.payload],
       };
-    case EDIT_CLIENT:
-      console.log("edit client reducer", action.payload);
-
     case DELETE_CLIENT:
-      console.log("delete client reducer", action.type);
+      console.log("delete client reducer", action.payload);
 
     default:
       return state;

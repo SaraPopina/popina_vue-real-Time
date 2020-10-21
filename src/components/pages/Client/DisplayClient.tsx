@@ -31,6 +31,7 @@ import { ThunkDispatch } from "redux-thunk";
 import { RouteComponentProps } from "react-router-dom";
 import UpdateClient from "./UpdateClient";
 import Client from "../../../store/model/ClientModel";
+import DeleteClient from "./DeleteClient";
 
 interface HomePageProps {
   id?: string;
@@ -70,6 +71,11 @@ export class DisplayClient extends React.Component<Props> {
     });
   };
 
+  onClientDeleted = (client: Client) => {
+    console.log("call du delete", client);
+    startRemoveClient(client);
+  };
+
   render() {
     const { ClientData } = this.props;
     return (
@@ -81,7 +87,7 @@ export class DisplayClient extends React.Component<Props> {
 
             {ClientData.map((client) => {
               return (
-                <div>
+                <div key={client.id}>
                   <Card className="card-style">
                     <Tooltip title="Modifier" placement="top-end">
                       <Button
@@ -188,7 +194,10 @@ export class DisplayClient extends React.Component<Props> {
                     <hr style={{ margin: "10px" }} />
 
                     <CardActions style={{ padding: "16px" }}>
-                      {/* <DeleteClient clientKey={client} onDeleteClient={this.onClientDeleted} /> */}
+                      <DeleteClient
+                        clientKey={client}
+                        onDeleteClient={this.onClientDeleted}
+                      />
                     </CardActions>
                   </Card>
                 </div>
@@ -209,7 +218,7 @@ interface LinkStateProp {
 interface LinkDispatchProps {
   addClient?: (client: Client) => void;
   startEditClient?: (client: Client) => void;
-  startRemoveClient?: (id: string) => void;
+  startRemoveClient?: (client: Client) => void;
 }
 
 const mapStateToProps = (

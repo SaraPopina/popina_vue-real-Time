@@ -13,6 +13,7 @@ import Client from "../../../store/model/ClientModel";
 interface displayClientProps {
   id?: string;
   color?: string;
+  ClientData: Client[];
 }
 
 interface HomePageState {}

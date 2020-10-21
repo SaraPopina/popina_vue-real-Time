@@ -14,19 +14,6 @@ import { startEditClient } from "../../../store/actions/dataActions";
 import Client from "../../../store/model/ClientModel";
 
 interface HomePageProps {
-  id?: string;
-  color?: string;
-  address?: string;
-  addressComplement?: string;
-  city?: string;
-  comment?: string;
-  company?: string;
-  company_number?: string;
-  country?: string;
-  email?: string;
-  name?: string;
-  phone?: string;
-  zip?: string;
   ClientData?: Client | {};
 }
 
@@ -37,7 +24,7 @@ interface LinkStateProp {
 }
 
 interface LinkDispatchProps {
-  addClient?: (client: Client) => void;
+  startEditClient?: (client: Client) => void;
 }
 
 type Props = HomePageProps & LinkDispatchProps & LinkStateProp;
@@ -53,7 +40,7 @@ export default class UpdateClient extends Component<
     // console.log("ici les props", this.props);
     this.state = {
       open: false,
-      client: new Client(),
+      client: null,
       id: null,
     };
     this.submitUpdate = React.createRef();
@@ -77,7 +64,7 @@ export default class UpdateClient extends Component<
     this.setState({
       // client: null,
       open: !this.state.open,
-      client: null,
+      //   client: null,
     });
   }
 

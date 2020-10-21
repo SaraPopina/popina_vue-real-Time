@@ -40,7 +40,6 @@ export default class FormClient extends Component<Props, ClientState> {
     //update client
     if (this.props.client) {
       const selectedClient = this.state.client;
-      console.log("ici selectedClient", selectedClient);
       const client = this.props.client
         .set("address", selectedClient.address)
         .set("addressComplement", selectedClient.addressComplement)

@@ -106,17 +106,43 @@ export const setClientData = (
         dispatch(getClientData(client));
       });
 
-      agendaRef.on("child_changed", (snapshot) => {
-        let data = snapshot.val();
-        data.id = snapshot.ref.key;
-        dispatch(addClient(data));
-      });
-
       // agendaRef.on("child_changed", (snapshot) => {
       //   let data = snapshot.val();
       //   data.id = snapshot.ref.key;
-      //   dispatch(startEditClient(data));
+      //   dispatch(addClient(data));
+      //   dispatch({
+      //     type: CREATE_CLIENT,
+      //     payload: new Client(data),
+      //   });
       // });
+
+      agendaRef.on("child_changed", (snapshot) => {
+        let data = snapshot.val();
+        data.id = snapshot.ref.key;
+        const client = new Client(data);
+        dispatch(getUpdatedClentData(client));
+      });
+
+      agendaRef.on("child_removed", (snapshot) => {
+        let data = snapshot.val();
+        data.id = snapshot.ref.key;
+        if (
+          data.orders != 0 &&
+          data.orders != undefined &&
+          data.orders != null
+        ) {
+          return window.alert(
+            "Impossible de supprimer ce client car des commandes sont toujours en cours "
+          );
+        } else {
+          let data = snapshot.val();
+          data.id = snapshot.ref.key;
+          // dispatch({
+          //   type: DELETE_CLIENT,
+          //   payload: new Client(data),
+          // });
+        }
+      });
     }
     try {
     } catch (err) {
@@ -136,16 +162,23 @@ export const getClientData = (
   };
 };
 
+export const getUpdatedClentData = (
+  clientData: Client
+): ThunkAction<void, RootState, null, DataAction> => {
+  return (dispatch) => {
+    dispatch({
+      type: EDIT_CLIENT,
+      payload: clientData,
+    });
+  };
+};
+
 export const deleteClient = (
-  id: string
+  client: Client
 ): ThunkAction<void, RootState, null, DataAction> => {
   return (dispatch) => {
     console.log("ici le deleteCLient", agendaRef);
-    // agendaRef.child(client.get('id')).remove()
-    dispatch({
-      type: DELETE_CLIENT,
-      payload: id,
-    });
+    agendaRef.child(client.get("id")).remove();
   };
 };
 
@@ -158,64 +191,32 @@ export const addClient = (
   }
 
   return async (dispatch) => {
-    const {
-      address = "",
-      addressComplement = "",
-      city = "",
-      comment = "",
-      company = "",
-      company_number = "",
-      country = "",
-      email = "",
-      name = "",
-      phone = "",
-      zip = "",
-    } = clientData;
-    // const client = {
-    //   address,
-    //   addressComplement,
-    //   city,
-    //   comment,
-    //   company,
-    //   company_number,
-    //   country,
-    //   email,
-    //   name,
-    //   phone,
-    //   zip,
-    // };
-
-    const client = clientData.set(clientData.id, clientData);
-
-    dispatch({
-      type: CREATE_CLIENT,
-      payload: new Client(client),
-    });
+    clientData.set(clientData.id, clientData);
   };
 };
 
 export const startRemoveClient = (
-  id: string
+  client: Client
 ): ThunkAction<void, RootState, null, DataAction> => {
+  agendaRef.child(client.get("id")).remove();
+
   return (dispatch) => {
-    console.log("ici l'id", id);
-    dispatch(deleteClient(id));
+    // dispatch(deleteClient(id));
   };
 };
 
 export const startEditClient = (
   client: Client
 ): ThunkAction<void, RootState, null, DataAction> => {
-  console.log("ici le client a update", client);
+  console.log(client.toFirebaseObject());
   if (null != agendaRef) {
     const key = client.get("id");
     agendaRef.child(key).update(client.toFirebaseObject());
   }
-  return (dispatch) => {
-    dispatch({
-      type: EDIT_CLIENT,
-      payload: new Client(client),
-    });
+  return async (dispatch) => {
+    // client.set(client.id, client);
+    // dispatch(updateClient(client));
+    // console.log("on passe ici");
   };
 };
 
