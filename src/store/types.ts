@@ -1,4 +1,5 @@
 import Client from "./model/ClientModel";
+import RealTime from "./model/RealTimeModel";
 
 export const SET_USER = "SET_USER";
 export const SIGN_OUT = "SIGN_OUT";
@@ -18,88 +19,88 @@ export interface User {
   uid: string;
 }
 
-export interface RealTimeModel {
-  client_id: string;
-  connected: boolean;
-  date_begin: number;
-  date_deleted: number;
-  date_end: number;
-  device_name: string;
-  fiscal: number;
-  is_closed: number;
-  name: string;
-  number_guests: number;
-  team: [
-    {
-      date_begin: number;
-      date_end: number;
-      name: string;
-    }
-  ];
-  ticket_address: string;
-  ticket_city: string;
-  ticket_company: string;
-  ticket_country: string;
-  ticket_naf: string;
-  ticket_name: string;
-  ticket_phone: string;
-  ticket_text: string;
-  ticket_tva: string;
-  ticket_url: string;
-  ticket_zip: string;
-  tickets: [
-    {
-      cancelled: number;
-      date_begin: number;
-      date_end: number;
-      items: [
-        {
-          cancelled: 0;
-          category: string;
-          creation_date: number;
-          live_paid: number;
-          name: string;
-          parent_category: string;
-          parent_category_index: number;
-          price: {
-            amount: number;
-            currency: string;
-            tax: number;
-            tax_name: string;
-            tier: string;
-          };
-          quantity: number;
-          step_index: number;
-          transferred: number;
-          waiter: string;
-          waiter_id: string;
-        }
-      ];
-      live_paid: number;
-      number_guests: number;
-      order_id: number;
-      payments: [
-        {
-          amount: number;
-          cancelled: number;
-          clientID: string;
-          creation_date: number;
-          currency: string;
-          mode: number;
-          name: string;
-          type: number;
-        }
-      ];
-      price: { amount: number; currency: string; tier: string };
-      prints_count: number;
-      room: string;
-      table: string;
-      transferred: number;
-      waiter: string;
-      waiter_id: string;
-    }
-  ];
-}
+// export interface RealTimeModel {
+//   client_id: string;
+//   connected: boolean;
+//   date_begin: number;
+//   date_deleted: number;
+//   date_end: number;
+//   device_name: string;
+//   fiscal: number;
+//   is_closed: number;
+//   name: string;
+//   number_guests: number;
+//   team: [
+//     {
+//       date_begin: number;
+//       date_end: number;
+//       name: string;
+//     }
+//   ];
+//   ticket_address: string;
+//   ticket_city: string;
+//   ticket_company: string;
+//   ticket_country: string;
+//   ticket_naf: string;
+//   ticket_name: string;
+//   ticket_phone: string;
+//   ticket_text: string;
+//   ticket_tva: string;
+//   ticket_url: string;
+//   ticket_zip: string;
+//   tickets: [
+//     {
+//       cancelled: number;
+//       date_begin: number;
+//       date_end: number;
+//       items: [
+//         {
+//           cancelled: 0;
+//           category: string;
+//           creation_date: number;
+//           live_paid: number;
+//           name: string;
+//           parent_category: string;
+//           parent_category_index: number;
+//           price: {
+//             amount: number;
+//             currency: string;
+//             tax: number;
+//             tax_name: string;
+//             tier: string;
+//           };
+//           quantity: number;
+//           step_index: number;
+//           transferred: number;
+//           waiter: string;
+//           waiter_id: string;
+//         }
+//       ];
+//       live_paid: number;
+//       number_guests: number;
+//       order_id: number;
+//       payments: [
+//         {
+//           amount: number;
+//           cancelled: number;
+//           clientID: string;
+//           creation_date: number;
+//           currency: string;
+//           mode: number;
+//           name: string;
+//           type: number;
+//         }
+//       ];
+//       price: { amount: number; currency: string; tier: string };
+//       prints_count: number;
+//       room: string;
+//       table: string;
+//       transferred: number;
+//       waiter: string;
+//       waiter_id: string;
+//     }
+//   ];
+// }
 
 export interface AuthState {
   user: User | null;
@@ -110,24 +111,9 @@ export interface AuthState {
   uid: string;
 }
 
-export interface ClientModel {
-  id?: string;
-  address: string;
-  addressComplement: string;
-  city: string;
-  comment: string;
-  company: string;
-  company_number: string;
-  country: string;
-  email: string;
-  name: string;
-  phone: string;
-  zip: string;
-}
-
 // state
 export interface DataState {
-  RealTimedata: RealTimeModel | null;
+  RealTimedata: RealTime[] | null;
   ClientData: Client[] | null;
 }
 export interface SignInData {
@@ -143,7 +129,7 @@ export interface LoginUser {
 
 interface fetchRealTimeDataSuccess {
   type: typeof FETCHREAL_TIME_DATA_SUCCESS;
-  payload: RealTimeModel;
+  payload: RealTime;
 }
 
 interface fetchClientDataSuccess {

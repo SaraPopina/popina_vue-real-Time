@@ -3,7 +3,6 @@ import {
   DataAction,
   FETCHREAL_TIME_DATA_SUCCESS,
   FETCHCLIENT_DATA_SUCCESS,
-  ClientModel,
   EDIT_CLIENT,
   CREATE_CLIENT,
   DELETE_CLIENT,
@@ -11,6 +10,7 @@ import {
 import { RootState } from "..";
 import { auth, database } from "firebase";
 import Client from "../model/ClientModel";
+import RealTime from "../model/RealTimeModel";
 
 let agendaRef: database.Reference = null;
 
@@ -38,7 +38,9 @@ export const setRealTimeData = (
 
       realTimeRef.on("child_added", (snapshot) => {
         const data = snapshot.val();
-        dispatch(getRealTimeData(data));
+        data.id = snapshot.key;
+        let realtimeData = new RealTime(data);
+        dispatch(getRealTimeData(realtimeData));
       });
     } else {
       const realTimeRef = database()
@@ -47,7 +49,9 @@ export const setRealTimeData = (
 
       realTimeRef.on("child_added", (snapshot) => {
         const data = snapshot.val();
-        dispatch(getRealTimeData(data));
+        data.id = snapshot.key;
+        let realtimeData = new RealTime(data);
+        dispatch(getRealTimeData(realtimeData));
       });
     }
     try {
@@ -58,7 +62,7 @@ export const setRealTimeData = (
 };
 
 export const getRealTimeData = (
-  RealTimedata: null
+  RealTimedata: RealTime
 ): ThunkAction<void, RootState, null, DataAction> => {
   return (dispatch) => {
     dispatch({

@@ -5,7 +5,7 @@ import { setSuccess } from "../../../store/actions/authActions";
 import store, { RootState } from "../../../store";
 import CreateClient from "./CreateClient";
 import { DisplayClient } from "./DisplayClient";
-import { ClientModel, DataState, DataAction } from "../../../store/types";
+import { DataState, DataAction } from "../../../store/types";
 import { ThunkDispatch } from "redux-thunk";
 import { addClient } from "../../../store/actions/dataActions";
 import Client from "../../../store/model/ClientModel";

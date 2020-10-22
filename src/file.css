@@ -112,3 +112,24 @@ h3 {
   width: 400px;
   margin-right: 30px
 }
+
+.card-RealTime {
+  width: 55%;
+  margin-top: 70px;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: spacing(0.5);
+  transition: 0.3s;
+  overflow: initial;
+  background: #ffffff;
+}
+
+.table-RealTime {
+  max-width: 300px;
+}
+
+.content-RealTime {
+  padding-top: 10px;
+  text-align: left;
+  overflow-x: auto,
+}

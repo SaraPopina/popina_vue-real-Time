@@ -9,7 +9,6 @@ import {
   DialogActions,
 } from "@material-ui/core";
 import FormClient from "./form/FormClient";
-import { ClientModel } from "../../../store/types";
 import { startEditClient } from "../../../store/actions/dataActions";
 import Client from "../../../store/model/ClientModel";
 
@@ -77,7 +76,6 @@ export default class UpdateClient extends Component<
   };
 
   onUpdateClient = (client: Client) => {
-    console.log("update", client);
     startEditClient(client);
   };
 

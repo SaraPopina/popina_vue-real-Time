@@ -18,7 +18,6 @@ import {
 } from "@material-ui/core";
 import { render } from "react-dom";
 import FormClient from "./form/FormClient";
-import { ClientModel } from "../../../store/types";
 import Client from "../../../store/model/ClientModel";
 
 interface HomePageProps {
@@ -38,11 +37,11 @@ interface HomePageProps {
 }
 
 interface LinkStateProp {
-  ClientData?: ClientModel[];
+  ClientData?: Client[];
 }
 
 interface LinkDispatchProps {
-  addClient?: (client: ClientModel) => void;
+  addClient?: (client: Client) => void;
 }
 
 type Props = HomePageProps & LinkDispatchProps & LinkStateProp;

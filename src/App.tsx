@@ -14,6 +14,7 @@ import { setRealTimeData, setClientData } from "./store/actions/dataActions";
 import store, { RootState } from "./store";
 import "./file.css";
 import ClientsContainer from "./components/pages/Client/ClientsContainer";
+import RealTimeContainer from "./components/pages/RealTime/RealTime_container";
 
 const App: FC = () => {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ const App: FC = () => {
       <Switch>
         <PublicRoute path="/" component={Homepage} exact />
         <PublicRoute path="/signin" component={SignIn} exact />
-        <PrivateRoute path="/real_time" component={RealTime} exact />
+        <PrivateRoute path="/real_time" component={RealTimeContainer} exact />
         <PrivateRoute path="/clients" component={ClientsContainer} exact />
       </Switch>
     </BrowserRouter>

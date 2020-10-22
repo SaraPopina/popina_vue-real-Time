@@ -26,7 +26,7 @@ import {
   startEditClient,
   startRemoveClient,
 } from "../../../store/actions/dataActions";
-import { ClientModel, DataState, DataAction } from "../../../store/types";
+import { DataState, DataAction } from "../../../store/types";
 import { ThunkDispatch } from "redux-thunk";
 import { RouteComponentProps } from "react-router-dom";
 import UpdateClient from "./UpdateClient";
@@ -46,7 +46,6 @@ export class DisplayClient extends React.Component<Props> {
   modalElement: React.RefObject<UpdateClient>;
   constructor(props: Props | Readonly<Props>) {
     super(props);
-    console.log("props display client", this.props);
     this.state = {
       open: false,
       setOpen: false,
@@ -72,7 +71,7 @@ export class DisplayClient extends React.Component<Props> {
   };
 
   onClientDeleted = (client: Client) => {
-    console.log("call du delete", client);
+    // console.log("call du delete", client);
     startRemoveClient(client);
   };
 

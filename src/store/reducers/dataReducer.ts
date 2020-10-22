@@ -9,17 +9,17 @@ import {
 } from "../types";
 
 const dataState: DataState = {
-  RealTimedata: null,
+  RealTimedata: [],
   ClientData: [],
 };
 
 export default (state = dataState, action: DataAction) => {
-  console.log(state, action);
   switch (action.type) {
     case FETCHREAL_TIME_DATA_SUCCESS:
+      console.log(action.payload);
       return {
         ...state,
-        RealTimedata: action.payload,
+        RealTimedata: [action.payload],
       };
     case FETCHCLIENT_DATA_SUCCESS:
       return {

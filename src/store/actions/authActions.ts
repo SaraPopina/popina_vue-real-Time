@@ -48,7 +48,7 @@ export const signin = (
         payload: userData,
       });
 
-      console.log("on recup l'uid", areaSnapshot.user.uid);
+      // console.log("on recup l'uid", areaSnapshot.user.uid);
     } catch (err) {
       console.log(err);
       onError();
