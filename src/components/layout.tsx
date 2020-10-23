@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { User } from "../store/types";
+import { User } from "../store/types/AuthTypes";
 
 interface Props {
   user: null;

@@ -1,79 +1,19 @@
 import { ThunkAction } from "redux-thunk";
 import {
-  DataAction,
-  FETCHREAL_TIME_DATA_SUCCESS,
+  ClientAction,
   FETCHCLIENT_DATA_SUCCESS,
   EDIT_CLIENT,
   DELETE_CLIENT,
-} from "../types";
+} from "../types/ClientTypes";
 import { RootState } from "..";
 import { auth, database } from "firebase";
 import Client from "../model/ClientModel";
-import RealTime from "../model/RealTimeModel";
 
 let agendaRef: database.Reference = null;
 
-export const setRealTimeData = (
-  userUid: string
-): ThunkAction<void, RootState, null, DataAction> => {
-  return async (dispatch) => {
-    const userUid = auth().currentUser.uid;
-    const snapshot = database()
-      .ref()
-      .child(`users/${userUid}/realtimeID`)
-      .once("value");
-
-    if (false == (await snapshot).exists()) {
-      const newKey = database()
-        .ref()
-        .child(`users/${userUid}/realtimeID`)
-        .push().key;
-
-      database().ref().child(`users/${userUid}/`).update({
-        realtimeID: newKey,
-      });
-      const realtimeID = (await snapshot).val();
-      const realTimeRef = database().ref().child(`realtimes/${realtimeID}`);
-
-      realTimeRef.on("child_added", (snapshot) => {
-        const data = snapshot.val();
-        data.id = snapshot.key;
-        let realtimeData = new RealTime(data);
-        dispatch(getRealTimeData(realtimeData));
-      });
-    } else {
-      const realTimeRef = database()
-        .ref()
-        .child(`realtimes/${(await snapshot).val()}`);
-
-      realTimeRef.on("child_added", (snapshot) => {
-        const data = snapshot.val();
-        data.id = snapshot.key;
-        let realtimeData = new RealTime(data);
-        dispatch(getRealTimeData(realtimeData));
-      });
-    }
-    try {
-    } catch (err) {
-      console.log(err);
-    }
-  };
-};
-
-export const getRealTimeData = (
-  RealTimedata: RealTime
-): ThunkAction<void, RootState, null, DataAction> => {
-  return (dispatch) => {
-    dispatch({
-      type: FETCHREAL_TIME_DATA_SUCCESS,
-      payload: RealTimedata,
-    });
-  };
-};
-
 export const setClientData = (
   userUid: string
-): ThunkAction<void, RootState, null, DataAction> => {
+): ThunkAction<void, RootState, null, ClientAction> => {
   return async (dispatch) => {
     const userUid = auth().currentUser.uid;
     const snapshot = database()
@@ -145,7 +85,7 @@ export const setClientData = (
 
 export const getClientData = (
   clientdata: Client
-): ThunkAction<void, RootState, null, DataAction> => {
+): ThunkAction<void, RootState, null, ClientAction> => {
   return (dispatch) => {
     dispatch({
       type: FETCHCLIENT_DATA_SUCCESS,
@@ -156,7 +96,7 @@ export const getClientData = (
 
 export const getUpdatedClientData = (
   clientData: Client
-): ThunkAction<void, RootState, null, DataAction> => {
+): ThunkAction<void, RootState, null, ClientAction> => {
   return (dispatch) => {
     dispatch({
       type: EDIT_CLIENT,
@@ -167,7 +107,7 @@ export const getUpdatedClientData = (
 
 export const getDeletedClientData = (
   clientData: Client
-): ThunkAction<void, RootState, null, DataAction> => {
+): ThunkAction<void, RootState, null, ClientAction> => {
   return (dispatch) => {
     dispatch({
       type: DELETE_CLIENT,
@@ -177,7 +117,7 @@ export const getDeletedClientData = (
 };
 export const addClient = (
   clientData: Client
-): ThunkAction<void, RootState, null, DataAction> => {
+): ThunkAction<void, RootState, null, ClientAction> => {
   if (null != agendaRef) {
     const newClient = clientData.toFirebaseObject();
     agendaRef.push(newClient);
@@ -190,7 +130,7 @@ export const addClient = (
 
 export const startRemoveClient = (
   client: Client
-): ThunkAction<void, RootState, null, DataAction> => {
+): ThunkAction<void, RootState, null, ClientAction> => {
   agendaRef.child(client.get("id")).remove();
 
   return () => {};
@@ -198,7 +138,7 @@ export const startRemoveClient = (
 
 export const startEditClient = (
   client: Client
-): ThunkAction<void, RootState, null, DataAction> => {
+): ThunkAction<void, RootState, null, ClientAction> => {
   if (null != agendaRef) {
     const key = client.get("id");
     agendaRef.child(key).update(client.toFirebaseObject());

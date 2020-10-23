@@ -10,7 +10,7 @@ import {
   SignInData,
   SET_ERROR,
   SET_SUCCESS,
-} from "../types";
+} from "../types/AuthTypes";
 import { RootState } from "..";
 
 // Set loading

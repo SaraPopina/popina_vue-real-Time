@@ -2,8 +2,11 @@ import React, { FC, useEffect, createRef } from "react";
 import { useSelector, useDispatch, connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { setSuccess } from "../../../store/actions/authActions";
-import store, { RootState } from "../../../store";
-import { DataState, DataAction } from "../../../store/types";
+import { RootState } from "../../../store";
+import {
+  RealTimeState,
+  RealTimeAction,
+} from "../../../store/types/RealTimeTypes";
 import { ThunkDispatch } from "redux-thunk";
 import RealTime from "../../../store/model/RealTimeModel";
 import { RealTimeVue } from "./Real_time";
@@ -20,7 +23,9 @@ type Props = displayRealTimeProps & LinkDispatchProps & LinkStateProp;
 
 const RealTimeContainer: FC<Props> = () => {
   const { success } = useSelector((state: RootState) => state.auth);
-  const { RealTimedata } = useSelector((state: RootState) => state.data);
+  const { RealTimedata } = useSelector(
+    (state: RootState) => state.realTimeData
+  );
 
   const dispatch = useDispatch();
 
@@ -44,14 +49,14 @@ interface LinkStateProp {
 interface LinkDispatchProps {}
 
 const mapStateToProps = (
-  state: DataState,
+  state: RealTimeState,
   props: displayRealTimeProps
 ): LinkStateProp => ({
   RealTimedata: state.RealTimedata,
 });
 
 const mapDispatchToProps = (
-  dispatch: ThunkDispatch<any, any, DataAction>,
+  dispatch: ThunkDispatch<any, any, RealTimeAction>,
   props: displayRealTimeProps
 ): LinkDispatchProps => ({});
 

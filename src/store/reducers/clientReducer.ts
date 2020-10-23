@@ -1,26 +1,18 @@
 import {
-  DataAction,
-  DataState,
-  FETCHREAL_TIME_DATA_SUCCESS,
+  ClientAction,
+  ClientState,
   FETCHCLIENT_DATA_SUCCESS,
   CREATE_CLIENT,
   EDIT_CLIENT,
   DELETE_CLIENT,
-} from "../types";
+} from "../types/ClientTypes";
 
-const dataState: DataState = {
-  RealTimedata: [],
+const clientState: ClientState = {
   ClientData: [],
 };
 
-export default (state = dataState, action: DataAction) => {
+export default (state = clientState, action: ClientAction) => {
   switch (action.type) {
-    case FETCHREAL_TIME_DATA_SUCCESS:
-      console.log(action.payload);
-      return {
-        ...state,
-        RealTimedata: [action.payload],
-      };
     case FETCHCLIENT_DATA_SUCCESS:
       return {
         ...state,

@@ -2,12 +2,12 @@ import React, { FC, useEffect, createRef } from "react";
 import { useSelector, useDispatch, connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { setSuccess } from "../../../store/actions/authActions";
-import store, { RootState } from "../../../store";
+import { RootState } from "../../../store";
 import CreateClient from "./CreateClient";
 import { DisplayClient } from "./DisplayClient";
-import { DataState, DataAction } from "../../../store/types";
+import { ClientState, ClientAction } from "../../../store/types/ClientTypes";
 import { ThunkDispatch } from "redux-thunk";
-import { addClient } from "../../../store/actions/dataActions";
+import { addClient } from "../../../store/actions/clientActions";
 import Client from "../../../store/model/ClientModel";
 
 interface displayClientProps {
@@ -22,7 +22,7 @@ type Props = displayClientProps & LinkDispatchProps & LinkStateProp;
 
 const ClientsContainer: FC<Props> = () => {
   const { user, success } = useSelector((state: RootState) => state.auth);
-  const { ClientData } = useSelector((state: RootState) => state.data);
+  const { ClientData } = useSelector((state: RootState) => state.client);
   const [open, setOpen] = React.useState(false);
   const modalCreateElement = React.createRef<CreateClient>();
 
@@ -50,14 +50,14 @@ interface LinkDispatchProps {
 }
 
 const mapStateToProps = (
-  state: DataState,
+  state: ClientState,
   props: displayClientProps
 ): LinkStateProp => ({
   ClientData: state.ClientData,
 });
 
 const mapDispatchToProps = (
-  dispatch: ThunkDispatch<any, any, DataAction>,
+  dispatch: ThunkDispatch<any, any, ClientAction>,
   props: displayClientProps
 ): LinkDispatchProps => ({
   addClient: bindActionCreators(addClient, dispatch),

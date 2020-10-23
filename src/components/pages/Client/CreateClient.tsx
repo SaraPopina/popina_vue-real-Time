@@ -1,8 +1,5 @@
-import React, { FC, useEffect, Fragment, Component } from "react";
-import { useSelector, useDispatch, connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { addClient } from "../../../store/actions/dataActions";
-import store, { RootState } from "../../../store";
+import React, { Component, Fragment } from "react";
+import { addClient } from "../../../store/actions/clientActions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "@material-ui/core/Button";
 import {
@@ -16,7 +13,6 @@ import {
   DialogContent,
   DialogActions,
 } from "@material-ui/core";
-import { render } from "react-dom";
 import FormClient from "./form/FormClient";
 import Client from "../../../store/model/ClientModel";
 
@@ -48,16 +44,12 @@ type Props = HomePageProps & LinkDispatchProps & LinkStateProp;
 
 export default class CreateClient extends Component<Props, { open: boolean }> {
   submitCreate: React.RefObject<FormClient>;
-  //   submitCreate: React.RefObject<FormClient | null>;
   constructor(props: {}) {
     super(props);
-    // console.log("ici les props", this.props);
     this.state = {
       open: false,
     };
     this.submitCreate = React.createRef();
-
-    // this.submitCreate = React.createRef();
   }
   handleOpen = () => {
     this.setState({
@@ -71,10 +63,6 @@ export default class CreateClient extends Component<Props, { open: boolean }> {
   };
 
   handleSubmit = () => {
-    // console.log(
-    //   "ici les props de create client pour appeler la fonction action",
-    //   this.props
-    // );
     this.submitCreate.current.manageClient();
     this.setState({
       open: !this.state.open,

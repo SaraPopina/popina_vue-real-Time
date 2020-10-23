@@ -16,10 +16,14 @@ import * as moment from "moment";
 import "moment/locale/fr";
 import CardHeader from "@material-ui/core/CardHeader";
 import RealTime from "../../../store/model/RealTimeModel";
-import { DataState, DataAction } from "../../../store/types";
+import {
+  RealTimeState,
+  RealTimeAction,
+} from "../../../store/types/RealTimeTypes";
 import { ThunkDispatch } from "redux-thunk";
 import ChartClient from "./chart/ChartClient";
 import ChartTicket from "./chart/ChartTicket";
+import { Avatar } from "@material-ui/core";
 
 type Props = LinkStateProp;
 export class RealTimeVue extends React.Component<Props> {
@@ -36,9 +40,9 @@ export class RealTimeVue extends React.Component<Props> {
         <div className="dashboard_header_title">
           <h1 className="is-size-1">Temps réel</h1>
         </div>
-        {RealTimedata.map((aData) => {
+        {RealTimedata.map((aData, index) => {
           return (
-            <div className="dashboard_realtime_title_container">
+            <div className="dashboard_realtime_title_container" key={index}>
               <h2>Caisse du {moment(aData.date_begin).format("LLLL")} </h2>
               <h3>
                 Dernière modification effectué à{" "}
@@ -259,7 +263,10 @@ export class RealTimeVue extends React.Component<Props> {
                           size="small"
                           aria-label="a dense table"
                           key={index}
-                          style={{ marginTop: "30px" }}
+                          style={{
+                            marginTop: "10px",
+                            borderBottom: "1px solid #8c8c8c47",
+                          }}
                         >
                           <TableHead key={index}>
                             <TableRow
@@ -386,6 +393,8 @@ export class RealTimeVue extends React.Component<Props> {
                         component="h3"
                         color="textSecondary"
                       >
+                        <Avatar className="avatar" src="/broken-image.jpg" />
+
                         <p>{aTeamMember.name}</p>
                       </Typography>
                       <Typography color="textSecondary">
@@ -416,12 +425,12 @@ interface LinkStateProp {
   RealTimedata: RealTime[];
 }
 
-const mapStateToProps = (state: DataState): LinkStateProp => ({
+const mapStateToProps = (state: RealTimeState): LinkStateProp => ({
   RealTimedata: state.RealTimedata,
 });
 
 const mapDispatchToProps = (
-  dispatch: ThunkDispatch<any, any, DataAction>
+  dispatch: ThunkDispatch<any, any, RealTimeAction>
 ) => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(RealTimeVue);

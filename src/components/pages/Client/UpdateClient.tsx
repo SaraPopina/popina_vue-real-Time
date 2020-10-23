@@ -9,7 +9,7 @@ import {
   DialogActions,
 } from "@material-ui/core";
 import FormClient from "./form/FormClient";
-import { startEditClient } from "../../../store/actions/dataActions";
+import { startEditClient } from "../../../store/actions/clientActions";
 import Client from "../../../store/model/ClientModel";
 
 interface HomePageProps {
@@ -36,7 +36,6 @@ export default class UpdateClient extends Component<
 
   constructor(props: Props | Readonly<Props>) {
     super(props);
-    // console.log("ici les props", this.props);
     this.state = {
       open: false,
       client: null,
@@ -45,9 +44,7 @@ export default class UpdateClient extends Component<
     this.submitUpdate = React.createRef();
   }
 
-  // ouverture du modal avec son ID
   handleModal = (client: Client) => {
-    // console.log("open modal avec client ", client);
     if (client) {
       this.setState({
         client: client,
@@ -58,12 +55,9 @@ export default class UpdateClient extends Component<
     });
   };
 
-  // ferme le modal
   handleTapCloseModal() {
     this.setState({
-      // client: null,
       open: !this.state.open,
-      //   client: null,
     });
   }
 

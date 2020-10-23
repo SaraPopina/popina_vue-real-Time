@@ -6,7 +6,7 @@ import {
   SIGN_OUT,
   SET_ERROR,
   SET_SUCCESS,
-} from "../types";
+} from "../types/AuthTypes";
 
 const initialState: AuthState = {
   user: null,

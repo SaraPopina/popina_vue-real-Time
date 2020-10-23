@@ -18,15 +18,13 @@ import {
 
 import { Tooltip, Avatar, CardActions } from "@material-ui/core";
 import CreateClient from "./CreateClient";
-import { render } from "react-dom";
 import {
   addClient,
   startEditClient,
   startRemoveClient,
-} from "../../../store/actions/dataActions";
-import { DataState, DataAction } from "../../../store/types";
+} from "../../../store/actions/clientActions";
+import { ClientState, ClientAction } from "../../../store/types/ClientTypes";
 import { ThunkDispatch } from "redux-thunk";
-import { RouteComponentProps } from "react-router-dom";
 import UpdateClient from "./UpdateClient";
 import Client from "../../../store/model/ClientModel";
 import DeleteClient from "./DeleteClient";
@@ -69,7 +67,6 @@ export class DisplayClient extends React.Component<Props> {
   };
 
   onClientDeleted = (client: Client) => {
-    // console.log("call du delete", client);
     startRemoveClient(client);
   };
 
@@ -224,7 +221,7 @@ interface LinkDispatchProps {
 }
 
 const mapStateToProps = (
-  state: DataState,
+  state: ClientState,
   props: HomePageProps
 ): LinkStateProp => ({
   ClientData: state.ClientData,
@@ -232,7 +229,7 @@ const mapStateToProps = (
 });
 
 const mapDispatchToProps = (
-  dispatch: ThunkDispatch<any, any, DataAction>,
+  dispatch: ThunkDispatch<any, any, ClientAction>,
   props: HomePageProps
 ): LinkDispatchProps => ({
   addClient: bindActionCreators(addClient, dispatch),
