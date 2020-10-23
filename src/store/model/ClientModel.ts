@@ -11,6 +11,27 @@ const ClientReccord = Record({
   country: "",
   email: "",
   name: "",
+  // orders: [
+  //   {
+  //     createdAt: 0,
+  //     device: "",
+  //     guests: 0,
+  //     isPaid: false,
+  //     items: {},
+  //     needs_checkin: false,
+  //     orderClientID: "",
+  //     orderedAt: 0,
+  //     paidAmountBeforeDebt: 0,
+  //     payments: {
+  //       amount: 0,
+  //       name: "",
+  //     },
+  //     room: "",
+  //     table: "",
+  //     vendor: "",
+  //     venue: "",
+  //   },
+  // ],
   phone: "",
   zip: "",
 });

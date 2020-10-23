@@ -18,17 +18,18 @@ import CardHeader from "@material-ui/core/CardHeader";
 import RealTime from "../../../store/model/RealTimeModel";
 import { DataState, DataAction } from "../../../store/types";
 import { ThunkDispatch } from "redux-thunk";
+import ChartClient from "./chart/ChartClient";
+import ChartTicket from "./chart/ChartTicket";
 
 type Props = LinkStateProp;
 export class RealTimeVue extends React.Component<Props> {
-  constructor(props: Props | Readonly<Props>) {
+  constructor(props: Props) {
     super(props);
-    this.state = {};
   }
 
   render() {
     const { RealTimedata } = this.props;
-    console.log(RealTimedata);
+    // console.log(RealTimedata);
 
     return (
       <section>
@@ -55,6 +56,10 @@ export class RealTimeVue extends React.Component<Props> {
                   justifyContent: "space-around",
                 }}
               >
+                <ChartTicket
+                  sumTotal={aData.sumTotal()}
+                  sumPayed={aData.sumTotalPaid()}
+                />
                 <TableContainer className="table-RealTime">
                   <Table size="small">
                     <TableHead>
@@ -164,6 +169,10 @@ export class RealTimeVue extends React.Component<Props> {
                     </TableBody>
                   </Table>
                 </TableContainer>
+                <ChartClient
+                  guestPaid={aData.total_sumGuestPaid()}
+                  totalGuest={aData.sumTotalGuest()}
+                />
 
                 <TableContainer className="table-RealTime">
                   <Table size="small">
@@ -250,6 +259,7 @@ export class RealTimeVue extends React.Component<Props> {
                           size="small"
                           aria-label="a dense table"
                           key={index}
+                          style={{ marginTop: "30px" }}
                         >
                           <TableHead key={index}>
                             <TableRow

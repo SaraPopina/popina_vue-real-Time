@@ -1,8 +1,6 @@
-import React, { FC, useEffect, createRef } from "react";
-import { useSelector, useDispatch, connect } from "react-redux";
+import React from "react";
+import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { setSuccess } from "../../../store/actions/authActions";
-import store, { RootState } from "../../../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Card from "@material-ui/core/Card";
@@ -77,6 +75,7 @@ export class DisplayClient extends React.Component<Props> {
 
   render() {
     const { ClientData } = this.props;
+    // console.log(ClientData);
     return (
       <div>
         <section className="dashboard_container">
@@ -188,6 +187,10 @@ export class DisplayClient extends React.Component<Props> {
                         ) : (
                           ""
                         )}
+
+                        {/* {client.orders.map((aOrder, index) => {
+                          console.log(client.orders[index]);
+                        })} */}
                       </Typography>
                     </CardContent>
                     <hr style={{ margin: "10px" }} />

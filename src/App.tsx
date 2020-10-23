@@ -47,8 +47,8 @@ const App: FC = () => {
       <Switch>
         <PublicRoute path="/" component={Homepage} exact />
         <PublicRoute path="/signin" component={SignIn} exact />
-        <PrivateRoute path="/real_time" component={RealTimeContainer} exact />
         <PrivateRoute path="/clients" component={ClientsContainer} exact />
+        <PrivateRoute path="/real_time" component={RealTimeContainer} exact />
       </Switch>
     </BrowserRouter>
   );

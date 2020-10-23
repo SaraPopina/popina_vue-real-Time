@@ -4,7 +4,6 @@ import {
   FETCHREAL_TIME_DATA_SUCCESS,
   FETCHCLIENT_DATA_SUCCESS,
   EDIT_CLIENT,
-  CREATE_CLIENT,
   DELETE_CLIENT,
 } from "../types";
 import { RootState } from "..";
@@ -105,6 +104,7 @@ export const setClientData = (
 
       agendaRef.on("child_added", (snapshot) => {
         let data = snapshot.val();
+        // console.log("ici les data order", data.orders);
         data.id = snapshot.key;
         let client = new Client(data);
         dispatch(getClientData(client));

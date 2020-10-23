@@ -83,8 +83,6 @@ const RealTimeRecord = Record({
   ],
 });
 
-let totalGuestNotPaid: number[] = [];
-
 class RealTime extends RealTimeRecord {
   constructor(
     data?: Partial<{
@@ -286,7 +284,6 @@ class RealTime extends RealTimeRecord {
 
     this.tickets.map((aTicket) => {
       if (aTicket.payments == undefined) {
-        console.log(aTicket.number_guests);
         totalGuestNotPaid.push(aTicket.number_guests);
         totalGuestNotPaid.reduce((a: number, b: number) => {
           return (sumGuestNotPaid = a + b);
@@ -315,6 +312,7 @@ class RealTime extends RealTimeRecord {
 
     return sumCancelled;
   }
+
   // function total
 
   sumTotal(): number {
