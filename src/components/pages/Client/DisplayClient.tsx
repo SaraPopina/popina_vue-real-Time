@@ -75,135 +75,125 @@ export class DisplayClient extends React.Component<Props> {
     // console.log(ClientData);
     return (
       <div>
-        <section className="dashboard_container">
-          <div className="template-card">
-            <CreateClient />
-            <UpdateClient ref={this.modalElement} />
+        <CreateClient />
+        <UpdateClient ref={this.modalElement} />
+        <div className="template-card">
+          {ClientData.map((client) => {
+            return (
+              <div key={client.id}>
+                <Card className="card-style">
+                  <Tooltip title="Modifier" placement="top-end">
+                    <Button
+                      variant="contained"
+                      style={{ float: "right", color: "#464e5d" }}
+                      onClick={() => this.handleOpen(client)}
+                    >
+                      <FontAwesomeIcon icon={faEdit} />
+                    </Button>
+                  </Tooltip>
 
-            {ClientData.map((client) => {
-              return (
-                <div key={client.id}>
-                  <Card className="card-style">
-                    <Tooltip title="Modifier" placement="top-end">
-                      <Button
-                        variant="contained"
-                        style={{ float: "right", color: "#464e5d" }}
-                        onClick={() => this.handleOpen(client)}
-                      >
-                        <FontAwesomeIcon icon={faEdit} />
-                      </Button>
-                    </Tooltip>
+                  <CardContent style={{ fontSize: "16px" }}>
+                    <Avatar className="avatar" src="/broken-image.jpg" />
 
-                    <CardContent style={{ fontSize: "16px" }}>
-                      <Avatar className="avatar" src="/broken-image.jpg" />
+                    {client.name ? (
+                      <h2 className="client-name">{client.name}</h2>
+                    ) : (
+                      <h2 className="client-name"> Nouveau Client </h2>
+                    )}
 
-                      {client.name ? (
-                        <h2 className="client-name">{client.name}</h2>
-                      ) : (
-                        <h2 className="client-name"> Nouveau Client </h2>
-                      )}
-
-                      <hr style={{ margin: "10px" }} />
-
-                      <Typography
-                        variant="body2"
-                        color="textSecondary"
-                        component="div"
-                      >
-                        {/*  partie info perso  */}
-
-                        <FontAwesomeIcon
-                          icon={faAddressBook}
-                          className="icon"
-                        />
-
-                        {client.address ? (
-                          <b> {client.address} </b>
-                        ) : (
-                          " ( Vide ) "
-                        )}
-
-                        {client.addressComplement ? (
-                          <b> {client.addressComplement} </b>
-                        ) : (
-                          ""
-                        )}
-
-                        {client.zip ? <b> {client.zip} </b> : ""}
-
-                        {client.city ? <b> {client.city} </b> : ""}
-
-                        {client.country ? <b> {client.country} </b> : ""}
-                        <br />
-
-                        {/*  partie info contact */}
-
-                        <FontAwesomeIcon icon={faEnvelope} className="icon" />
-
-                        {client.email ? <b> {client.email} </b> : " ( Vide ) "}
-
-                        <br />
-
-                        <FontAwesomeIcon icon={faPhone} className="icon" />
-
-                        {client.phone ? <b> {client.phone} </b> : " ( Vide ) "}
-                        <br />
-
-                        {/*  partie info société */}
-                        <FontAwesomeIcon
-                          icon={faStoreAlt}
-                          className="iconStore "
-                        />
-
-                        {client.company ? (
-                          <b> {client.company} </b>
-                        ) : (
-                          " ( Vide )"
-                        )}
-
-                        {client.company_number ? (
-                          <div>
-                            {" "}
-                            <br />{" "}
-                            <p style={{ marginLeft: "12px" }}>
-                              N° Société : <b> {client.company_number} </b>
-                            </p>
-                          </div>
-                        ) : (
-                          " "
-                        )}
-
-                        {client.comment ? (
-                          <div>
-                            {" "}
-                            <br />{" "}
-                            <p style={{ marginLeft: "12px" }}>
-                              Commentaire : <b> {client.comment} </b>
-                            </p>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-
-                        {/* {client.orders.map((aOrder, index) => {
-                          console.log(client.orders[index]);
-                        })} */}
-                      </Typography>
-                    </CardContent>
                     <hr style={{ margin: "10px" }} />
 
-                    <CardActions style={{ padding: "16px" }}>
-                      <DeleteClient
-                        clientKey={client}
-                        onDeleteClient={this.onClientDeleted}
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                      component="div"
+                    >
+                      {/*  partie info perso  */}
+
+                      <FontAwesomeIcon icon={faAddressBook} className="icon" />
+
+                      {client.address ? (
+                        <b> {client.address} </b>
+                      ) : (
+                        " ( Vide ) "
+                      )}
+
+                      {client.addressComplement ? (
+                        <b> {client.addressComplement} </b>
+                      ) : (
+                        ""
+                      )}
+
+                      {client.zip ? <b> {client.zip} </b> : ""}
+
+                      {client.city ? <b> {client.city} </b> : ""}
+
+                      {client.country ? <b> {client.country} </b> : ""}
+                      <br />
+
+                      {/*  partie info contact */}
+
+                      <FontAwesomeIcon icon={faEnvelope} className="icon" />
+
+                      {client.email ? <b> {client.email} </b> : " ( Vide ) "}
+
+                      <br />
+
+                      <FontAwesomeIcon icon={faPhone} className="icon" />
+
+                      {client.phone ? <b> {client.phone} </b> : " ( Vide ) "}
+                      <br />
+
+                      {/*  partie info société */}
+                      <FontAwesomeIcon
+                        icon={faStoreAlt}
+                        className="iconStore "
                       />
-                    </CardActions>
-                  </Card>
-                </div>
-              );
-            })}
-          </div>
-        </section>
+
+                      {client.company ? <b> {client.company} </b> : " ( Vide )"}
+
+                      {client.company_number ? (
+                        <div>
+                          {" "}
+                          <br />{" "}
+                          <p style={{ marginLeft: "12px" }}>
+                            N° Société : <b> {client.company_number} </b>
+                          </p>
+                        </div>
+                      ) : (
+                        " "
+                      )}
+
+                      {client.comment ? (
+                        <div>
+                          {" "}
+                          <br />{" "}
+                          <p style={{ marginLeft: "12px" }}>
+                            Commentaire : <b> {client.comment} </b>
+                          </p>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+
+                      {/* {client.orders.map((aOrder, index) => {
+                          console.log(client.orders[index]);
+                        })} */}
+                    </Typography>
+                  </CardContent>
+                  <hr style={{ margin: "10px" }} />
+
+                  <CardActions style={{ padding: "16px" }}>
+                    <DeleteClient
+                      clientKey={client}
+                      onDeleteClient={this.onClientDeleted}
+                    />
+                  </CardActions>
+                </Card>
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   }

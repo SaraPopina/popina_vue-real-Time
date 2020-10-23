@@ -77,11 +77,12 @@ export default class CreateClient extends Component<Props, { open: boolean }> {
     return (
       <div>
         <Fragment>
-          <div style={{ textAlign: "center", marginTop: "2em" }}>
+          <div style={{ textAlign: "center" }}>
             <Button
               variant="contained"
               style={{
                 color: "black",
+                marginTop: "2em",
                 backgroundColor: "white",
                 borderColor: "grey",
               }}
