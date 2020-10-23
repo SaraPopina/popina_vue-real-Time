@@ -16,21 +16,7 @@ import {
 import FormClient from "./form/FormClient";
 import Client from "../../../store/model/ClientModel";
 
-interface HomePageProps {
-  id?: string;
-  color?: string;
-  address?: string;
-  addressComplement?: string;
-  city?: string;
-  comment?: string;
-  company?: string;
-  company_number?: string;
-  country?: string;
-  email?: string;
-  name?: string;
-  phone?: string;
-  zip?: string;
-}
+interface HomePageProps {}
 
 interface LinkStateProp {
   ClientData?: Client[];

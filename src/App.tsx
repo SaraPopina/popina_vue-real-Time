@@ -12,10 +12,12 @@ import firebase from "./firebase/config";
 import { setLoading } from "./store/actions/authActions";
 import { setClientData } from "./store/actions/clientActions";
 import { setRealTimeData } from "./store/actions/realTimeAction";
+import { setReservationData } from "./store/actions/reservationAction";
 import { RootState } from "./store";
 import "./file.css";
 import ClientsContainer from "./components/pages/Client/ClientsContainer";
 import RealTimeContainer from "./components/pages/RealTime/RealTime_container";
+import ReservationContainer from "./components/pages/Reservation/Reservation_container";
 
 const App: FC = () => {
   const dispatch = useDispatch();
@@ -29,6 +31,7 @@ const App: FC = () => {
         dispatch(setLoading(true));
         dispatch(setRealTimeData(user.uid));
         dispatch(setClientData(user.uid));
+        dispatch(setReservationData(user.uid));
       }
       dispatch(setLoading(false));
     });
@@ -50,6 +53,11 @@ const App: FC = () => {
         <PublicRoute path="/signin" component={SignIn} exact />
         <PrivateRoute path="/clients" component={ClientsContainer} exact />
         <PrivateRoute path="/real_time" component={RealTimeContainer} exact />
+        <PrivateRoute
+          path="/reservation"
+          component={ReservationContainer}
+          exact
+        />
       </Switch>
     </BrowserRouter>
   );
