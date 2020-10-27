@@ -135,7 +135,7 @@ h3 {
 }
 
 .reservation-card {
-  width: 380px;
+  width: 300px;
   margin: 20px;
 }
 
@@ -143,6 +143,15 @@ h3 {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+}
+
+.reservation-card-detail {
+  width: 380px;
+  margin: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px;
 }
 
 .reservation-day {
@@ -162,4 +171,30 @@ h3 {
 
 .icon-booking {
   width: 20px;
+}
+
+.div-nbGuest {
+  margin: 10px;
+}
+
+.number {
+  text-align: center;
+  font-size: 45px;
+  font-weight: bold;
+  margin: 0;
+  color: #464e5d;
+
+}
+
+.booking-detail-modal {
+  background-color: #F5FAF8;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+
+
+.div-content-booking {
+  text-align: center;
 }

@@ -123,13 +123,16 @@ export class ReservationVue extends React.Component<Props, filterState> {
                   {Object.keys(bookingByDate)[index]}
                 </Typography>
 
-                <CardContent>
+                <CardContent style={{ textAlign: "center" }}>
                   <div className="numberClient-booking">
-                    {this.getNumberOfGuest(aBooking)}/{" "}
+                    {this.getNumberOfGuest(aBooking)}{" "}
+                    <span style={{ color: "#a3b3b4" }}>/</span>
                     {this.getNumberOfReservation(aBooking)}
                   </div>
                 </CardContent>
-                <CardContent>Couvert / Reservation</CardContent>
+                <CardContent style={{ color: "#a3b3b4", textAlign: "center" }}>
+                  Couvert Reservation
+                </CardContent>
               </Card>
             </div>
           );
