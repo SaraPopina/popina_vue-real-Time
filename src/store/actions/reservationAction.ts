@@ -6,6 +6,8 @@ import {
 import { RootState } from "..";
 import { auth, database } from "firebase";
 import Reservation from "../model/ReservationModel";
+import * as moment from "moment";
+import "moment/locale/fr";
 
 let calendarRef: database.Reference = null;
 
@@ -34,6 +36,7 @@ export const setReservationData = (
       calendarRef.on("child_added", (snapshot) => {
         const data = snapshot.val();
         data.id = snapshot.key;
+
         let reservation = new Reservation(data);
         dispatch(getReservationData(reservation));
       });
@@ -44,8 +47,11 @@ export const setReservationData = (
 
       calendarRef.on("child_added", (snapshot) => {
         let data = snapshot.val();
+        // console.log("ici les resa", data);
+
         // console.log("ici les data order", data.orders);
         data.id = snapshot.key;
+        data.bookingDate = moment(data.bookingDate * 1000).format("L");
         let reservation = new Reservation(data);
         dispatch(getReservationData(reservation));
       });
