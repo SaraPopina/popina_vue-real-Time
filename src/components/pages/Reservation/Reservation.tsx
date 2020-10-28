@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUtensils } from "@fortawesome/free-solid-svg-icons";
 import DisplayGroupReservation from "./DisplayGroupReservation";
 import { ContactsOutlined } from "@material-ui/icons";
+import CreateReservation from "./CreateReservation";
 
 interface displayReservationProps {
   id?: string;
@@ -42,7 +43,6 @@ export class ReservationVue extends React.Component<Props, filterState> {
     this.getNumberOfGuest = this.getNumberOfGuest.bind(this);
     this.getDayOfBooking = this.getDayOfBooking.bind(this);
     this.modalElement = React.createRef();
-    // this.getDataByDay();
   }
 
   componentWillMount() {
@@ -77,7 +77,8 @@ export class ReservationVue extends React.Component<Props, filterState> {
         {}
       );
 
-    finalData = groupBy("bookingDate", this.state.booking);
+    finalData = groupBy("month", this.state.booking);
+    console.log(finalData);
     return finalData;
   };
 
@@ -100,44 +101,50 @@ export class ReservationVue extends React.Component<Props, filterState> {
 
   getDayOfBooking = () => {
     Object.keys(this.state.newData).forEach((aKey) => {
-      console.log(aKey);
       return aKey;
     });
   };
 
   render() {
-    const { Reservationdata } = this.props;
     const bookingByDate = this.state.newData;
+    console.log(this.state.booking);
+    const date = Object.keys(bookingByDate);
 
     return (
-      <div className="div-reservation">
-        {Object.values(bookingByDate).map((aBooking: Reservation, index) => {
-          return (
-            <div key={index} onClick={() => this.handleOpen(aBooking)}>
-              <Card className="reservation-card">
-                <Typography
-                  className="reservation-day"
-                  variant="h5"
-                  component="h2"
-                >
-                  {Object.keys(bookingByDate)[index]}
-                </Typography>
+      <div>
+        <CreateReservation />
 
-                <CardContent style={{ textAlign: "center" }}>
-                  <div className="numberClient-booking">
-                    {this.getNumberOfGuest(aBooking)}{" "}
-                    <span style={{ color: "#a3b3b4" }}>/</span>
-                    {this.getNumberOfReservation(aBooking)}
-                  </div>
-                </CardContent>
-                <CardContent style={{ color: "#a3b3b4", textAlign: "center" }}>
-                  Couvert Reservation
-                </CardContent>
-              </Card>
-            </div>
-          );
-        })}
-        <DisplayGroupReservation ref={this.modalElement} />
+        <div className="div-reservation">
+          {Object.values(bookingByDate).map((aBooking: Reservation, index) => {
+            return (
+              <div key={index} onClick={() => this.handleOpen(aBooking)}>
+                <Card className="reservation-card">
+                  <Typography
+                    className="reservation-day"
+                    variant="h5"
+                    component="h2"
+                  >
+                    {Object.keys(bookingByDate)[index]}
+                  </Typography>
+
+                  <CardContent style={{ textAlign: "center" }}>
+                    <div className="numberClient-booking">
+                      {this.getNumberOfGuest(aBooking)}{" "}
+                      <span style={{ color: "#a3b3b4" }}>/</span>
+                      {this.getNumberOfReservation(aBooking)}
+                    </div>
+                  </CardContent>
+                  <CardContent
+                    style={{ color: "#a3b3b4", textAlign: "center" }}
+                  >
+                    Couvert Reservation
+                  </CardContent>
+                </Card>
+              </div>
+            );
+          })}
+          <DisplayGroupReservation ref={this.modalElement} />
+        </div>
       </div>
     );
   }

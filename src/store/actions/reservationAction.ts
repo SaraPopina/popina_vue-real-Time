@@ -47,11 +47,8 @@ export const setReservationData = (
 
       calendarRef.on("child_added", (snapshot) => {
         let data = snapshot.val();
-        // console.log("ici les resa", data);
-
-        // console.log("ici les data order", data.orders);
         data.id = snapshot.key;
-        data.bookingDate = moment(data.bookingDate * 1000).format("L");
+        data.month = moment(data.bookingDate * 1000).format("L");
         let reservation = new Reservation(data);
         dispatch(getReservationData(reservation));
       });

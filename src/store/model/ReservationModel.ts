@@ -3,7 +3,7 @@ import { Record, List } from "immutable";
 const ReservationReccord = Record({
   bookingDate: null,
   comments: "",
-  createdDate: null,
+  createdDate: Date.now(),
   email: "",
   id: "",
   numberOfGuests: null,
@@ -11,6 +11,7 @@ const ReservationReccord = Record({
   phone: "",
   sourceName: "",
   tableName: "",
+  month: null,
 });
 
 class Reservation extends ReservationReccord {
@@ -26,6 +27,7 @@ class Reservation extends ReservationReccord {
       phone: string;
       sourceName: string;
       tableName: string;
+      month: number;
     }>
   ) {
     super(data);

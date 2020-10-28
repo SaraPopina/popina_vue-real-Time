@@ -35,7 +35,7 @@ export default class FormClient extends Component<Props, ClientState> {
   }
 
   manageClient = () => {
-    event.preventDefault();
+    // event.preventDefault();
 
     //update client
     if (this.props.client) {
