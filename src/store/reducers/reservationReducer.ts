@@ -14,7 +14,6 @@ const reservationState: ReservationState = {
 export default (state = reservationState, action: ReservationAction) => {
   switch (action.type) {
     case FETCHRESERVATION_DATA_SUCCESS:
-      console.log("ici la reducer", action.payload);
       return {
         ...state,
         ReservationData: [...state.ReservationData, action.payload],

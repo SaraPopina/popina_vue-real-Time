@@ -51,10 +51,12 @@ export class ReservationVue extends React.Component<Props, filterState> {
       this.setState({
         newData: bookingByDate,
       });
+
+      this.modalElement.current.handleModal;
     }
   }
 
-  handleOpen = (reservation: Reservation) => {
+  handleOpen = (reservation: any) => {
     this.modalElement.current.handleModal(reservation);
 
     this.setState({

@@ -3,7 +3,6 @@ import {
   AccountCircle,
   Email,
   Phone,
-  LocationOn,
   Restaurant,
   BusinessCenter,
 } from "@material-ui/icons/";
@@ -47,10 +46,10 @@ export default class FormReservation extends Component<Props, BookingState> {
 
     //update booking
     if (this.props.reservation) {
-      const selectedReservation = this.state.reservation;
-      console.log("ici le booking", selectedReservation.date);
-      const reservation = this.props.reservation
-        .set("bookingDate", selectedReservation.date)
+      const selectedReservation: Reservation = this.state.reservation;
+      const date: moment.Moment = this.state.date;
+      const reservation: Reservation = this.props.reservation
+        .set("bookingDate", date)
         .set("comments", selectedReservation.comments)
         .set("numberOfGuests", selectedReservation.numberOfGuests)
         .set("comments", selectedReservation.comments)
@@ -59,6 +58,7 @@ export default class FormReservation extends Component<Props, BookingState> {
         .set("email", selectedReservation.email)
         .set("phone", selectedReservation.phone);
 
+      console.log("ici le booking", reservation);
       this.props.submit(reservation);
 
       //  create booking
@@ -91,7 +91,7 @@ export default class FormReservation extends Component<Props, BookingState> {
     console.log("bookingInfos", bookingInfos);
     this.setState({
       reservation: bookingInfos,
-      date: date,
+      date: newDate,
     });
   };
 

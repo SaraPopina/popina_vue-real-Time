@@ -50,7 +50,6 @@ export const setReservationData = (
 
       calendarRef.on("child_added", (snapshot) => {
         let data = snapshot.val();
-        console.log(data);
         data.id = snapshot.key;
         data.month = moment(data.bookingDate * 1000).format("L");
         let reservation = new Reservation(data);
@@ -117,13 +116,11 @@ export const addReservation = (
 ): ThunkAction<void, RootState, null, ReservationAction> => {
   if (null != calendarRef) {
     const newReservation = reservationData.toFirebaseObject();
-    console.log("action ici encore", newReservation);
 
     calendarRef.push(newReservation);
   }
 
   return async (dispatch) => {
-    console.log("reservation id", reservationData.id);
     reservationData.set(reservationData.id, reservationData);
   };
 };

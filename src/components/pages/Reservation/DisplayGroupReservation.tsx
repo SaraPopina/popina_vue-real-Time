@@ -9,11 +9,14 @@ import {
   DialogActions,
   Card,
   Typography,
+  CardActions,
 } from "@material-ui/core";
 import Reservation from "../../../store/model/ReservationModel";
 import * as moment from "moment";
 import "moment/locale/fr";
 import UpdateReservation from "./UpdateReservation";
+import { startRemoveReservation } from "../../../store/actions/reservationAction";
+import DeleteReservation from "./DeleteReservation";
 
 interface HomePageProps {
   BookingData?: Reservation | {};
@@ -33,29 +36,28 @@ type Props = HomePageProps & LinkDispatchProps & LinkStateProp;
 
 export default class DisplayGroupReservation extends Component<
   Props,
-  { open: boolean; booking: Reservation; id: string }
+  { show: boolean; open: boolean; booking: Reservation[]; id: string }
 > {
   modalElement: React.RefObject<UpdateReservation>;
 
   constructor(props: Props | Readonly<Props>) {
     super(props);
     this.state = {
+      show: false,
       open: false,
       booking: null,
       id: null,
     };
     this.modalElement = React.createRef();
-
-    // this.submitUpdate = React.createRef();
   }
 
-  // componentDidMount() {
-  //   this.handleModal;
-  // }
+  componentDidUpdate(prevProps: any, prevState: any) {
+    if (this.state.booking !== prevState.booking) {
+      console.log("update vue", this.state.booking, prevState.bookingDate);
+    }
+  }
 
-  handleModal = (booking: Reservation) => {
-    // console.log(booking);
-
+  handleModal = (booking: Reservation[]) => {
     if (booking) {
       this.setState({
         booking: booking,
@@ -81,17 +83,27 @@ export default class DisplayGroupReservation extends Component<
   }
 
   handleSubmit = () => {
-    // this.submitUpdate.current.manageClient();
-
     this.setState({
       open: !this.state.open,
     });
   };
 
+  onReservationDeleted = (reservation: Reservation) => {
+    const booking = this.state.booking.filter(
+      (aBooking) => aBooking.id !== reservation.id
+    );
+    this.setState({ booking: booking });
+
+    startRemoveReservation(reservation);
+  };
+
   render() {
+    console.log("ici state booking", this.state.booking);
     return (
       <div>
-        {this.state.booking == null || this.state.booking == undefined ? (
+        {this.state.booking == null ||
+        this.state.booking.length == 0 ||
+        this.state.booking == undefined ? (
           ""
         ) : (
           <div>
@@ -114,12 +126,11 @@ export default class DisplayGroupReservation extends Component<
                 {Object.values(this.state.booking).map(
                   (aReservation: Reservation, index) => {
                     return (
-                      <Card
-                        key={index}
-                        className="reservation-card-detail"
-                        onClick={() => this.handleOpen(aReservation)}
-                      >
-                        <div className="div-nbGuest">
+                      <Card key={index} className="reservation-card-detail">
+                        <div
+                          className="div-nbGuest"
+                          onClick={() => this.handleOpen(aReservation)}
+                        >
                           <p className="number">
                             {aReservation.numberOfGuests}
                           </p>
@@ -161,6 +172,12 @@ export default class DisplayGroupReservation extends Component<
                             )}
                           </Typography>
                         </div>
+                        <CardActions style={{ padding: "16px" }}>
+                          <DeleteReservation
+                            reservationKey={aReservation}
+                            onDeleteReservation={this.onReservationDeleted}
+                          />
+                        </CardActions>
                       </Card>
                     );
                   }

@@ -175,10 +175,6 @@ export class DisplayClient extends React.Component<Props> {
                       ) : (
                         ""
                       )}
-
-                      {/* {client.orders.map((aOrder, index) => {
-                          console.log(client.orders[index]);
-                        })} */}
                     </Typography>
                   </CardContent>
                   <hr style={{ margin: "10px" }} />
