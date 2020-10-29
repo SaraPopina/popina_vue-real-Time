@@ -60,7 +60,6 @@ export default class FormReservation extends Component<Props, BookingState> {
         .set("phone", selectedReservation.phone);
 
       this.props.submit(reservation);
-      console.log("update", this.state.reservation);
 
       //  create booking
     } else {
@@ -87,13 +86,6 @@ export default class FormReservation extends Component<Props, BookingState> {
   handleChangeDateTime = (date: moment.Moment) => {
     console.log("handlechange date", date.unix());
     const newDate = date.unix();
-    // this.setState((prevState) => ({
-    //   reservation: {
-    //     ...prevState.reservation,
-    //     bookingDate: date,
-    //   },
-
-    // }));
     let bookingInfos = this.state.reservation;
     bookingInfos["bookingDate"] = newDate;
     console.log("bookingInfos", bookingInfos);
@@ -104,10 +96,6 @@ export default class FormReservation extends Component<Props, BookingState> {
   };
 
   render() {
-    // const dateTime: number = this.state.date;
-    // const newFormatDate = moment(dateTime * 1000).format("LLL");
-    // console.log("ici ", newFormatDate);
-
     return (
       <div>
         {this.props.reservation ? (

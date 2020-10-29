@@ -1,9 +1,9 @@
 import Reservation from "../model/ReservationModel";
 
 export const FETCHRESERVATION_DATA_SUCCESS = "FETCHRESERVATION_DATA_SUCCESS";
-// export const CREATE_CLIENT = "CREATE_CLIENT";
-// export const DELETE_CLIENT = "DELETE_CLIENT";
-// export const EDIT_CLIENT = "EDIT_CLIENT";
+export const CREATE_RESERVATION = "CREATE_RESERVATION";
+export const DELETE_RESERVATION = "DELETE_RESERVATION";
+export const EDIT_RESERVATION = "EDIT_RESERVATION";
 
 // state
 export interface ReservationState {
@@ -15,22 +15,23 @@ interface fetchReservationtDataSuccess {
   payload: Reservation;
 }
 
-// interface create_client {
-//   type: typeof CREATE_CLIENT;
-//   payload: Reservation;
-// }
+interface create_reservation {
+  type: typeof CREATE_RESERVATION;
+  payload: Reservation;
+}
 
-// interface edit_client {
-//   type: typeof EDIT_CLIENT;
-//   payload: Reservation;
-// }
+interface edit_reservation {
+  type: typeof EDIT_RESERVATION;
+  payload: Reservation;
+}
 
-// interface delete_client {
-//   type: typeof DELETE_CLIENT;
-//   payload: string;
-// }
+interface delete_reservation {
+  type: typeof DELETE_RESERVATION;
+  payload: string;
+}
 
-export type ReservationAction = fetchReservationtDataSuccess;
-//   | edit_client
-//   | delete_client
-//   | create_client;
+export type ReservationAction =
+  | fetchReservationtDataSuccess
+  | edit_reservation
+  | delete_reservation
+  | create_reservation;

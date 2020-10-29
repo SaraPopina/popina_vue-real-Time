@@ -49,12 +49,13 @@ export default class DisplayGroupReservation extends Component<
     // this.submitUpdate = React.createRef();
   }
 
-  componentDidMount() {
-    this.handleModal;
-  }
+  // componentDidMount() {
+  //   this.handleModal;
+  // }
 
   handleModal = (booking: Reservation) => {
     // console.log(booking);
+
     if (booking) {
       this.setState({
         booking: booking,
@@ -114,7 +115,7 @@ export default class DisplayGroupReservation extends Component<
                   (aReservation: Reservation, index) => {
                     return (
                       <Card
-                        key={aReservation.id}
+                        key={index}
                         className="reservation-card-detail"
                         onClick={() => this.handleOpen(aReservation)}
                       >

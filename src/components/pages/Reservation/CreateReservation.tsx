@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { addClient } from "../../../store/actions/clientActions";
+import { addReservation } from "../../../store/actions/reservationAction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "@material-ui/core/Button";
 import {
@@ -23,7 +23,7 @@ interface LinkStateProp {
 }
 
 interface LinkDispatchProps {
-  addBooking?: (reservation: Reservation) => void;
+  addReservation?: (reservation: Reservation) => void;
 }
 
 type Props = HomePageProps & LinkDispatchProps & LinkStateProp;
@@ -59,8 +59,7 @@ export default class CreateReservation extends Component<
   };
 
   onCreate = (reservation: Reservation) => {
-    console.log("ici le oncreate", reservation);
-    // addClient(client);
+    addReservation(reservation);
   };
 
   render() {

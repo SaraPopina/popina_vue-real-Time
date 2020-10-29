@@ -123,9 +123,8 @@ export const addClient = (
     agendaRef.push(newClient);
   }
 
-  return async (dispatch) => {
-    clientData.set(clientData.id, clientData);
-  };
+  clientData.set(clientData.id, clientData);
+  return async (dispatch) => {};
 };
 
 export const startRemoveClient = (

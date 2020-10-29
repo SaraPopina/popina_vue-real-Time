@@ -6,14 +6,15 @@ import {
   ReservationState,
   ReservationAction,
 } from "../../../store/types/ReservationTypes";
-import { Card, Typography, CardContent, CardHeader } from "@material-ui/core";
-import * as moment from "moment";
-import "moment/locale/fr";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUtensils } from "@fortawesome/free-solid-svg-icons";
+import { Card, Typography, CardContent } from "@material-ui/core";
 import DisplayGroupReservation from "./DisplayGroupReservation";
-import { ContactsOutlined } from "@material-ui/icons";
 import CreateReservation from "./CreateReservation";
+import { bindActionCreators } from "redux";
+import {
+  addReservation,
+  startEditReservation,
+  startRemoveReservation,
+} from "../../../store/actions/reservationAction";
 
 interface displayReservationProps {
   id?: string;
@@ -22,20 +23,18 @@ interface displayReservationProps {
 }
 
 interface filterState {
-  booking: {}[];
   newData: {};
   open: boolean;
   bookingLenght: number;
 }
 
-type Props = LinkStateProp;
+type Props = LinkStateProp & displayReservationProps & LinkDispatchProps;
 export class ReservationVue extends React.Component<Props, filterState> {
   modalElement: React.RefObject<DisplayGroupReservation>;
   constructor(props: Props, {}) {
     super(props);
     this.state = {
-      booking: [],
-      newData: {},
+      newData: this.getDataByDay(),
       open: false,
       bookingLenght: null,
     };
@@ -45,11 +44,14 @@ export class ReservationVue extends React.Component<Props, filterState> {
     this.modalElement = React.createRef();
   }
 
-  componentWillMount() {
-    const bookingByDate = this.getDataByDay();
-    this.setState({
-      newData: bookingByDate,
-    });
+  componentDidUpdate(prevProps: any) {
+    if (this.props.Reservationdata !== prevProps.Reservationdata) {
+      const bookingByDate = this.getDataByDay();
+
+      this.setState({
+        newData: bookingByDate,
+      });
+    }
   }
 
   handleOpen = (reservation: Reservation) => {
@@ -61,12 +63,7 @@ export class ReservationVue extends React.Component<Props, filterState> {
   };
 
   getDataByDay = () => {
-    let finalData: {}[] = [];
-
-    this.props.Reservationdata.forEach((aReservation) => {
-      this.state.booking.push(aReservation);
-    });
-
+    let finalData: Reservation[] = this.props.Reservationdata;
     let groupBy = (key: string, arr: {}[]) =>
       arr.reduce(
         (groupDate: any, day: any) => ({
@@ -77,8 +74,7 @@ export class ReservationVue extends React.Component<Props, filterState> {
         {}
       );
 
-    finalData = groupBy("month", this.state.booking);
-    console.log(finalData);
+    finalData = groupBy("month", this.props.Reservationdata);
     return finalData;
   };
 
@@ -105,10 +101,12 @@ export class ReservationVue extends React.Component<Props, filterState> {
     });
   };
 
+  onCreate = (reservation: Reservation) => {
+    this.props.addReservation(reservation);
+  };
+
   render() {
     const bookingByDate = this.state.newData;
-    console.log(this.state.booking);
-    const date = Object.keys(bookingByDate);
 
     return (
       <div>
@@ -152,20 +150,30 @@ export class ReservationVue extends React.Component<Props, filterState> {
 
 interface LinkStateProp {
   Reservationdata: Reservation[];
+  id?: string;
 }
 
-interface LinkDispatchProps {}
+interface LinkDispatchProps {
+  addReservation?: (reservation: Reservation) => void;
+  startEditReservation?: (reservation: Reservation) => void;
+  startRemoveReservation?: (reservation: Reservation) => void;
+}
 
 const mapStateToProps = (
   state: ReservationState,
   props: displayReservationProps
 ): LinkStateProp => ({
   Reservationdata: state.ReservationData,
+  id: props.id,
 });
 
 const mapDispatchToProps = (
   dispatch: ThunkDispatch<any, any, ReservationAction>,
   props: displayReservationProps
-): LinkDispatchProps => ({});
+): LinkDispatchProps => ({
+  addReservation: bindActionCreators(addReservation, dispatch),
+  startEditReservation: bindActionCreators(startEditReservation, dispatch),
+  startRemoveReservation: bindActionCreators(startRemoveReservation, dispatch),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReservationVue);

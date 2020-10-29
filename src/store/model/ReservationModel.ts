@@ -5,7 +5,7 @@ const ReservationReccord = Record({
   comments: "",
   createdDate: Date.now(),
   email: "",
-  id: "",
+  id: null,
   numberOfGuests: null,
   personName: "",
   phone: "",
@@ -31,6 +31,14 @@ class Reservation extends ReservationReccord {
     }>
   ) {
     super(data);
+  }
+
+  toFirebaseObject() {
+    let data = this.toJS();
+    delete data.id;
+    delete data.month;
+
+    return data;
   }
 
   // getDate() {

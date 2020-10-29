@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import Reservation from "../../../store/model/ReservationModel";
+import { startEditReservation } from "../../../store/actions/reservationAction";
 import * as moment from "moment";
 import "moment/locale/fr";
 import FormReservation from "./form/FormReservation";
@@ -78,8 +79,7 @@ export default class UpdateReservation extends Component<
   };
 
   onUpdateBooking = (reservation: Reservation) => {
-    console.log("on edit", reservation);
-    // startEditClient(client);
+    startEditReservation(reservation);
   };
 
   render() {

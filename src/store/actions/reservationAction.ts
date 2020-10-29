@@ -2,6 +2,9 @@ import { ThunkAction } from "redux-thunk";
 import {
   ReservationAction,
   FETCHRESERVATION_DATA_SUCCESS,
+  EDIT_RESERVATION,
+  DELETE_RESERVATION,
+  CREATE_RESERVATION,
 } from "../types/ReservationTypes";
 import { RootState } from "..";
 import { auth, database } from "firebase";
@@ -36,7 +39,7 @@ export const setReservationData = (
       calendarRef.on("child_added", (snapshot) => {
         const data = snapshot.val();
         data.id = snapshot.key;
-
+        data.month = moment(data.bookingDate * 1000).format("L");
         let reservation = new Reservation(data);
         dispatch(getReservationData(reservation));
       });
@@ -47,10 +50,26 @@ export const setReservationData = (
 
       calendarRef.on("child_added", (snapshot) => {
         let data = snapshot.val();
+        console.log(data);
         data.id = snapshot.key;
         data.month = moment(data.bookingDate * 1000).format("L");
         let reservation = new Reservation(data);
         dispatch(getReservationData(reservation));
+      });
+
+      calendarRef.on("child_changed", (snapshot) => {
+        let data = snapshot.val();
+        data.id = snapshot.ref.key;
+        const reservation = new Reservation(data);
+        dispatch(getUpdatedReservationData(reservation));
+      });
+
+      calendarRef.on("child_removed", (snapshot) => {
+        let data = snapshot.val();
+        data.id = snapshot.ref.key;
+
+        const reservation = new Reservation(data);
+        dispatch(getDeletedReservationData(reservation));
       });
     }
     try {
@@ -69,4 +88,60 @@ export const getReservationData = (
       payload: Reservationdata,
     });
   };
+};
+
+export const getUpdatedReservationData = (
+  reservationData: Reservation
+): ThunkAction<void, RootState, null, ReservationAction> => {
+  return (dispatch) => {
+    dispatch({
+      type: EDIT_RESERVATION,
+      payload: reservationData,
+    });
+  };
+};
+
+export const getDeletedReservationData = (
+  reservationData: Reservation
+): ThunkAction<void, RootState, null, ReservationAction> => {
+  return (dispatch) => {
+    dispatch({
+      type: DELETE_RESERVATION,
+      payload: reservationData.id,
+    });
+  };
+};
+
+export const addReservation = (
+  reservationData: Reservation
+): ThunkAction<void, RootState, null, ReservationAction> => {
+  if (null != calendarRef) {
+    const newReservation = reservationData.toFirebaseObject();
+    console.log("action ici encore", newReservation);
+
+    calendarRef.push(newReservation);
+  }
+
+  return async (dispatch) => {
+    console.log("reservation id", reservationData.id);
+    reservationData.set(reservationData.id, reservationData);
+  };
+};
+
+export const startRemoveReservation = (
+  reservation: Reservation
+): ThunkAction<void, RootState, null, ReservationAction> => {
+  calendarRef.child(reservation.get("id")).remove();
+
+  return () => {};
+};
+
+export const startEditReservation = (
+  reservation: Reservation
+): ThunkAction<void, RootState, null, ReservationAction> => {
+  if (null != calendarRef) {
+    const key = reservation.get("id");
+    calendarRef.child(key).update(reservation.toFirebaseObject());
+  }
+  return async () => {};
 };
