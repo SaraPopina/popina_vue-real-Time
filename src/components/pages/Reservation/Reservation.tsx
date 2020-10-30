@@ -46,6 +46,7 @@ export class ReservationVue extends React.Component<Props, filterState> {
 
   componentDidUpdate(prevProps: any) {
     if (this.props.Reservationdata !== prevProps.Reservationdata) {
+      console.log("on passe ici");
       const bookingByDate = this.getDataByDay();
 
       this.setState({
@@ -53,6 +54,7 @@ export class ReservationVue extends React.Component<Props, filterState> {
       });
 
       this.modalElement.current.handleModal;
+      this.handleOpen;
     }
   }
 
@@ -89,7 +91,9 @@ export class ReservationVue extends React.Component<Props, filterState> {
     let totalGuest: number[] = [0];
     let sumTotal: number = 0;
     Object.values(reservation).forEach((aResa) => {
-      totalGuest.push(aResa.numberOfGuests);
+      const numberParse = parseInt(aResa.numberOfGuests);
+
+      totalGuest.push(numberParse);
       totalGuest.reduce((a: number, b: number) => {
         return (sumTotal = a + b);
       });

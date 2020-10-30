@@ -8,8 +8,42 @@ import {
   Public,
   BusinessCenter,
 } from "@material-ui/icons/";
-import { InputAdornment, TextField } from "@material-ui/core";
+import { InputAdornment, TextField, withStyles } from "@material-ui/core";
 import Client from "../../../../store/model/ClientModel";
+
+const CssTextField = withStyles({
+  root: {
+    "& label.Mui-focused": {
+      color: "#6fc597",
+    },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "#6fc597",
+    },
+    "&.MuiInput-underline": {
+      color: "#6fc597",
+      borderBottomColor: "#6fc597",
+    },
+    "&.MuiInput-underline:before": {
+      color: "#6fc597",
+      borderBottomColor: "#6fc597",
+    },
+    "&.MuiInputBase-root": {
+      color: "#6fc597",
+    },
+
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "#6fc597",
+      },
+      "&:hover fieldset": {
+        borderColor: "#6fc597",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#6fc597",
+      },
+    },
+  },
+})(TextField);
 
 interface Props {
   client?: Client;
@@ -84,7 +118,7 @@ export default class FormClient extends Component<Props, ClientState> {
           Identité :
         </h2>
 
-        <TextField
+        <CssTextField
           label="Nom & prénom"
           defaultValue={this.props.client ? this.props.client.name : ""}
           onChange={this.handleChange}
@@ -95,7 +129,7 @@ export default class FormClient extends Component<Props, ClientState> {
           rows="2"
           InputProps={{
             startAdornment: (
-              <InputAdornment position="start">
+              <InputAdornment position="start" style={{ color: "#6fc597" }}>
                 <AccountCircle />
               </InputAdornment>
             ),
@@ -104,7 +138,7 @@ export default class FormClient extends Component<Props, ClientState> {
 
         <br />
         <div className="form-template">
-          <TextField
+          <CssTextField
             label="Email"
             defaultValue={this.props.client ? this.props.client.email : ""}
             onChange={this.handleChange}
@@ -116,13 +150,13 @@ export default class FormClient extends Component<Props, ClientState> {
             rows="2"
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position="start" style={{ color: "#6fc597" }}>
                   <Email />
                 </InputAdornment>
               ),
             }}
           />
-          <TextField
+          <CssTextField
             label="Téléphone"
             defaultValue={this.props.client ? this.props.client.phone : ""}
             onChange={this.handleChange}
@@ -134,7 +168,7 @@ export default class FormClient extends Component<Props, ClientState> {
             rows="2"
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position="start" style={{ color: "#6fc597" }}>
                   <Phone />
                 </InputAdornment>
               ),
@@ -146,7 +180,7 @@ export default class FormClient extends Component<Props, ClientState> {
         <h2 style={{ fontFamily: "Helvetica, Arial, sans-serif" }}>
           Correspondance :
         </h2>
-        <TextField
+        <CssTextField
           label="Adresse"
           defaultValue={this.props.client ? this.props.client.address : ""}
           onChange={this.handleChange}
@@ -157,14 +191,14 @@ export default class FormClient extends Component<Props, ClientState> {
           rows="2"
           InputProps={{
             startAdornment: (
-              <InputAdornment position="start">
+              <InputAdornment position="start" style={{ color: "#6fc597" }}>
                 <LocationOn />
               </InputAdornment>
             ),
           }}
         />
         <br />
-        <TextField
+        <CssTextField
           label="Complément d'adresse"
           defaultValue={
             this.props.client ? this.props.client.addressComplement : ""
@@ -177,7 +211,7 @@ export default class FormClient extends Component<Props, ClientState> {
           rows="2"
           InputProps={{
             startAdornment: (
-              <InputAdornment position="start">
+              <InputAdornment position="start" style={{ color: "#6fc597" }}>
                 <LocationOn />
               </InputAdornment>
             ),
@@ -185,7 +219,7 @@ export default class FormClient extends Component<Props, ClientState> {
         />
         <br />
         <div className="form-template">
-          <TextField
+          <CssTextField
             label="Ville"
             defaultValue={this.props.client ? this.props.client.city : ""}
             onChange={this.handleChange}
@@ -196,14 +230,14 @@ export default class FormClient extends Component<Props, ClientState> {
             rows="2"
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position="start" style={{ color: "#6fc597" }}>
                   <LocationCity />
                 </InputAdornment>
               ),
             }}
           />
           <br />
-          <TextField
+          <CssTextField
             label="Code postal"
             defaultValue={this.props.client ? this.props.client.zip : ""}
             onChange={this.handleChange}
@@ -215,7 +249,7 @@ export default class FormClient extends Component<Props, ClientState> {
             rows="2"
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position="start" style={{ color: "#6fc597" }}>
                   <LocationCity />
                 </InputAdornment>
               ),
@@ -223,7 +257,7 @@ export default class FormClient extends Component<Props, ClientState> {
           />
           <br />
         </div>
-        <TextField
+        <CssTextField
           label="Pays"
           defaultValue={this.props.client ? this.props.client.country : ""}
           onChange={this.handleChange}
@@ -234,7 +268,7 @@ export default class FormClient extends Component<Props, ClientState> {
           rows="2"
           InputProps={{
             startAdornment: (
-              <InputAdornment position="start">
+              <InputAdornment position="start" style={{ color: "#6fc597" }}>
                 <Public />
               </InputAdornment>
             ),
@@ -245,7 +279,7 @@ export default class FormClient extends Component<Props, ClientState> {
           A propos :
         </h2>
         <div className="form-template">
-          <TextField
+          <CssTextField
             label="Société"
             defaultValue={this.props.client ? this.props.client.company : ""}
             onChange={this.handleChange}
@@ -256,14 +290,14 @@ export default class FormClient extends Component<Props, ClientState> {
             rows="2"
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position="start" style={{ color: "#6fc597" }}>
                   <BusinessCenter />
                 </InputAdornment>
               ),
             }}
           />
           <br />
-          <TextField
+          <CssTextField
             label="Numéro de société"
             defaultValue={
               this.props.client ? this.props.client.company_number : ""
@@ -277,14 +311,14 @@ export default class FormClient extends Component<Props, ClientState> {
             rows="2"
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position="start" style={{ color: "#6fc597" }}>
                   <BusinessCenter />
                 </InputAdornment>
               ),
             }}
           />
         </div>
-        <TextField
+        <CssTextField
           label="Commentaire"
           multiline
           rows="3"
@@ -295,7 +329,7 @@ export default class FormClient extends Component<Props, ClientState> {
           margin="dense"
           InputProps={{
             startAdornment: (
-              <InputAdornment position="start">
+              <InputAdornment position="start" style={{ color: "#6fc597" }}>
                 <BusinessCenter />
               </InputAdornment>
             ),
@@ -305,5 +339,3 @@ export default class FormClient extends Component<Props, ClientState> {
     );
   }
 }
-
-// export default FormClient;

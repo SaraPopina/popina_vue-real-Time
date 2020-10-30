@@ -24,6 +24,7 @@ interface LinkStateProp {
   BookingData?: Reservation;
   id?: string;
   open?: boolean;
+  onUpdateReservation?: (reservation: Reservation) => void;
 }
 
 interface LinkDispatchProps {
@@ -53,7 +54,6 @@ export default class UpdateReservation extends Component<
   }
 
   handleModal = (booking: Reservation) => {
-    console.log("open de la modal update", booking);
     if (booking) {
       this.setState({
         booking: booking,
@@ -79,7 +79,7 @@ export default class UpdateReservation extends Component<
   };
 
   onUpdateBooking = (reservation: Reservation) => {
-    startEditReservation(reservation);
+    this.props.onUpdateReservation(reservation);
   };
 
   render() {

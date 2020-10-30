@@ -15,7 +15,10 @@ import Reservation from "../../../store/model/ReservationModel";
 import * as moment from "moment";
 import "moment/locale/fr";
 import UpdateReservation from "./UpdateReservation";
-import { startRemoveReservation } from "../../../store/actions/reservationAction";
+import {
+  startRemoveReservation,
+  startEditReservation,
+} from "../../../store/actions/reservationAction";
 import DeleteReservation from "./DeleteReservation";
 
 interface HomePageProps {
@@ -29,7 +32,7 @@ interface LinkStateProp {
 }
 
 interface LinkDispatchProps {
-  //   startEditClient?: (client: Reservation) => void;
+  startEditReservation?: (reservation: Reservation) => void;
 }
 
 type Props = HomePageProps & LinkDispatchProps & LinkStateProp;
@@ -51,10 +54,8 @@ export default class DisplayGroupReservation extends Component<
     this.modalElement = React.createRef();
   }
 
-  componentDidUpdate(prevProps: any, prevState: any) {
-    if (this.state.booking !== prevState.booking) {
-      console.log("update vue", this.state.booking, prevState.bookingDate);
-    }
+  componentDidUpdate(prevState: any, prevProps: any) {
+    console.log("update de la vue");
   }
 
   handleModal = (booking: Reservation[]) => {
@@ -97,8 +98,20 @@ export default class DisplayGroupReservation extends Component<
     startRemoveReservation(reservation);
   };
 
+  onReservationUpdated = (reservation: Reservation) => {
+    const booking = this.state.booking;
+
+    const indexOfReservation = booking.findIndex(
+      (aReservation, _index) => aReservation.id === reservation.id
+    );
+
+    booking[indexOfReservation] = reservation;
+    this.setState({ booking: booking });
+    startEditReservation(reservation);
+  };
+
   render() {
-    console.log("ici state booking", this.state.booking);
+    console.log(this.state.booking);
     return (
       <div>
         {this.state.booking == null ||
@@ -107,7 +120,10 @@ export default class DisplayGroupReservation extends Component<
           ""
         ) : (
           <div>
-            <UpdateReservation ref={this.modalElement} />
+            <UpdateReservation
+              ref={this.modalElement}
+              onUpdateReservation={this.onReservationUpdated}
+            />
             <Dialog
               key="info_client"
               onClose={this.handleModal}
@@ -128,49 +144,51 @@ export default class DisplayGroupReservation extends Component<
                     return (
                       <Card key={index} className="reservation-card-detail">
                         <div
-                          className="div-nbGuest"
                           onClick={() => this.handleOpen(aReservation)}
+                          style={{ display: "flex" }}
                         >
-                          <p className="number">
-                            {aReservation.numberOfGuests}
-                          </p>
-                          <span style={{ color: "#8a8a8a" }}>personnes</span>
-                        </div>
-                        <div className="div-content-booking">
-                          <Typography
-                            variant="h5"
-                            style={{
-                              color: "#464e5d",
-                              textAlign: "center",
-                              fontWeight: "bold",
-                              marginBottom: "10px",
-                            }}
-                          >
-                            {aReservation.personName}
-                          </Typography>
-                          <Typography
-                            variant="h6"
-                            component="h3"
-                            color="textSecondary"
-                          >
-                            {aReservation.phone}
-                          </Typography>
-                          <Typography
-                            variant="h5"
-                            component="h3"
-                            color="textSecondary"
-                          >
-                            {aReservation.email}
-                          </Typography>
-                          <Typography
-                            variant="h6"
-                            component="h6"
-                            color="textSecondary"
-                          >
-                            {moment(aReservation.bookingDate * 1000).format(
-                              "LLLL"
-                            )}
-                          </Typography>
+                          <div className="div-nbGuest">
+                            <p className="number">
+                              {aReservation.numberOfGuests}
+                            </p>
+                            <span style={{ color: "#8a8a8a" }}>personnes</span>
+                          </div>
+                          <div className="div-content-booking">
+                            <Typography
+                              variant="h5"
+                              style={{
+                                color: "#464e5d",
+                                textAlign: "center",
+                                fontWeight: "bold",
+                                marginBottom: "10px",
+                              }}
+                            >
+                              {aReservation.personName}
+                            </Typography>
+                            <Typography
+                              variant="h6"
+                              component="h3"
+                              color="textSecondary"
+                            >
+                              {aReservation.phone}
+                            </Typography>
+                            <Typography
+                              variant="h5"
+                              component="h3"
+                              color="textSecondary"
+                            >
+                              {aReservation.email}
+                            </Typography>
+                            <Typography
+                              variant="h6"
+                              component="h6"
+                              color="textSecondary"
+                            >
+                              {moment(aReservation.bookingDate * 1000).format(
+                                "LLLL"
+                              )}
+                            </Typography>
+                          </div>
                         </div>
                         <CardActions style={{ padding: "16px" }}>
                           <DeleteReservation

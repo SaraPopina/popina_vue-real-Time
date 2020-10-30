@@ -6,7 +6,7 @@ const ReservationReccord = Record({
   createdDate: Date.now(),
   email: "",
   id: null,
-  numberOfGuests: null,
+  numberOfGuests: 1,
   personName: "",
   phone: "",
   sourceName: "",

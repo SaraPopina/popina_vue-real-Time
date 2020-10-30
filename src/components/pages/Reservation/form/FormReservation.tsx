@@ -5,14 +5,63 @@ import {
   Phone,
   Restaurant,
   BusinessCenter,
+  CalendarToday,
 } from "@material-ui/icons/";
 import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import Moment from "@date-io/moment";
 import * as moment from "moment";
 import "moment/locale/fr";
 
-import { InputAdornment, TextField } from "@material-ui/core";
+import {
+  InputAdornment,
+  TextField,
+  withStyles,
+  IconButton,
+  createMuiTheme,
+  ThemeProvider,
+} from "@material-ui/core";
 import Reservation from "../../../../store/model/ReservationModel";
+import { teal } from "@material-ui/core/colors";
+
+const defaultMaterialTheme = createMuiTheme({
+  palette: {
+    primary: teal,
+  },
+});
+
+const CssTextField = withStyles({
+  root: {
+    "& label.Mui-focused": {
+      color: "#6fc597",
+    },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "#6fc597",
+    },
+    "&.MuiInput-underline": {
+      color: "#6fc597",
+      borderBottomColor: "#6fc597",
+    },
+    "&.MuiInput-underline:before": {
+      color: "#6fc597",
+      borderBottomColor: "#6fc597",
+    },
+    "&.MuiInputBase-root": {
+      color: "#6fc597",
+    },
+
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "#6fc597",
+      },
+      "&:hover fieldset": {
+        borderColor: "#6fc597",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#6fc597",
+      },
+    },
+  },
+})(TextField);
 
 interface Props {
   reservation?: Reservation;
@@ -47,9 +96,15 @@ export default class FormReservation extends Component<Props, BookingState> {
     //update booking
     if (this.props.reservation) {
       const selectedReservation: Reservation = this.state.reservation;
-      const date: moment.Moment = this.state.date;
+      let date: number = this.state.date;
+      let newDate = new Date(date * 1000);
       const reservation: Reservation = this.props.reservation
-        .set("bookingDate", date)
+        .set(
+          "bookingDate",
+          this.state.reservation.bookingDate
+            ? this.state.reservation.bookingDate
+            : newDate
+        )
         .set("comments", selectedReservation.comments)
         .set("numberOfGuests", selectedReservation.numberOfGuests)
         .set("comments", selectedReservation.comments)
@@ -58,7 +113,6 @@ export default class FormReservation extends Component<Props, BookingState> {
         .set("email", selectedReservation.email)
         .set("phone", selectedReservation.phone);
 
-      console.log("ici le booking", reservation);
       this.props.submit(reservation);
 
       //  create booking
@@ -84,14 +138,13 @@ export default class FormReservation extends Component<Props, BookingState> {
   };
 
   handleChangeDateTime = (date: moment.Moment) => {
-    console.log("handlechange date", date.unix());
     const newDate = date.unix();
     let bookingInfos = this.state.reservation;
     bookingInfos["bookingDate"] = newDate;
-    console.log("bookingInfos", bookingInfos);
+
     this.setState({
       reservation: bookingInfos,
-      date: newDate,
+      date: date,
     });
   };
 
@@ -99,68 +152,97 @@ export default class FormReservation extends Component<Props, BookingState> {
     return (
       <div>
         {this.props.reservation ? (
-          <div>
-            <h3>Date & Horaire de la reservation : </h3>
-            <br />
-            <h4>
+          <div style={{ textAlign: "center" }}>
+            <h2>Date & Horaire de la reservation : </h2>
+            <h3>
               {moment(this.props.reservation.bookingDate * 1000).format("LLLL")}
-            </h4>
+            </h3>
           </div>
         ) : (
           ""
         )}
-        <MuiPickersUtilsProvider utils={Moment}>
-          <DateTimePicker
-            // format={"DD-MM-YYYY hh:mm:ss"}
-            value={this.props.reservation ? this.state.date : this.state.date}
-            ampm={false}
-            onChange={this.handleChangeDateTime}
-            name="bookingDate"
-          />
-        </MuiPickersUtilsProvider>
-        <TextField
-          label="Nombre de couverts "
-          defaultValue={
-            this.props.reservation ? this.props.reservation.numberOfGuests : ""
-          }
-          onChange={this.handleChange}
-          name="numberOfGuests"
-          required={true}
-          margin="dense"
-          multiline
-          rows="2"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Restaurant />
-              </InputAdornment>
-            ),
-          }}
-        />
+        <ThemeProvider theme={defaultMaterialTheme}>
+          <MuiPickersUtilsProvider utils={Moment}>
+            <DateTimePicker
+              autoOk
+              disablePast
+              hideTabs
+              label="Date de la réservation"
+              value={this.props.reservation ? this.state.date : this.state.date}
+              ampm={false}
+              onChange={this.handleChangeDateTime}
+              name="bookingDate"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton>
+                      <CalendarToday />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </MuiPickersUtilsProvider>
+        </ThemeProvider>
         <br />
-        <TextField
-          label="Nom & Prénom"
-          defaultValue={
-            this.props.reservation ? this.props.reservation.personName : ""
-          }
-          onChange={this.handleChange}
-          name="personName"
-          required={true}
-          margin="dense"
-          multiline
-          rows="2"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <AccountCircle />
-              </InputAdornment>
-            ),
+        <br />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            color: "green",
           }}
-        />
+        >
+          <CssTextField
+            label="Nom & Prénom"
+            defaultValue={
+              this.props.reservation ? this.props.reservation.personName : ""
+            }
+            onChange={this.handleChange}
+            name="personName"
+            required={true}
+            margin="dense"
+            id="custom-css-standard-input"
+            multiline
+            rows="2"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start" style={{ color: "#6fc597" }}>
+                  <AccountCircle />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <CssTextField
+            style={{
+              marginRight: "25%",
+            }}
+            id="outlined-number"
+            label="Nombre de couverts "
+            type="number"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            variant="outlined"
+            defaultValue={
+              this.props.reservation ? this.props.reservation.numberOfGuests : 1
+            }
+            onChange={this.handleChange}
+            name="numberOfGuests"
+            required={true}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start" style={{ color: "#6fc597" }}>
+                  <Restaurant />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </div>
 
         <br />
         <div className="form-template">
-          <TextField
+          <CssTextField
             label="Email"
             defaultValue={
               this.props.reservation ? this.props.reservation.email : ""
@@ -174,13 +256,13 @@ export default class FormReservation extends Component<Props, BookingState> {
             rows="2"
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position="start" style={{ color: "#6fc597" }}>
                   <Email />
                 </InputAdornment>
               ),
             }}
           />
-          <TextField
+          <CssTextField
             label="Téléphone"
             defaultValue={
               this.props.reservation ? this.props.reservation.phone : ""
@@ -194,7 +276,7 @@ export default class FormReservation extends Component<Props, BookingState> {
             rows="2"
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position="start" style={{ color: "#6fc597" }}>
                   <Phone />
                 </InputAdornment>
               ),
@@ -204,7 +286,7 @@ export default class FormReservation extends Component<Props, BookingState> {
 
         <br />
 
-        <TextField
+        <CssTextField
           label="Numéro Table"
           defaultValue={
             this.props.reservation ? this.props.reservation.tableName : ""
@@ -217,7 +299,7 @@ export default class FormReservation extends Component<Props, BookingState> {
           rows="2"
           InputProps={{
             startAdornment: (
-              <InputAdornment position="start">
+              <InputAdornment position="start" style={{ color: "#6fc597" }}>
                 <Restaurant />
               </InputAdornment>
             ),
@@ -225,7 +307,7 @@ export default class FormReservation extends Component<Props, BookingState> {
         />
         <br />
 
-        <TextField
+        <CssTextField
           label="Commentaire"
           multiline
           rows="3"
@@ -238,7 +320,7 @@ export default class FormReservation extends Component<Props, BookingState> {
           margin="dense"
           InputProps={{
             startAdornment: (
-              <InputAdornment position="start">
+              <InputAdornment position="start" style={{ color: "#6fc597" }}>
                 <BusinessCenter />
               </InputAdornment>
             ),
@@ -248,5 +330,3 @@ export default class FormReservation extends Component<Props, BookingState> {
     );
   }
 }
-
-// export default FormReservation;

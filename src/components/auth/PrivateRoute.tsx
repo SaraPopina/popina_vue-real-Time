@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { useSelector } from "react-redux";
 import { Route, Redirect, RouteProps } from "react-router-dom";
+import { ThemeProvider } from "@material-ui/core";
 
 import { RootState } from "../../store";
 

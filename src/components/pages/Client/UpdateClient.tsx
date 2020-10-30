@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  ThemeProvider,
 } from "@material-ui/core";
 import FormClient from "./form/FormClient";
 import { startEditClient } from "../../../store/actions/clientActions";

@@ -23,7 +23,9 @@ export default (state = reservationState, action: ReservationAction) => {
       const indexOfReservation = reservations.findIndex(
         (aReservation, _index) => aReservation.id === action.payload.id
       );
+
       reservations[indexOfReservation] = action.payload;
+
       return {
         ...state,
         ReservationData: reservations,
