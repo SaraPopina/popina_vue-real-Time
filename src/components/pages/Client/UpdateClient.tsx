@@ -7,35 +7,18 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  ThemeProvider,
 } from "@material-ui/core";
 import FormClient from "./form/FormClient";
 import { startEditClient } from "../../../store/actions/clientActions";
 import Client from "../../../store/model/ClientModel";
 
-interface HomePageProps {
-  ClientData?: Client | {};
-}
-
-interface LinkStateProp {
-  ClientData?: Client;
-  id?: string;
-  open?: boolean;
-}
-
-interface LinkDispatchProps {
-  startEditClient?: (client: Client) => void;
-}
-
-type Props = HomePageProps & LinkDispatchProps & LinkStateProp;
-
 export default class UpdateClient extends Component<
-  Props,
+  any,
   { open: boolean; client: Client; id: string }
 > {
   submitUpdate: React.RefObject<FormClient>;
 
-  constructor(props: Props | Readonly<Props>) {
+  constructor(props: any) {
     super(props);
     this.state = {
       open: false,

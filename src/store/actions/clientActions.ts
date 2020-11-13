@@ -8,12 +8,15 @@ import {
 import { RootState } from "..";
 import { auth, database } from "firebase";
 import Client from "../model/ClientModel";
+import { Dispatch } from "redux";
 
 let agendaRef: database.Reference = null;
 
 export const setClientData = (
   userUid: string
 ): ThunkAction<void, RootState, null, ClientAction> => {
+  // return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
+
   return async (dispatch) => {
     const userUid = auth().currentUser.uid;
     const snapshot = database()
@@ -86,7 +89,7 @@ export const setClientData = (
 export const getClientData = (
   clientdata: Client
 ): ThunkAction<void, RootState, null, ClientAction> => {
-  return (dispatch) => {
+  return (dispatch: Dispatch) => {
     dispatch({
       type: FETCHCLIENT_DATA_SUCCESS,
       payload: clientdata,
@@ -97,7 +100,7 @@ export const getClientData = (
 export const getUpdatedClientData = (
   clientData: Client
 ): ThunkAction<void, RootState, null, ClientAction> => {
-  return (dispatch) => {
+  return (dispatch: Dispatch) => {
     dispatch({
       type: EDIT_CLIENT,
       payload: clientData,
@@ -108,7 +111,7 @@ export const getUpdatedClientData = (
 export const getDeletedClientData = (
   clientData: Client
 ): ThunkAction<void, RootState, null, ClientAction> => {
-  return (dispatch) => {
+  return (dispatch: Dispatch) => {
     dispatch({
       type: DELETE_CLIENT,
       payload: clientData.id,

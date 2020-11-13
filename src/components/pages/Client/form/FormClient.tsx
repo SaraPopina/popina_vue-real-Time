@@ -1,4 +1,4 @@
-import React, { Component, ChangeEvent, FC, useState } from "react";
+import React, { Component, ChangeEvent } from "react";
 import {
   AccountCircle,
   Email,
@@ -53,12 +53,10 @@ interface Props {
 }
 
 interface ClientState {
-  // userUid: "";
   showMo?: boolean;
   client?: ClientData | {} | any;
 }
 
-// const FormClient: FC<Props> = ({}) => {
 export default class FormClient extends Component<Props, ClientState> {
   constructor(props: Props | Readonly<Props>) {
     super(props);
@@ -73,6 +71,7 @@ export default class FormClient extends Component<Props, ClientState> {
 
     //update client
     if (this.props.client) {
+      console.log("yes");
       const selectedClient = this.state.client;
       const client = this.props.client
         .set("address", selectedClient.address)
