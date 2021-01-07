@@ -49,8 +49,8 @@ export class RealTimeVue extends React.Component<Props> {
             <div className="dashboard_realtime_title_container" key={index}>
               <h2>Caisse du {moment(aData.date_begin).format("LLLL")} </h2>
               <h3>
-                Dernière modification effectué à{" "}
-                {moment(aData.date_end).format("LT")}{" "}
+                Dernière modification effectué à
+                {moment(aData.date_end).format("LT")}
               </h3>
               <p className="tip">
                 Rafraichissement de la page automatiquement à chaque changements
@@ -344,11 +344,10 @@ export class RealTimeVue extends React.Component<Props> {
                                       marginBottom: "10px",
                                     }}
                                   >
-                                    {" "}
                                     {(() => {
                                       if (aPayment.name == "Espèces") {
                                         return (
-                                          <TableCell key={index}>
+                                          <TableCell>
                                             <FontAwesomeIcon
                                               icon={faMoneyBillAlt}
                                               className="paiement_icon"
@@ -361,7 +360,7 @@ export class RealTimeVue extends React.Component<Props> {
                                         aPayment.name == "Titre restaurant"
                                       ) {
                                         return (
-                                          <TableCell key={index}>
+                                          <TableCell>
                                             <FontAwesomeIcon
                                               icon={faCreditCard}
                                               className="paiement_icon"
@@ -375,7 +374,7 @@ export class RealTimeVue extends React.Component<Props> {
                                         aPayment.name == "Compte client"
                                       ) {
                                         return (
-                                          <TableCell key={index}>
+                                          <TableCell>
                                             <FontAwesomeIcon
                                               icon={faHandHoldingUsd}
                                               className="paiement_icon"
@@ -385,7 +384,7 @@ export class RealTimeVue extends React.Component<Props> {
                                         );
                                       } else if (aPayment.name == "Chèque") {
                                         return (
-                                          <TableCell key={index}>
+                                          <TableCell>
                                             <FontAwesomeIcon
                                               icon={faMoneyCheckAlt}
                                               className="paiement_icon"
@@ -395,7 +394,7 @@ export class RealTimeVue extends React.Component<Props> {
                                         );
                                       } else {
                                         return (
-                                          <TableCell key={index}>
+                                          <TableCell>
                                             <FontAwesomeIcon
                                               icon={faMoneyBillAlt}
                                               className="paiement_icon"
@@ -407,8 +406,7 @@ export class RealTimeVue extends React.Component<Props> {
                                     })()}
                                     <TableCell />
                                     <TableCell />
-                                    <TableCell align="right" key={index}>
-                                      {" "}
+                                    <TableCell align="right">
                                       {(aPayment.amount / 100).toFixed(2)}
                                       {aPayment.currency}
                                     </TableCell>
@@ -426,7 +424,6 @@ export class RealTimeVue extends React.Component<Props> {
                                       <TableCell />
                                       <TableCell />
                                       <TableCell align="right">
-                                        {" "}
                                         {(aPayment.amount / 100).toFixed(2)}
                                         {aPayment.currency}
                                       </TableCell>
@@ -441,10 +438,9 @@ export class RealTimeVue extends React.Component<Props> {
                                       <TableCell />
                                       <TableCell />
                                       <TableCell>
-                                        {" "}
-                                        Reste à payer :{" "}
+                                        Reste à payer :
                                         {aTicket.price.amount / 100 -
-                                          aData.total_sumItem(aTicket)}{" "}
+                                          aData.total_sumItem(aTicket)}
                                       </TableCell>
 
                                       <TableCell />
@@ -458,6 +454,7 @@ export class RealTimeVue extends React.Component<Props> {
                                   backgroundColor: "#ffcfcf",
                                   marginBottom: "10px",
                                 }}
+                                key={index}
                               >
                                 <TableCell> Paiement en attente </TableCell>
                                 <TableCell />
@@ -482,7 +479,7 @@ export class RealTimeVue extends React.Component<Props> {
                                     align="right"
                                     style={{ borderBottom: 0 }}
                                   >
-                                    {(row.price.amount / 100).toFixed(2)}{" "}
+                                    {(row.price.amount / 100).toFixed(2)}
                                     {row.price.currency}
                                   </TableCell>
                                 </TableRow>
