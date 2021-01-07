@@ -271,7 +271,7 @@ export class RealTimeVue extends React.Component<Props> {
                 <Card className="card-RealTime">
                   <CardHeader
                     className="cardHeaderShadowStyles"
-                    title={"Commande"}
+                    title={"Historique des commandes"}
                   />
                   <CardContent className="content-RealTime">
                     {aData.tickets.map((aTicket, index) => {
@@ -498,32 +498,38 @@ export class RealTimeVue extends React.Component<Props> {
                   </CardContent>
                 </Card>
               </section>
+
               {aData.team.map((aTeamMember, index) => {
                 return (
-                  <Card className="team-card" key={index}>
-                    <CardContent>
-                      <Typography gutterBottom>Équipe</Typography>
-                      <Typography
-                        variant="h5"
-                        component="h3"
-                        color="textSecondary"
-                      >
-                        <Avatar className="avatar" src="/broken-image.jpg" />
+                  <section>
+                    <Card className="card-RealTime" key={index}>
+                      <CardHeader
+                        className="cardHeaderShadowStyles"
+                        title={"Equipe"}
+                      />
+                      <CardContent>
+                        <Typography
+                          variant="h5"
+                          component="h3"
+                          color="textSecondary"
+                        >
+                          <Avatar className="avatar" src="/broken-image.jpg" />
 
-                        <p>{aTeamMember.name}</p>
-                      </Typography>
-                      <Typography color="textSecondary">
-                        {moment(aTeamMember.date_begin).format("LLLL")}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        component="p"
-                        color="textSecondary"
-                      >
-                        {moment(aTeamMember.date_end).format("LLLL")}
-                      </Typography>
-                    </CardContent>
-                  </Card>
+                          <p>{aTeamMember.name}</p>
+                        </Typography>
+                        <Typography color="textSecondary">
+                          {moment(aTeamMember.date_begin).format("LLLL")}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          component="p"
+                          color="textSecondary"
+                        >
+                          {moment(aTeamMember.date_end).format("LLLL")}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </section>
                 );
               })}
             </div>
