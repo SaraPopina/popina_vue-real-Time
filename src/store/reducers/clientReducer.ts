@@ -6,7 +6,6 @@ import {
   EDIT_CLIENT,
   DELETE_CLIENT,
 } from "../types/ClientTypes";
-import Client from "../model/ClientModel";
 
 const clientState: ClientState = {
   ClientData: [],

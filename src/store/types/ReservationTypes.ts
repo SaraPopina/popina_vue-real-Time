@@ -4,6 +4,7 @@ export const FETCHRESERVATION_DATA_SUCCESS = "FETCHRESERVATION_DATA_SUCCESS";
 export const CREATE_RESERVATION = "CREATE_RESERVATION";
 export const DELETE_RESERVATION = "DELETE_RESERVATION";
 export const EDIT_RESERVATION = "EDIT_RESERVATION";
+export const FILTER_BY_DAY = "FILTER_BY_DAY";
 
 // state
 export interface ReservationState {
@@ -30,8 +31,14 @@ interface delete_reservation {
   payload: string;
 }
 
+interface filter_reservation {
+  type: typeof FILTER_BY_DAY;
+  payload: Reservation;
+}
+
 export type ReservationAction =
   | fetchReservationtDataSuccess
   | edit_reservation
+  | filter_reservation
   | delete_reservation
   | create_reservation;

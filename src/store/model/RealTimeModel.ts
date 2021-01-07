@@ -217,6 +217,8 @@ class RealTime extends RealTimeRecord {
     let sumPaid: number = 0;
     let totalDiscount: number[] = [];
     let sumDiscount: number = 0;
+    let realAmount: string = null;
+    let parseNumber: number = 0;
 
     this.tickets.forEach((aTicket) => {
       if (aTicket.live_paid > 0) {
@@ -225,17 +227,17 @@ class RealTime extends RealTimeRecord {
             aPayment.name == "Offert Client" ||
             aPayment.name == "Offert Staff"
           ) {
-            const realAmount = (aPayment.amount / 100).toFixed(2);
-            const parseNumber = parseFloat(realAmount);
+            realAmount = (aPayment.amount / 100).toFixed(2);
+            parseNumber = parseFloat(realAmount);
             totalDiscount.push(parseNumber);
             totalDiscount.reduce((a: number, b: number) => {
               return (sumDiscount = a + b);
             });
           } else {
-            const realAmount = (aPayment.amount / 100).toFixed(2);
-            const parseNumber = parseFloat(realAmount);
+            realAmount = (aPayment.amount / 100).toFixed(2);
+            parseNumber = parseFloat(realAmount);
             totalPricePaid.push(parseNumber);
-            totalPricePaid.reduce((a: number, b: number) => {
+            sumPaid = totalPricePaid.reduce((a: number, b: number) => {
               return (sumPaid = a + b);
             });
           }
@@ -266,7 +268,7 @@ class RealTime extends RealTimeRecord {
     let sumNotPaid: number = 0;
 
     this.tickets.forEach((aTicket) => {
-      if (aTicket.payments == undefined) {
+      if (aTicket.payments == undefined || aTicket.live_paid == 0) {
         const realAmount = (aTicket.price.amount / 100).toFixed(1);
         const parseNumber = parseFloat(realAmount);
         totalPriceNotPaid.push(parseNumber);
@@ -307,6 +309,17 @@ class RealTime extends RealTimeRecord {
             return (sumCancelled = a + b);
           });
         });
+      } else if (aTicket.items) {
+        aTicket.items.forEach((aItem) => {
+          if (aItem.cancelled > 0) {
+            const realAmount = (aItem.price.amount / 100).toFixed(2);
+            const parseNumber = parseFloat(realAmount);
+            totalCancelled.push(parseNumber);
+            totalCancelled.reduce((a: number, b: number) => {
+              return (sumCancelled = a + b);
+            });
+          }
+        });
       }
     });
 
@@ -330,6 +343,23 @@ class RealTime extends RealTimeRecord {
     let totalGuests: number = 0;
     totalGuests = this.total_sumGuestPaid() + this.total_sumGuestNotPaid();
     return totalGuests;
+  }
+
+  total_sumItem(tickets: { items: {}; payments: {} }): number {
+    let sumItemTotal: number = 0;
+    let totalItem: number[] = [0];
+    let itemPrice: number = 0;
+
+    if (tickets.payments) {
+      Object.values(tickets.payments).map((aPayement: { amount: number }) => {
+        itemPrice = aPayement.amount / 100;
+        totalItem.push(itemPrice);
+        totalItem.reduce((a: number, b: number) => {
+          return (sumItemTotal = a + b);
+        });
+      });
+    }
+    return sumItemTotal;
   }
 }
 

@@ -57,6 +57,7 @@ export const setRealTimeData = (
 export const getRealTimeData = (
   RealTimedata: RealTime
 ): ThunkAction<void, RootState, null, RealTimeAction> => {
+  console.log("donné Realtime ici", RealTimedata);
   return (dispatch) => {
     dispatch({
       type: FETCHREAL_TIME_DATA_SUCCESS,

@@ -1,68 +1,51 @@
-import React, { FC, useEffect, createRef } from "react";
-import { useSelector, useDispatch, connect } from "react-redux";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { setSuccess } from "../../../store/actions/authActions";
 import { RootState } from "../../../store";
 import {
   ReservationState,
   ReservationAction,
 } from "../../../store/types/ReservationTypes";
 import { ThunkDispatch } from "redux-thunk";
-import Reservation from "../../../store/model/ReservationModel";
 import { ReservationVue } from "./Reservation";
-// import { ReservationVue } from "./Real_time";
+import { startEditReservation } from "../../../store/actions/reservationAction";
 
-interface displayReservationProps {
-  id?: string;
-  color?: string;
-  Reservationdata: Reservation[];
+type Props = LinkDispatchProps & LinkStateProp & OwnProps;
+
+export class ReservationContainer extends Component<Props> {
+  render() {
+    console.log(this.props.ReservationData);
+    return (
+      <section className="dashboard_container">
+        <ReservationVue
+          ReservationData={this.props.ReservationData}
+          startEditReservation={this.props.startEditReservation}
+        />
+      </section>
+    );
+  }
 }
-
-interface HomePageState {}
-
-type Props = displayReservationProps & LinkDispatchProps & LinkStateProp;
-
-const ReservationContainer: FC<Props> = () => {
-  const { success } = useSelector((state: RootState) => state.auth);
-  const { ReservationData } = useSelector(
-    (state: RootState) => state.reservationData
-  );
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (success) {
-      dispatch(setSuccess(""));
-    }
-  }, [success, dispatch]);
-
-  console.log("le container", ReservationData);
-  return (
-    <section className="dashboard_container">
-      <ReservationVue Reservationdata={ReservationData} />
-    </section>
-  );
-};
 
 interface LinkStateProp {
-  Reservationdata: Reservation[];
+  ReservationData: ReservationState;
 }
 
-interface LinkDispatchProps {}
+interface LinkDispatchProps {
+  startEditReservation: typeof startEditReservation;
+}
+const mapStateToProps = (state: RootState): LinkStateProp => {
+  return { ReservationData: state.reservationData };
+};
 
-const mapStateToProps = (
-  state: ReservationState,
-  props: displayReservationProps
-): LinkStateProp => ({
-  Reservationdata: state.ReservationData,
-});
+interface OwnProps {}
 
 const mapDispatchToProps = (
-  dispatch: ThunkDispatch<any, any, ReservationAction>,
-  props: displayReservationProps
-): LinkDispatchProps => ({});
+  dispatch: ThunkDispatch<any, any, ReservationAction>
+): LinkDispatchProps => ({
+  startEditReservation: bindActionCreators(startEditReservation, dispatch),
+});
 
-export default connect(
+export default connect<LinkStateProp, LinkDispatchProps, OwnProps, RootState>(
   mapStateToProps,
   mapDispatchToProps
 )(ReservationContainer);

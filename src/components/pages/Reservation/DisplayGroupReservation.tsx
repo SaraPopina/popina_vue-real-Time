@@ -15,10 +15,7 @@ import Reservation from "../../../store/model/ReservationModel";
 import * as moment from "moment";
 import "moment/locale/fr";
 import UpdateReservation from "./UpdateReservation";
-import {
-  startRemoveReservation,
-  startEditReservation,
-} from "../../../store/actions/reservationAction";
+import { startRemoveReservation } from "../../../store/actions/reservationAction";
 import DeleteReservation from "./DeleteReservation";
 
 interface HomePageProps {
@@ -29,10 +26,11 @@ interface LinkStateProp {
   BookingData?: Reservation;
   id?: string;
   open?: boolean;
+  handler?: () => void;
 }
 
 interface LinkDispatchProps {
-  startEditReservation?: (reservation: Reservation) => void;
+  onUpdate?: (reservation: Reservation) => void;
 }
 
 type Props = HomePageProps & LinkDispatchProps & LinkStateProp;
@@ -54,8 +52,12 @@ export default class DisplayGroupReservation extends Component<
     this.modalElement = React.createRef();
   }
 
-  componentDidUpdate(prevState: any, prevProps: any) {
-    console.log("update de la vue");
+  componentDidUpdate(prevProps: any, prevState: any) {
+    if (prevState.booking !== this.state.booking) {
+      this.setState({
+        booking: this.state.booking,
+      });
+    }
   }
 
   handleModal = (booking: Reservation[]) => {
@@ -77,7 +79,14 @@ export default class DisplayGroupReservation extends Component<
     });
   };
 
-  handleTapCloseModal() {
+  handleTapCloseModal(reservation: Reservation[]) {
+    if (this.state.booking !== reservation) {
+      console.log("oui", reservation, this.state.booking);
+    } else {
+      console.log("non", reservation, this.state.booking);
+    }
+    // this.props.handler();
+
     this.setState({
       open: !this.state.open,
     });
@@ -107,11 +116,13 @@ export default class DisplayGroupReservation extends Component<
 
     booking[indexOfReservation] = reservation;
     this.setState({ booking: booking });
-    startEditReservation(reservation);
+    // startEditReservation(reservation);
+
+    this.props.onUpdate(reservation);
   };
 
   render() {
-    console.log(this.state.booking);
+    // console.log(this.state.booking);
     return (
       <div>
         {this.state.booking == null ||
@@ -206,7 +217,7 @@ export default class DisplayGroupReservation extends Component<
                   variant="contained"
                   color="secondary"
                   onClick={() => {
-                    this.handleTapCloseModal();
+                    this.handleTapCloseModal(this.state.booking);
                   }}
                   style={{ marginRight: "10px" }}
                 >

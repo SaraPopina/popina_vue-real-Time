@@ -4,7 +4,6 @@ import {
   FETCHRESERVATION_DATA_SUCCESS,
   EDIT_RESERVATION,
   DELETE_RESERVATION,
-  CREATE_RESERVATION,
 } from "../types/ReservationTypes";
 import { RootState } from "..";
 import { auth, database } from "firebase";
@@ -48,7 +47,7 @@ export const setReservationData = (
         .ref()
         .child(`calendars/${(await snapshot).val()}`);
 
-      calendarRef.on("child_added", (snapshot) => {
+      calendarRef.orderByChild("bookingDate").on("child_added", (snapshot) => {
         let data = snapshot.val();
         data.id = snapshot.key;
         data.month = moment(data.bookingDate * 1000).format("L");

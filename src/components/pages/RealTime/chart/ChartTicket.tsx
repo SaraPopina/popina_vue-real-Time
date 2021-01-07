@@ -16,7 +16,7 @@ class ChartTicket extends Component<Props> {
     const sumTotal = this.props.sumTotal;
     const sumPayed = this.props.sumPayed;
     const data = {
-      labels: ["Payé", "Total"],
+      labels: ["Non Payé", "Total"],
       datasets: [
         {
           data: [sumPayed, sumTotal],

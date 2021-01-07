@@ -16,7 +16,7 @@ class ChartClient extends Component<Props> {
     const guestPaid = this.props.guestPaid;
     const totalGuest = this.props.totalGuest;
     const data = {
-      labels: ["Payé", "Total"],
+      labels: ["Non Payé", "Total"],
       datasets: [
         {
           data: [guestPaid, totalGuest],

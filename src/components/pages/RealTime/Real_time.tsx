@@ -24,15 +24,19 @@ import { ThunkDispatch } from "redux-thunk";
 import ChartClient from "./chart/ChartClient";
 import ChartTicket from "./chart/ChartTicket";
 import { Avatar } from "@material-ui/core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faMoneyBillAlt,
+  faCreditCard,
+  faHandHoldingUsd,
+  faMoneyCheckAlt,
+} from "@fortawesome/free-solid-svg-icons";
 
 type Props = LinkStateProp;
 export class RealTimeVue extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-  }
-
   render() {
     const { RealTimedata } = this.props;
+
     // console.log(RealTimedata);
 
     return (
@@ -60,10 +64,15 @@ export class RealTimeVue extends React.Component<Props> {
                   justifyContent: "space-around",
                 }}
               >
-                <ChartTicket
-                  sumTotal={aData.sumTotal()}
-                  sumPayed={aData.sumTotalPaid()}
-                />
+                {aData.sumTotal() == aData.total_sumNotPaid() ? (
+                  <ChartTicket sumTotal={aData.sumTotal()} sumPayed={null} />
+                ) : (
+                  <ChartTicket
+                    sumTotal={aData.sumTotal()}
+                    sumPayed={aData.total_sumNotPaid()}
+                  />
+                )}
+
                 <TableContainer className="table-RealTime">
                   <Table size="small">
                     <TableHead>
@@ -173,10 +182,18 @@ export class RealTimeVue extends React.Component<Props> {
                     </TableBody>
                   </Table>
                 </TableContainer>
-                <ChartClient
-                  guestPaid={aData.total_sumGuestPaid()}
-                  totalGuest={aData.sumTotalGuest()}
-                />
+
+                {aData.total_sumGuestNotPaid() == aData.sumTotalGuest() ? (
+                  <ChartClient
+                    guestPaid={null}
+                    totalGuest={aData.sumTotalGuest()}
+                  />
+                ) : (
+                  <ChartClient
+                    guestPaid={aData.total_sumGuestNotPaid()}
+                    totalGuest={aData.sumTotalGuest()}
+                  />
+                )}
 
                 <TableContainer className="table-RealTime">
                   <Table size="small">
@@ -265,25 +282,23 @@ export class RealTimeVue extends React.Component<Props> {
                           key={index}
                           style={{
                             marginTop: "10px",
-                            borderBottom: "1px solid #8c8c8c47",
+                            borderBottom: "4px solid #8c8c8c47",
                           }}
                         >
                           <TableHead key={index}>
                             <TableRow
                               className="detail_tableHeader"
                               key={index}
+                              style={{ backgroundColor: "#a7baae" }}
                             >
                               <TableCell
-                                align="center"
                                 style={{
                                   fontWeight: "bold",
-                                  fontStyle: "italic",
                                 }}
                               >
                                 {moment(aTicket.date_begin).format("LT")}
                               </TableCell>
                               <TableCell
-                                align="center"
                                 style={{
                                   fontWeight: "bold",
                                   fontStyle: "italic",
@@ -292,7 +307,7 @@ export class RealTimeVue extends React.Component<Props> {
                                 {aTicket.room} {aTicket.table}
                               </TableCell>
                               <TableCell
-                                align="center"
+                                align="left"
                                 style={{
                                   fontWeight: "bold",
                                   fontStyle: "italic",
@@ -302,20 +317,26 @@ export class RealTimeVue extends React.Component<Props> {
                               </TableCell>
                               <TableCell
                                 align="right"
-                                style={{
-                                  fontWeight: "bold",
-                                  fontStyle: "italic",
-                                }}
+                                style={{ fontWeight: "bold" }}
                               >
+                                <span
+                                  style={{
+                                    fontStyle: "italic",
+                                    marginRight: "10px",
+                                  }}
+                                >
+                                  Total :{" "}
+                                </span>
                                 {(aTicket.price.amount / 100).toFixed(2)}
                                 {aTicket.price.currency}
                               </TableCell>
                             </TableRow>
                           </TableHead>
                           <TableBody>
-                            {aTicket.live_paid >= 1 ? (
+                            {aTicket.payments ? (
                               aTicket.payments.map((aPayment, index) => {
-                                return (
+                                return aTicket.price.amount / 100 ==
+                                  aData.total_sumItem(aTicket) ? (
                                   <TableRow
                                     key={index}
                                     style={{
@@ -323,15 +344,112 @@ export class RealTimeVue extends React.Component<Props> {
                                       marginBottom: "10px",
                                     }}
                                   >
-                                    <TableCell> {aPayment.name}</TableCell>
+                                    {" "}
+                                    {(() => {
+                                      if (aPayment.name == "Espèces") {
+                                        return (
+                                          <TableCell key={index}>
+                                            <FontAwesomeIcon
+                                              icon={faMoneyBillAlt}
+                                              className="paiement_icon"
+                                            />
+                                            {aPayment.name}
+                                          </TableCell>
+                                        );
+                                      } else if (
+                                        aPayment.name == "Carte de crédit" ||
+                                        aPayment.name == "Titre restaurant"
+                                      ) {
+                                        return (
+                                          <TableCell key={index}>
+                                            <FontAwesomeIcon
+                                              icon={faCreditCard}
+                                              className="paiement_icon"
+                                            />
+                                            {aPayment.name}
+                                          </TableCell>
+                                        );
+                                      } else if (
+                                        aPayment.name == "Avoir" ||
+                                        aPayment.name == "Poporder" ||
+                                        aPayment.name == "Compte client"
+                                      ) {
+                                        return (
+                                          <TableCell key={index}>
+                                            <FontAwesomeIcon
+                                              icon={faHandHoldingUsd}
+                                              className="paiement_icon"
+                                            />
+                                            {aPayment.name}
+                                          </TableCell>
+                                        );
+                                      } else if (aPayment.name == "Chèque") {
+                                        return (
+                                          <TableCell key={index}>
+                                            <FontAwesomeIcon
+                                              icon={faMoneyCheckAlt}
+                                              className="paiement_icon"
+                                            />
+                                            {aPayment.name}
+                                          </TableCell>
+                                        );
+                                      } else {
+                                        return (
+                                          <TableCell key={index}>
+                                            <FontAwesomeIcon
+                                              icon={faMoneyBillAlt}
+                                              className="paiement_icon"
+                                            />
+                                            {aPayment.name}
+                                          </TableCell>
+                                        );
+                                      }
+                                    })()}
                                     <TableCell />
                                     <TableCell />
-                                    <TableCell align="right">
+                                    <TableCell align="right" key={index}>
                                       {" "}
                                       {(aPayment.amount / 100).toFixed(2)}
                                       {aPayment.currency}
                                     </TableCell>
                                   </TableRow>
+                                ) : (
+                                  <>
+                                    <TableRow
+                                      key={index}
+                                      style={{
+                                        backgroundColor: "#34c73a1c",
+                                        marginBottom: "10px",
+                                      }}
+                                    >
+                                      <TableCell>{aPayment.name}</TableCell>
+                                      <TableCell />
+                                      <TableCell />
+                                      <TableCell align="right">
+                                        {" "}
+                                        {(aPayment.amount / 100).toFixed(2)}
+                                        {aPayment.currency}
+                                      </TableCell>
+                                    </TableRow>
+                                    <TableRow
+                                      style={{
+                                        backgroundColor: "#ffcfcf",
+                                        marginBottom: "10px",
+                                      }}
+                                      key={index}
+                                    >
+                                      <TableCell />
+                                      <TableCell />
+                                      <TableCell>
+                                        {" "}
+                                        Reste à payer :{" "}
+                                        {aTicket.price.amount / 100 -
+                                          aData.total_sumItem(aTicket)}{" "}
+                                      </TableCell>
+
+                                      <TableCell />
+                                    </TableRow>
+                                  </>
                                 );
                               })
                             ) : (

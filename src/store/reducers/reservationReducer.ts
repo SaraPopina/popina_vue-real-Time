@@ -5,6 +5,7 @@ import {
   CREATE_RESERVATION,
   EDIT_RESERVATION,
   DELETE_RESERVATION,
+  FILTER_BY_DAY,
 } from "../types/ReservationTypes";
 
 const reservationState: ReservationState = {
@@ -42,6 +43,8 @@ export default (state = reservationState, action: ReservationAction) => {
           (aReservation) => aReservation.id !== action.payload
         ),
       };
+    case FILTER_BY_DAY:
+      return state;
 
     default:
       return state;
