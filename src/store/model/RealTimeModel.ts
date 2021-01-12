@@ -285,7 +285,7 @@ class RealTime extends RealTimeRecord {
     let sumGuestNotPaid: number = 0;
 
     this.tickets.map((aTicket) => {
-      if (aTicket.payments == undefined) {
+      if (aTicket.live_paid === 0) {
         totalGuestNotPaid.push(aTicket.number_guests);
         totalGuestNotPaid.reduce((a: number, b: number) => {
           return (sumGuestNotPaid = a + b);

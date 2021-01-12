@@ -37,7 +37,13 @@ export class RealTimeVue extends React.Component<Props> {
   render() {
     const { RealTimedata } = this.props;
 
-    // console.log(RealTimedata);
+    const filterByDate = RealTimedata.map((aData) => {
+      return aData.tickets.sort((a, b) => {
+        return a.date_begin > b.date_begin ? 1 : -1;
+      });
+    });
+
+    const dateObject: RealTime = Object.assign({}, ...filterByDate);
 
     return (
       <section>
@@ -275,6 +281,7 @@ export class RealTimeVue extends React.Component<Props> {
                   />
                   <CardContent className="content-RealTime">
                     {aData.tickets.map((aTicket, index) => {
+                      console.log("data", aTicket);
                       return (
                         <Table
                           size="small"
@@ -294,6 +301,7 @@ export class RealTimeVue extends React.Component<Props> {
                               <TableCell
                                 style={{
                                   fontWeight: "bold",
+                                  width: "25%",
                                 }}
                               >
                                 {moment(aTicket.date_begin).format("LT")}
@@ -302,6 +310,7 @@ export class RealTimeVue extends React.Component<Props> {
                                 style={{
                                   fontWeight: "bold",
                                   fontStyle: "italic",
+                                  width: "25%",
                                 }}
                               >
                                 {aTicket.room} {aTicket.table}
@@ -311,22 +320,29 @@ export class RealTimeVue extends React.Component<Props> {
                                 style={{
                                   fontWeight: "bold",
                                   fontStyle: "italic",
+                                  width: "25%",
                                 }}
                               >
                                 {aTicket.waiter}
                               </TableCell>
                               <TableCell
                                 align="right"
-                                style={{ fontWeight: "bold" }}
+                                style={{
+                                  fontWeight: "bold",
+                                  width: "25%",
+                                  fontSize: "20px",
+                                }}
                               >
                                 <span
                                   style={{
                                     fontStyle: "italic",
                                     marginRight: "10px",
+                                    fontSize: "14px",
                                   }}
                                 >
                                   Total :{" "}
                                 </span>
+
                                 {(aTicket.price.amount / 100).toFixed(2)}
                                 {aTicket.price.currency}
                               </TableCell>
@@ -428,20 +444,24 @@ export class RealTimeVue extends React.Component<Props> {
                                         {aPayment.currency}
                                       </TableCell>
                                     </TableRow>
+
                                     <TableRow
+                                      key={index}
                                       style={{
                                         backgroundColor: "#ffcfcf",
                                         marginBottom: "10px",
                                       }}
-                                      key={index}
                                     >
-                                      <TableCell />
-                                      <TableCell />
                                       <TableCell>
-                                        Reste à payer :
-                                        {aTicket.price.amount / 100 -
-                                          aData.total_sumItem(aTicket)}
+                                        Reste à payer :{" "}
+                                        <span style={{ fontSize: "18px" }}>
+                                          {aTicket.price.amount / 100 -
+                                            aData.total_sumItem(aTicket)}{" "}
+                                          €
+                                        </span>
                                       </TableCell>
+                                      <TableCell />
+                                      <TableCell />
 
                                       <TableCell />
                                     </TableRow>
