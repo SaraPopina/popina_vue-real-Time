@@ -39,7 +39,7 @@ export class RealTimeVue extends React.Component<Props> {
 
     const filterByDate = RealTimedata.map((aData) => {
       return aData.tickets.sort((a, b) => {
-        return a.date_begin > b.date_begin ? 1 : -1;
+        return a.date_begin > b.date_begin ? -1 : 1;
       });
     });
 
@@ -86,7 +86,11 @@ export class RealTimeVue extends React.Component<Props> {
                         <TableCell
                           align="center"
                           colSpan={2}
-                          style={{ color: "#94c7f3", borderBottom: 0 }}
+                          style={{
+                            color: "#94c7f3",
+                            borderBottom: 0,
+                            fontSize: 16,
+                          }}
                         >
                           Encaissements
                         </TableCell>
@@ -110,31 +114,49 @@ export class RealTimeVue extends React.Component<Props> {
                         </TableCell>
                       </TableRow>
                       <TableRow>
-                        <TableCell style={{ borderBottom: 0 }}>
+                        <TableCell
+                          style={{ borderBottom: 0, color: "#696969" }}
+                        >
                           - dont encaissé
                         </TableCell>
                         <TableCell
-                          style={{ fontWeight: "bold", borderBottom: 0 }}
+                          style={{
+                            fontWeight: "bold",
+                            borderBottom: 0,
+                            color: "#696969",
+                          }}
                         >
                           {aData.total_sumPaid()} €
                         </TableCell>
                       </TableRow>
                       <TableRow>
-                        <TableCell style={{ borderBottom: 0 }}>
+                        <TableCell
+                          style={{ borderBottom: 0, color: "#696969" }}
+                        >
                           - dont offert
                         </TableCell>
                         <TableCell
-                          style={{ fontWeight: "bold", borderBottom: 0 }}
+                          style={{
+                            fontWeight: "bold",
+                            borderBottom: 0,
+                            color: "#696969",
+                          }}
                         >
                           {aData.total_sumDiscount()} €
                         </TableCell>
                       </TableRow>
                       <TableRow>
-                        <TableCell style={{ borderBottom: 0 }}>
+                        <TableCell
+                          style={{ borderBottom: 0, color: "#696969" }}
+                        >
                           - dont transféré
                         </TableCell>
                         <TableCell
-                          style={{ fontWeight: "bold", borderBottom: 0 }}
+                          style={{
+                            fontWeight: "bold",
+                            borderBottom: 0,
+                            color: "#696969",
+                          }}
                         >
                           {aData.total_transfered()} €
                         </TableCell>
@@ -208,7 +230,11 @@ export class RealTimeVue extends React.Component<Props> {
                         <TableCell
                           align="center"
                           colSpan={2}
-                          style={{ color: "#bd9b71", borderBottom: 0 }}
+                          style={{
+                            color: "#bd9b71",
+                            borderBottom: 0,
+                            fontSize: 16,
+                          }}
                         >
                           Clients
                         </TableCell>

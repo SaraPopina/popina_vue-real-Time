@@ -40,8 +40,9 @@ h3 {
 }
 
 .dashboard_realtime_title_container {
-  padding: 5px;
+  padding: 15px;
   margin: 20px;
+  width: auto;
 }
 
 .cardHeaderShadowStyles {
